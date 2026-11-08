@@ -1,0 +1,16 @@
+{
+  "name": "TUI Portfolio // Alex Devson",
+  "short_name": "TUI Portfolio",
+  "description": "Minimalist Retro Terminal User Interface (TUI) Portfolio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a120b",
+  "theme_color": "#00ff66",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

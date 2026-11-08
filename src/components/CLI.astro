@@ -1,5 +1,7 @@
 ---
 import { PORTFOLIO_DATA } from "../data/portfolio";
+  import { AIRPORTS_DATA, TOP10_AIRPORTS, FEATURED_AIRPORT } from "../data/airports";
+  import { PROXY_CLIENTS_DATA } from "../data/clients";
 ---
 
 <div id="view-cli" class="flex flex-col flex-1 font-mono text-xs md:text-sm">
@@ -186,6 +188,43 @@ import { PORTFOLIO_DATA } from "../data/portfolio";
       const args = parts.slice(1);
 
       switch (cmd) {
+        case "top10":
+        case "rank":
+          playSuccessSound();
+          renderTop10();
+          break;
+
+        case "guangsu":
+        case "gsy":
+          playSuccessSound();
+          renderGuangsu();
+          break;
+
+        case "airports":
+        case "jichang":
+        case "brands":
+          playSuccessSound();
+          renderAirports();
+          break;
+
+        case "speedtest":
+        case "speed":
+          playSuccessSound();
+          renderSpeedtest();
+          break;
+
+        case "clients":
+        case "client":
+          playSuccessSound();
+          renderClients();
+          break;
+
+        case "geo":
+        case "unlock":
+          playSuccessSound();
+          renderGeo();
+          break;
+
         case "help":
         case "man":
           playSuccessSound();
@@ -212,6 +251,12 @@ import { PORTFOLIO_DATA } from "../data/portfolio";
         case "cat":
           playSuccessSound();
           const fileArg = (args[0] || "").toLowerCase();
+          if (fileArg === "01_光速云.vip" || fileArg === "光速云" || fileArg === "guangsu") renderGuangsu();
+          else if (fileArg === "top10.txt" || fileArg === "top10") renderTop10();
+          else if (fileArg === "42_airports.db" || fileArg === "airports.txt" || fileArg === "airports") renderAirports();
+          else if (fileArg === "speedtest.log" || fileArg === "speedtest") renderSpeedtest();
+          else if (fileArg === "clients.sh" || fileArg === "clients") renderClients();
+          else if (fileArg === "geo_unlock.md" || fileArg === "geo") renderGeo();
           if (fileArg === "bio.txt" || fileArg === "bio") renderAbout();
           else if (fileArg === "skills.sh" || fileArg === "skills") renderSkills();
           else if (fileArg === "collabs.md" || fileArg === "collabs") renderCollabs();
@@ -233,7 +278,7 @@ import { PORTFOLIO_DATA } from "../data/portfolio";
             renderRadio();
           } else {
             appendOutput(
-              `<div class="text-yellow-400">Usage: cat &lt;bio.txt | skills.sh | collabs.md | github.sh | contact.txt | pong.sh | snake.sh | radio.sh&gt;</div>`,
+              `<div class="text-yellow-400">Usage: cat &lt;01_光速云.vip | top10.txt | 42_airports.db | speedtest.log | clients.sh | geo_unlock.md | bio.txt | skills.sh&gt;</div>`,
             );
           }
           break;

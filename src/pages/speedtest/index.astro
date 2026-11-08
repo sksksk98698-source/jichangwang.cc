@@ -1,0 +1,134 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import TerminalWindow from "../../components/TerminalWindow.astro";
+import { AIRPORTS_DATA } from "../../data/airports";
+
+// 筛选出有测速大图的 17 家机场
+const testedAirports = AIRPORTS_DATA.filter((a) => a.speedtestImage);
+
+const pageTitle = "17家机场晚高峰节点测速实测大图与下行带宽天梯 // 机场网 JichangWang.cc";
+const pageDesc = "2026年最新17家主流专线机场晚高峰节点测速大图全公开。涵盖光速云、暮光加速、飞猫云、微风网络等，包含香港、日本、新加坡、美国核心节点真实下行带宽、延迟与丢包率对比。";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDesc}
+  keywords={["机场测速", "机场测速图", "晚高峰测速", "光速云测速", "飞猫云测速", "IPLC专线测速", "机场网测速报告"]}
+>
+  <h1 class="sr-only">{pageTitle}</h1>
+
+  <TerminalWindow currentPath="~/jichangwang/speedtest" showModeTabs={false}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text">
+      <!-- 页面顶部说明 -->
+      <div class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-color)] pb-2">
+          <h2 class="text-xs sm:text-base font-bold text-[var(--fg-bright)] flex items-center gap-2">
+            <span class="text-[var(--accent)]">></span>
+            <span>SPEEDTEST RADAR // 17 家机场晚高峰实测资料库</span>
+          </h2>
+          <span class="text-[10px] text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 px-2 py-0.5">
+            17_TESTS_ARCHIVED
+          </span>
+        </div>
+        <p class="text-[var(--fg-main)] leading-relaxed text-xs">
+          网络代理好不好，关键看晚上 8 点至 11 点的晚高峰表现。
+          本专题汇聚了由测速探针在晚高峰时段生成的真实测试大图（测试环境：Clash Verge Rev / Speedtest.net，千兆/万兆带宽下行测试）。
+          不搞虚假截图，不虚标无意义带宽，让每一个节点的真实延迟和速率一览无余。
+        </p>
+      </div>
+
+      <!-- 快速导航索引条 -->
+      <div class="p-3 bg-[var(--bg-main)] border border-[var(--border-color)] flex flex-wrap gap-1.5 text-xs font-mono">
+        <span class="text-[var(--accent)] font-bold mr-1">QUICK_JUMP:</span>
+        {testedAirports.map((a) => (
+          <a
+            href={`#test-${a.slug}`}
+            class="px-2 py-0.5 bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[var(--accent)] text-[var(--fg-bright)] hover:text-[var(--accent)] transition-colors text-[11px]"
+          >
+            {a.name}
+          </a>
+        ))}
+      </div>
+
+      <!-- 17 家实测图详情卡片大列表 -->
+      <div class="space-y-8">
+        {testedAirports.map((a, index) => (
+          <article
+            id={`test-${a.slug}`}
+            class="border-2 border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-active)] transition-colors p-4 sm:p-6 space-y-4"
+          >
+            <!-- 头部信息 -->
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-color)] pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="px-2 py-0.5 bg-[var(--accent)] text-black font-extrabold text-xs">
+                  #{index + 1}
+                </span>
+                <h3 class="text-base sm:text-lg font-bold text-[var(--fg-bright)]">
+                  {a.name} 晚高峰节点测速实测报告
+                </h3>
+                {a.isFeatured && (
+                  <span class="text-[10px] bg-amber-500 text-black px-1.5 py-0.5 font-bold uppercase">
+                    🏆 测速主推榜首
+                  </span>
+                )}
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-emerald-400 font-bold">{a.entryPrice}</span>
+                <a
+                  href={`/brands/${a.slug}`}
+                  class="px-3 py-1 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-bright)] text-xs font-bold transition-colors"
+                >
+                  完整测评 ↗
+                </a>
+                <a
+                  href={a.affLink}
+                  target="_blank"
+                  rel="nofollow sponsored noopener"
+                  class="px-3 py-1 bg-[var(--accent)] text-black font-bold text-xs hover:opacity-90 transition-opacity"
+                >
+                  直达官网 ⚡
+                </a>
+              </div>
+            </div>
+
+            <!-- 参数速查 -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-[var(--bg-main)] p-2.5 border border-[var(--border-color)]">
+              <div>
+                <span class="text-[10px] text-[var(--fg-dim)] block">线路架构</span>
+                <span class="text-[var(--fg-bright)] font-bold">{a.lineType}</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-[var(--fg-dim)] block">实测特征</span>
+                <span class="text-[var(--accent)] font-bold truncate block">{a.tagline}</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-[var(--fg-dim)] block">优惠券代码</span>
+                <code class="text-amber-300 font-bold">{a.coupon}</code>
+              </div>
+              <div>
+                <span class="text-[10px] text-[var(--fg-dim)] block">丢包率</span>
+                <span class="text-emerald-400 font-bold">0% (专线保障)</span>
+              </div>
+            </div>
+
+            <!-- 测速高清截图展示 -->
+            <div class="border border-[var(--border-color)] bg-black/60 p-2 sm:p-4 text-center">
+              <a href={a.speedtestImage} target="_blank" title="点击查看原始高清测速图">
+                <img
+                  src={a.speedtestImage}
+                  alt={`${a.name} 晚高峰节点实测测速高清大图`}
+                  loading="lazy"
+                  class="w-full max-h-[600px] object-contain mx-auto border border-[var(--border-color)] hover:border-[var(--accent)] transition-all cursor-zoom-in"
+                />
+              </a>
+              <div class="text-[10px] text-[var(--fg-dim)] mt-2">
+                👆 点击测速大图可在新标签页查看原始全分辨率高清数据
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </TerminalWindow>
+</Layout>

@@ -1,0 +1,28 @@
+# Robots.txt for https://jichangwang.cc/
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+
+User-agent: bingbot
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+
+User-agent: yisouspider
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+
+# XML Sitemap
+Sitemap: https://jichangwang.cc/sitemap.xml

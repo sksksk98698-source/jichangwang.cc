@@ -1,0 +1,133 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TerminalWindow from "../../../components/TerminalWindow.astro";
+import { ALERT_CATEGORIES, ALERT_ARTICLES, type AlertCategory } from "../../../data/alertsData";
+import { SITE_CONFIG } from "../../../config/siteConfig";
+
+export async function getStaticPaths() {
+  return ALERT_CATEGORIES.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }));
+}
+
+interface Props {
+  category: AlertCategory;
+}
+
+const { category } = Astro.props;
+
+// 过滤当前分类下的文章
+const categoryArticles = ALERT_ARTICLES.filter((a) => a.category === category.slug);
+
+const pageTitle = `${category.name} // 跑路预警与避坑专题 - 机场网 JichangWang.cc`;
+const pageDesc = `${category.tagline}。${category.description} 警惕黑心机场卷款割韭菜。`;
+
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/alerts/${category.slug}`;
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <TerminalWindow currentPath={`~/jichangwang/alerts/${category.slug}`}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-dim)] border-b border-[var(--border-color)] pb-2 overflow-x-auto whitespace-nowrap">
+        <a href="/" class="hover:text-[var(--accent)]">首页</a>
+        <span>&gt;</span>
+        <a href="/alerts" class="hover:text-[var(--accent)]">跑路预警专题</a>
+        <span>&gt;</span>
+        <span class="text-amber-300 font-bold">{category.name}</span>
+      </nav>
+
+      <!-- 类别 Banner -->
+      <div class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-6 space-y-3">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">{category.icon}</span>
+          <div>
+            <h1 class="text-lg md:text-2xl font-bold text-red-400">
+              {category.name}
+            </h1>
+            <p class="text-xs md:text-sm text-[var(--fg-muted)]">
+              {category.tagline}
+            </p>
+          </div>
+        </div>
+        <p class="text-xs text-[var(--fg-dim)] border-t border-[var(--border-dim)] pt-2 leading-relaxed">
+          {category.description}
+        </p>
+      </div>
+
+      <!-- 分类文章矩阵列表 -->
+      <div class="space-y-4">
+        <div class="flex justify-between items-center text-xs text-[var(--fg-dim)] border-b border-[var(--border-dim)] pb-1">
+          <span>避坑指南与专题索引 // INDEX ({categoryArticles.length})</span>
+          <span>防割雷达 // RISK RADAR</span>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4">
+          {categoryArticles.map((article) => (
+            <div class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-5 hover:border-red-500/60 transition-all rounded space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class={`px-2 py-0.5 text-xs font-bold border rounded ${
+                  article.alertLevel === '红色高危' ? 'border-red-500 text-red-400 bg-red-950/20' :
+                  article.alertLevel === '橙色预警' ? 'border-orange-500 text-orange-300 bg-orange-950/20' :
+                  article.alertLevel === '黄色警示' ? 'border-yellow-500 text-yellow-300 bg-yellow-950/20' :
+                  'border-emerald-500 text-emerald-400 bg-emerald-950/20'
+                }`}>
+                  ⚠️ {article.alertLevel}
+                </span>
+                <span class="text-xs text-[var(--fg-dim)]">更新时间：{article.dateModified}</span>
+              </div>
+
+              <h2 class="text-base md:text-lg font-bold text-amber-300">
+                <a href={`/alerts/${category.slug}/${article.slug}`} class="hover:underline">
+                  {article.title}
+                </a>
+              </h2>
+
+              <p class="text-xs text-[var(--fg-muted)] leading-relaxed">
+                {article.subtitle}
+              </p>
+
+              <div class="p-3 bg-[var(--bg-base)] border border-[var(--border-dim)] text-xs text-[var(--fg-dim)] rounded">
+                <span class="text-red-400 font-bold block mb-1">【核心提要】</span>
+                {article.summary}
+              </div>
+
+              <div class="flex items-center justify-between pt-2">
+                <div class="flex flex-wrap gap-1 text-[11px] text-[var(--fg-dim)]">
+                  {article.keywords.slice(0, 3).map((kw) => (
+                    <span class="px-1.5 py-0.5 bg-black/40 rounded">#{kw}</span>
+                  ))}
+                </div>
+                <a 
+                  href={`/alerts/${category.slug}/${article.slug}`}
+                  class="px-3 py-1 bg-red-500/20 text-red-300 border border-red-500/40 text-xs font-bold hover:bg-red-500 hover:text-black transition-colors rounded"
+                >
+                  深入阅读避坑细节 &gt;&gt;
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 光速云服务背书 -->
+      <div class="border border-emerald-500/40 bg-emerald-950/20 p-4 rounded flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+        <div>
+          <span class="text-emerald-300 font-bold block text-sm">🛡️ 遭遇跑路后的唯一安全避难所：【光速云】</span>
+          <span class="text-[var(--fg-dim)]">超 4 年稳健运营，自主 IEPL 内网专线，不玩买一送一套路，实打实口碑推荐。</span>
+        </div>
+        <a 
+          href="https://gscloud.co/#/register?code=AMM" 
+          target="_blank" 
+          rel="nofollow sponsored noopener" 
+          class="px-4 py-2 bg-emerald-500 text-black font-bold whitespace-nowrap rounded hover:bg-emerald-400"
+        >
+          迁入光速云避难所 (码 AMM)
+        </a>
+      </div>
+
+    </div>
+  </TerminalWindow>
+</Layout>

@@ -1,0 +1,115 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TerminalWindow from "../../../components/TerminalWindow.astro";
+import { TOOL_PLATFORMS, TOOL_ARTICLES, type ToolPlatform } from "../../../data/toolsData";
+import { SITE_CONFIG } from "../../../config/siteConfig";
+
+export async function getStaticPaths() {
+  return TOOL_PLATFORMS.map((platform) => ({
+    params: { platform: platform.slug },
+    props: { platform },
+  }));
+}
+
+interface Props {
+  platform: ToolPlatform;
+}
+
+const { platform } = Astro.props;
+const articles = TOOL_ARTICLES.filter((a) => a.platform === platform.slug);
+
+const pageTitle = `${platform.name} // 梯子客户端与配置指南 // 机场网 JichangWang.cc`;
+const pageDesc = `${platform.tagline}。${platform.description} 推荐首选客户端：${platform.recommendedApp}。`;
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={[platform.name, platform.recommendedApp, "科学上网客户端", "TUN模式配置", "分流规则"]}>
+  <TerminalWindow currentPath={`~/jichangwang/clients/${platform.slug}`}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-dim)] border-b border-[var(--border-color)] pb-2">
+        <a href="/" class="hover:text-[var(--accent)]">首页</a>
+        <span>&gt;</span>
+        <a href="/clients" class="hover:text-[var(--accent)]">梯子工具大全</a>
+        <span>&gt;</span>
+        <span class="text-cyan-300 font-bold">{platform.name}</span>
+      </nav>
+
+      <!-- 平台头部说明 -->
+      <header class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-5 space-y-3">
+        <div class="flex items-center gap-2 text-base md:text-lg font-bold text-cyan-300">
+          <span>{platform.icon}</span>
+          <h2>{platform.name} // 官方权威配置与优化索引</h2>
+        </div>
+        <p class="text-xs text-[var(--fg-bright)] leading-relaxed">{platform.description}</p>
+        <div class="flex flex-wrap items-center gap-3 text-xs pt-1">
+          <span class="text-[var(--fg-dim)]">平台官方首选推荐客户端：</span>
+          <span class="text-[var(--accent)] font-bold px-2 py-0.5 border border-[var(--accent)] bg-black">
+            {platform.recommendedApp}
+          </span>
+        </div>
+      </header>
+
+      <!-- 长尾实战文章列表 -->
+      <section class="space-y-4">
+        <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
+          <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)]">
+            📚 {platform.name} 专属深度配置教程 ({articles.length} 篇)
+          </h3>
+          <span class="text-[10px] text-[var(--fg-dim)]">覆盖安装与疑难排错</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {articles.map((art) => (
+            <article class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 space-y-3 hover:border-[var(--accent)] transition-colors flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center text-[10px]">
+                  <span class="px-2 py-0.5 border border-cyan-400 text-cyan-300 bg-cyan-950/20 font-bold">
+                    难度：{art.difficulty}
+                  </span>
+                  <span class="text-[var(--fg-dim)]">阅读时长：{art.readTime}</span>
+                </div>
+                <h4 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] hover:text-[var(--accent)]">
+                  <a href={`/clients/${platform.slug}/${art.slug}`}>{art.title}</a>
+                </h4>
+                <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">{art.summary}</p>
+              </div>
+
+              <div class="pt-2 border-t border-[var(--border-color)] flex justify-between items-center text-[10px]">
+                <span class="text-[var(--fg-dim)]">更新时间: {art.dateModified}</span>
+                <a href={`/clients/${platform.slug}/${art.slug}`} class="text-[var(--accent)] hover:underline font-bold">
+                  查阅保姆级教程 →
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- 快速跳转与专线订阅卡片 -->
+      <footer class="border-2 border-[var(--accent)] bg-[var(--bg-card)] p-4 space-y-2">
+        <div class="flex justify-between items-center">
+          <strong class="text-xs text-[var(--accent)]">⚡ 一键获取全协议兼容专线订阅：</strong>
+          <span class="text-[10px] bg-black text-amber-300 border border-amber-400 px-1.5 font-bold">优惠码: AMM</span>
+        </div>
+        <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+          好马配好鞍，优秀的客户端必须配合高质量的专线节点。首推【光速云】IEPL+企业内网双专线，支持一键导入 Clash Verge / Sing-box / Shadowrocket，全节点 2.5Gbps 最高物理端口。
+        </p>
+        <div class="pt-1 flex gap-2">
+          <a
+            href="https://gsy01.vip/#/register?code=wY5yvR82"
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            class="py-1.5 px-3 bg-[var(--accent)] text-black font-bold text-xs hover:brightness-110"
+          >
+            直达光速云控制台获取订阅 →
+          </a>
+          <a href="/clients" class="py-1.5 px-3 border border-[var(--border-color)] text-xs text-[var(--fg-bright)] hover:border-[var(--accent)]">
+            返回客户端总览
+          </a>
+        </div>
+      </footer>
+
+    </div>
+  </TerminalWindow>
+</Layout>

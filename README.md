@@ -1,205 +1,171 @@
 <div align="center">
 
-# 🖥️ Retro TUI Portfolio
-
-A minimal, high-aesthetic Terminal User Interface portfolio template.  
-Built with **Astro.js v7** & **Tailwind CSS v4**.
-
-<br />
-
-[![Astro](https://img.shields.io/badge/Astro-v7.0-BC52EE?style=flat&logo=astro&logoColor=white)](https://astro.build)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4.0-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-v5.0-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![Astro Themes](https://img.shields.io/badge/Astro%20Themes-Available%20Now-FF5D01?style=flat&logo=astro&logoColor=white)](https://portal.astro.build/themes/retro-tui-portfolio/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-10b981?style=flat)](LICENSE.MD)
-
-<br />
-<br />
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2Fnivinvysakh%2Fastro-tui-portfolio)
-
-<br />
-<br />
-
-<p align="center">
-  <a href="https://astro-tui-portfolio.netlify.app"><strong>🌐 Launch Live Demo</strong></a> &nbsp;•&nbsp;
-  <a href="https://portal.astro.build/themes/retro-tui-portfolio/"><strong>🌟 Available on Astro Themes</strong></a>
-</p>
-
-</div>
-
-<br />
-
-> 🌟 **Available on Astro Themes:** This theme is officially listed and available on the [Astro Theme Directory](https://portal.astro.build/themes/retro-tui-portfolio/).
-
----
-
-## 🌐 Live Preview
-
-Experience the interactive retro terminal portfolio live in your browser:
-- 🔗 **Live Demo**: [https://astro-tui-portfolio.netlify.app](https://astro-tui-portfolio.netlify.app)
-- 🌟 **Astro Themes Directory**: [retro-tui-portfolio on Astro Themes](https://portal.astro.build/themes/retro-tui-portfolio/)
-
----
-
-## 🎮 Video Demo
-
-https://github.com/user-attachments/assets/b48b7e89-4402-48b1-a201-9028e0d75327
-
----
-
-## 🎨 Retro CRT Themes
-
-Switch between **6 built-in CRT themes** in real-time via the header dropdown or the `theme <name>` CLI command:
-
-| **🟢 Phosphor Green** | **🟠 Amber CRT** |
-| :---: | :---: |
-| ![Phosphor Green](themes/Phosphor_Green.png) | ![Amber Monitor](themes/Amber_CRT.png) |
-
-| **🔵 Cyber Cyan** | **🟣 Dracula Synth** |
-| :---: | :---: |
-| ![Cyber Cyan](themes/Cyber_Cyan.png) | ![Dracula Synth](themes/Dracula_Synth.png) |
-
-| **⚪ Monochrome** | **☕ Cappuccino** |
-| :---: | :---: |
-| ![Retro Monochrome](themes/Monochrome.png) | ![Cappuccino Theme](themes/Cappuccino.png) |
-
-<p align="center">
-  <em>Includes a custom retro 404 terminal error screen:</em>
-</p>
-
-<div align="center">
-  <img src="themes/404.png" alt="404 Terminal Page" width="70%" />
-</div>
-
----
-
-## 📻 Retro Cassette Radio & 24/7 Live Streams
-
-An interactive retro cassette tape player with real-time Web Audio API spectrum visualization:
-- **Curated Tracks**: Built-in Lo-Fi, Chiptune, Synthwave, and Ambient tracks.
-- **24/7 Live Streams**: Includes 24/7 live YouTube radio streams (Lofi Girl 🔴 LIVE, Synthwave 🔴 LIVE, Chillhop 🔴 LIVE).
-- **Custom Song Streaming**: Stream any song or live radio from YouTube by pasting the video URL into the player or executing `radio add <url>` in CLI.
-- **Infinite Live Duration**: Displays `00:00 / ∞` for 24/7 live stream stations.
-
-<div align="center"><img src="themes/radio.png" alt="Retro Radio Player" width="50%" /></div>
-
----
-
-## 🐍 Retro Arcade Snake (`./snake.sh`)
-
-A classic 60 FPS HTML5 Canvas Snake arcade mini-game built right into the terminal:
-- **Controls**: Play using `W/A/S/D`, Arrow keys, or mobile D-Pad touch buttons (▲ ◀ ▼ ▶).
-- **Sound Effects**: Web Audio API sound synthesis for eating apples, steering, and game-over alerts.
-- **High Scores**: Persistent high-score tracking stored in browser `localStorage`.
-
-
-<div align="center"><img src="themes/Snake.png" alt="Retro Snake Game" width="70%" /></div>
-
----
-
-## 🕹️ Retro Arcade Pong (`./pong.sh`)
-
-A 1972-style 60 FPS HTML5 Canvas Pong arcade mini-game vs CPU AI:
-- **Controls**: Steer your paddle using `W/S`, `↑/↓` Arrow keys, Mouse drag, or mobile touch controls.
-- **Rally & Score Counter**: Real-time rally counter and persistent high-score tracking.
-
-
-<div align="center"><img src="themes/Pong.png" alt="Retro Pong Game" width="80%" /></div>
-
----
-
-## 🐙 Live GitHub Repositories & Metrics
-
-Real-time integration with the GitHub REST API:
-- **Live Metrics**: Automatically fetches total stars ⭐, total forks 🍴, followers count 👥, and public repository statistics.
-- **Language Breakdown**: Displays primary programming languages across all public repositories.
-- **Featured Repositories Grid**: Interactive cards displaying repository stars, description, and direct links.
-
-<div align="center"><img src="themes/Github%20GUI.png" alt="Live GitHub Stats & Repositories" width="80%" /></div>
-
-### 🖥️ GitHub CLI Integration (`github` / `repos`)
-
-Access live GitHub metrics and featured repositories directly inside the terminal CLI:
-- **CLI Commands**: Execute `github` (or `gh` / `stats`) to view live profile metrics, or `repos` (or `projects`) to browse top repositories.
-- **Interactive Terminal Cards**: Formatted terminal output displaying repository stars, forks, language badges, and direct links.
-
-<div align="center"><img src="themes/Github%20CLI.png" alt="GitHub CLI Integration" width="80%" /></div>
-
----
-
-## ✨ Key Features
-
-- **Dual-Mode UI** — Switch between an interactive **`>_ CLI Terminal`** (history, tab autocomplete) and a **`[#] GUI Dashboard`**.
-- **📻 Retro Lo-Fi Radio + 24/7 Live Radio Streams** — Cassette radio with Web Audio API real-time spectrum visualizer, 24/7 Live Lofi Girl / Synthwave streams, & custom YouTube URL loader.
-- **🐍 Retro Arcade Snake & 🕹️ Pong** — Fully playable 60 FPS HTML5 Canvas arcade games with sound synthesis, zero-latency touch controls, and persistent high-scores.
-- **📱 100% Mobile & Touch Optimized** — Pinned window headers, touch D-Pad controls, centered cassette player, and responsive layout for mobile screens (Samsung Galaxy S23 FE, iPhones, Android).
-- **🐙 Live GitHub Stats & Repos** — Real-time GitHub REST API metrics: total stars ⭐, forks 🍴, followers, languages breakdown & repositories.
-- **6 Vintage CRT Themes** — Phosphor Green, Amber, Cyber Cyan, Dracula Synth, Monochrome, and Cappuccino with dynamic runtime CSS variables.
-- **CRT Shader & Audio FX** — Scanline overlays, vignette shadows, and Web Audio API keypress sounds.
-- **Live Activity Streaming** — Optional Discord Lanyard WebSocket integration for Spotify activity and live gaming status (disabled by default).
-- **Zero-Backend Contact Form** — Working AJAX email transmission via FormSubmit.co with confetti celebration.
-- **100% Static & Fast** — Built with Astro v7 for instant load times and zero overhead.
-
----
-
-## 🚀 Quick Start
-
-```bash
-# Clone and install
-git clone https://github.com/nivinvysakh/astro-tui-portfolio.git
-cd astro-tui-portfolio
-npm install
-
-# Start local dev server
-npm run dev
+```text
+       _ _      _                                                 
+      (_|_)    | |                                                
+       _ _  ___| |__   __ _ _ __   __ ___      ____ _ _ __   __ _ 
+      | | |/ __| '_ \ / _` | '_ \ / _` \ \ /\ / / _` | '_ \ / _` |
+      | | | (__| | | | (_| | | | | (_| |\ V  V / (_| | | | | (_| |
+     _/ |_|\___|_| |_|\__,_|_| |_|\__, | \_/\_/ \__,_|_| |_|\__, |
+    |__/                           __/ |                     __/ |
+                                  |___/                     |___/ 
 ```
 
-Open **`http://localhost:4321`** to view your live portfolio.
+# ⚡ 机场网 (JichangWang.cc)
+### 全球专线网络实测中心 // 42 家机场品牌测评与选购智库
 
-> **🐳 Docker:** Run `docker compose up tui-portfolio-dev` for live development with hot-reloading.
+[![Astro](https://img.shields.io/badge/Astro-v7.4-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build/)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4.3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![SEO Score](https://img.shields.io/badge/SEO-100%2F100-success?style=flat-square&logo=google)](https://jichangwang.cc/sitemap.xml)
+[![Architecture](https://img.shields.io/badge/Architecture-SSG%20Static-00f0ff?style=flat-square)](https://jichangwang.cc/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](./LICENSE.MD)
 
----
+<p align="center">
+  <b>极客复古 TUI 终端界面（Terminal User Interface）与现代高性能 SSG 架构的结合。</b><br/>
+  专注全球 IPLC/IEPL 跨境专线实测、流媒体与 AI 解锁真实验证、晚高峰抗拥堵监测与全景知识库。
+</p>
 
-## ⚙️ Customization
-
-- **Content & Bio** &rarr; [`src/data/portfolio.ts`](src/data/portfolio.ts)  
-  *Update bio, skills matrix, hardware specs, collaborations, and contact details.*
-
-- **Themes, Radio & Integrations** &rarr; [`src/config/`](src/config/)  
-  *Configure custom CRT themes (`themeConfig.ts`), Radio tracks & 24/7 Live Streams (`radioConfig.ts`), Spotify RPC (`spotifyConfig.ts`), and live Gaming presence (`gamesConfig.ts`).*
-  > 💡 **Note:** Spotify and Gaming live activity widgets are disabled by default until configured with your Discord Lanyard User ID (`lanyardUserId: ""`).
-
-- **🎵 Adding Custom Radio Tracks & Streams**:
-  - **Permanent Playlist (Config)**: Add MP3 URLs or YouTube links to the `RADIO_PLAYLIST` array in [`src/config/radioConfig.ts`](src/config/radioConfig.ts).
-  - **Runtime via UI / CLI**: Paste any YouTube URL into the Radio window's *STREAM CUSTOM SONG VIA YOUTUBE URL* input field, or execute `radio add <youtube_url>` directly in the CLI terminal. Custom streams persist in browser `localStorage`.
+[🌐 访问官方站点](https://jichangwang.cc) • [📊 42家机场品牌库](https://jichangwang.cc/brands/) • [🧭 客户端选型矩阵](https://jichangwang.cc/clients/) • [⚠️ 跑路预警风控](https://jichangwang.cc/alerts/)
 
 ---
 
-## 💻 CLI Commands
+</div>
 
-| Command | Description |
-| :--- | :--- |
-| `help` | List available commands (`man`) |
-| `about` | Bio, background & location (`cat bio.txt`) |
-| `skills` | Interactive proficiency meters (`cat skills.sh`) |
-| `collabs` | Projects & collaborations (`cat collabs.md`) |
-| `neofetch` | System specs & ASCII art logo |
-| `github` | Live GitHub profile metrics, stars & language stats (`stats`, `gh`) |
-| `repos` | Explore featured repositories with stars & links (`projects`) |
-| `links` | Display quick links to LinkedIn, X (Twitter), GitHub & Email (`socials`) |
-| `snake` | Play classic retro Snake arcade game (`./snake.sh`) |
-| `pong` | Play retro arcade Pong vs CPU (`game`, `play`, `./pong.sh`) |
-| `radio` | Play Lo-Fi radio or stream 24/7 Live YouTube stations (`radio add <yt_url>`, `radio play`) |
-| `spotify` | Live Spotify track & progress bar (`np`) |
-| `theme <name>` | Switch theme (`green`, `amber`, `cyan`, `dracula`, `mono`, `cappuccino`) |
-| `matrix` | Toggle digital rain canvas animation |
-| `crt` / `sfx` | Toggle CRT shader / Keypress sound effects |
-| `gui` / `cli` | Switch layout mode |
-| `clear` | Clear terminal screen buffer (`cls`) |
+## 📖 项目简介 (Overview)
+
+**机场网 (`JichangWang.cc`)** 是一个面向网络工程师、开发者、跨境出海团队及极客用户的**全球专线网络实测与选购决策平台**。
+
+项目颠覆了传统千篇一律的博客模板，采用独具匠心的 **80s/90s 复古黑客终端（CRT Terminal）** 交互视觉，配合全静态 SSG 极速渲染与专著级万字知识库矩阵，提供客观、严谨、零虚标的评测数据。
 
 ---
 
-## 📄 License
+## ⚡ 核心功能与特色 (Key Features)
 
-Distributed under the [MIT License](LICENSE.MD). © 2026 Nivin
+### 1. 📚 四大万字级专著级知识库矩阵 (Pillar Knowledge Base)
+全站围绕搜索意图构建了四大支柱页（Pillar Page）与数十篇长尾专题文章（Cluster Articles），每篇核心支柱正文纯汉字量均超 **10,000 字**：
+* 🆓 **[免费资源专题 (`/free`)](https://jichangwang.cc/free/)**：开源订阅池、GitHub 节点爬虫安全性审计与防投毒指南（10,031 汉字）。
+* 🛠️ **[梯子工具矩阵 (`/clients`)](https://jichangwang.cc/clients/)**：Windows / macOS / iOS / Android 全平台内核与客户端深度选型评测（10,047 汉字）。
+* ❓ **[机场 FAQ 智库 (`/faq`)](https://jichangwang.cc/faq/)**：IEPL/IPLC 专线底层原理解析、常见 DNS 泄露与 1020 拦截排障技术白皮书（10,061 汉字）。
+* ⚠️ **[跑路预警系统 (`/alerts`)](https://jichangwang.cc/alerts/)**：超低价年付资金盘识别、域名频繁更换监测与跨境出海避坑风控（10,042 汉字）。
+
+### 2. 📊 42 家主流机场品牌多维实测数据库 (`/brands`)
+* **实测图集**：晚高峰真实下行带宽跑分图、ping.pe 全球节点延迟与抖动分布图。
+* **业务级解锁矩阵**：Netflix / Disney+ / YouTube 4K/8K 与 ChatGPT / Claude / Gemini 专线住宅 IP 解锁真实验证。
+* **协议与拓扑审计**：全面收录 Trojan、VLESS Reality、Shadowsocks 2022、Hysteria2 协议支持情况。
+
+### 3. 🎯 顶级技术 SEO 与 GEO 生成式引擎架构
+* **规范化 URL 体系**：全站 100% 小写英文语义化 slug，严禁无意义数字 ID，杜绝死链与 Soft 404。
+* **Canonical 自引用**：全站 80 个页面输出 HTTPS 绝对自引用 Canonical 标签，避免参数重复收录。
+* **搜索引擎爬虫全兼容**：
+  * 精准定制的 `robots.txt`，对 **Googlebot、bingbot、Baiduspider、yisouspider (神马)** 全量放行。
+  * 自动化单级 `sitemap.xml` 声明，仅收录 80 个 200 状态有效正文页面。
+* **Schema.org 结构化数据**：
+  * 全局声明 `WebSite` 与 `Organization` 实体。
+  * 品牌页声明 `Product`、`Review` 与 `BreadcrumbList`。
+  * 问答排障页声明合规 `FAQPage`，完全契合页面可视内容。
+* **商业外链风控**：所有外部合作链接严格包裹 `rel="nofollow sponsored noopener"`，保护域名信誉。
+
+### 4. 🖥️ 复古极客美学与交互 (TUI Experience)
+* **双模切换**：
+  * **CLI 命令行模式**：支持 `help`, `about`, `skills`, `collabs`, `brands`, `matrix`, `pong`, `snake` 等 20+ 虚拟 Shell 指令。
+  * **GUI 仪表盘模式**：一键切换至现代化卡片式终端界面。
+* **CRT 硬件级滤镜**：纯 CSS 实现 CRT 扫描线、RGB 辉光通道与荧光抖动效果。
+* **Web Audio API 真实音效**：原生合成键盘打字音效与蜂鸣器，零外部音频资源下载。
+* **6 套主题配色**：Phosphor Green（绿磷光）、Amber（琥珀金）、Cyan（赛博青）、Dracula 等随心切换。
+
+---
+
+## 🏗️ 目录结构 (Directory Structure)
+
+```text
+jichangwang.cc/
+├── public/                     # 静态公共资产目录
+│   ├── assets/img/             # 实测图、拓扑架构图与测速大图
+│   ├── favicon.svg             # 矢量站点图标
+│   ├── robots.txt              # 搜索引擎爬虫抓取指引
+│   ├── site.webmanifest        # PWA 渐进式应用清单
+│   └── sitemap.xml             # 80 个页面自动化站点地图
+├── src/
+│   ├── components/             # Astro 核心组件 (TUI 视窗、CLI、Neofetch 等)
+│   ├── config/                 # 核心配置 (siteConfig, themeConfig, crtConfig 等)
+│   ├── data/                   # 结构化数据库 (42家机场、知识库、客户端清单)
+│   ├── layouts/                # 全局 SEO Head 布局与 Schema.org 注入
+│   ├── pages/                  # 静态路由页面 (81 个静态输出)
+│   │   ├── about/              # 关于我们与实测实验室
+│   │   ├── alerts/             # 跑路预警万字支柱与长尾专题
+│   │   ├── brands/             # 42 家机场品牌深度测评独立页
+│   │   ├── clients/            # 代理工具万字支柱与全平台配置指南
+│   │   ├── disclaimer/         # 独立合规免责声明
+│   │   ├── faq/                # 常见问题万字支柱与排障手册
+│   │   ├── free/               # 免费节点万字支柱与开源池安全分析
+│   │   ├── geo/                # 全球拓扑与流媒体/AI解锁专区
+│   │   ├── speedtest/          # 晚高峰测速排行榜
+│   │   ├── 404.astro           # 终端风格 404 容错页
+│   │   └── index.astro         # 终端主页
+│   └── styles/                 # 终端 CRT 扫描线与全局 Tailwind 样式
+├── docs/                       # 预防性 SEO 审计与技术文档
+├── astro.config.mjs            # Astro v7 核心构建配置
+├── package.json                # 项目依赖清单
+└── tsconfig.json               # TypeScript 严格配置
+```
+
+---
+
+## 🚀 本地开发与构建 (Getting Started)
+
+### 环境要求
+* **Node.js**: `^18.17.0` 或 `>=20.0.0` (推荐 Node.js LTS)
+* **包管理器**: `npm` / `pnpm` / `bun`
+
+### 安装与运行
+```bash
+# 1. 克隆代码仓库
+git clone https://github.com/sksksk98698-source/jichangwang.cc.git
+cd jichangwang.cc
+
+# 2. 安装项目依赖
+npm install
+
+# 3. 启动本地开发服务器 (默认端口 http://localhost:4321)
+npm run dev
+
+# 4. 执行生产环境 SSG 静态构建
+npm run build
+
+# 5. 本地预览生产构建产物
+npm run preview
+```
+
+构建产物将输出至 `./dist` 目录，单次构建仅需约 1 秒，输出 81 个标准纯静态 HTML 页面。
+
+---
+
+## 🌐 生产部署指引 (Deployment)
+
+由于本项目采用 **100% SSG（静态站点生成）** 架构，可无缝免费托管于全球各大 Edge CDN：
+
+### Cloudflare Pages (推荐)
+1. 登录 Cloudflare Dashboard -> **Compute (Workers & Pages)** -> **Create application** -> **Pages**。
+2. 连接 GitHub 仓库 `sksksk98698-source/jichangwang.cc`。
+3. 构建预设选择 **Astro**：
+   * **Build command**: `npm run build`
+   * **Build output directory**: `dist`
+4. 自定义域名绑定 `jichangwang.cc`，并在 SSL/TLS 开启 **Full (Strict)** 与 **Always Use HTTPS**。
+
+### Vercel / Netlify
+* 导入 Git 仓库后，平台会自动识别 Astro 项目，构建命令填 `npm run build`，发布目录填 `dist` 即可秒级完成全球部署。
+
+---
+
+## ⚖️ 知识产权与免责 (Disclaimer & License)
+
+* **内容原创声明**：本项目所有测速数据、架构拓扑图解、跑路预警溯源分析与专著级白皮书均为实测团队原创研究成果。
+* **合规说明**：本项目所载工具与技术评测仅供网络技术研究、出海合规业务及学术交流参考，请严格遵守所在国家与地区的法律法规。
+* **开源协议**：项目代码基于 [MIT License](./LICENSE.MD) 协议开源。
+
+---
+
+<div align="center">
+  <sub>Designed & Engineered with ⚡ by <b><a href="https://jichangwang.cc">机场网实测团队</a></b>. Powered by Astro & Tailwind CSS.</sub>
+</div>

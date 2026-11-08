@@ -1,0 +1,156 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TerminalWindow from "../../../components/TerminalWindow.astro";
+import { ALERT_ARTICLES, ALERT_CATEGORIES, type AlertArticle } from "../../../data/alertsData";
+import { SITE_CONFIG } from "../../../config/siteConfig";
+
+export async function getStaticPaths() {
+  return ALERT_ARTICLES.map((article) => {
+    const categoryObj = ALERT_CATEGORIES.find((c) => c.slug === article.category);
+    return {
+      params: { category: article.category, slug: article.slug },
+      props: { article, category: categoryObj },
+    };
+  });
+}
+
+interface Props {
+  article: AlertArticle;
+  category: any;
+}
+
+const { article, category } = Astro.props;
+
+const pageTitle = `${article.title} // 机场网跑路预警智库 JichangWang.cc`;
+const pageDesc = `${article.subtitle}。${article.summary}`;
+
+// Schema.org Article 结构化数据
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/alerts/${article.category}/${article.slug}`;
+const schemaJson = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": article.title,
+  "description": article.summary,
+  "datePublished": `${article.datePublished}T08:00:00+08:00`,
+  "dateModified": `${article.dateModified}T08:00:00+08:00`,
+  "inLanguage": "zh-CN",
+  "publisher": {
+    "@type": "Organization",
+    "name": "机场网技术测评实验室",
+    "url": SITE_CONFIG.siteUrl
+  }
+};
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={article.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} />
+
+  <TerminalWindow currentPath={`~/jichangwang/alerts/${article.category}/${article.slug}`}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-dim)] border-b border-[var(--border-color)] pb-2 overflow-x-auto whitespace-nowrap">
+        <a href="/" class="hover:text-[var(--accent)]">首页</a>
+        <span>&gt;</span>
+        <a href="/alerts" class="hover:text-[var(--accent)]">跑路预警</a>
+        <span>&gt;</span>
+        <a href={`/alerts/${article.category}`} class="hover:text-[var(--accent)]">{category?.name || article.category}</a>
+        <span>&gt;</span>
+        <span class="text-red-400 font-bold truncate max-w-[200px]">{article.title}</span>
+      </nav>
+
+      <!-- 文章主标题区 -->
+      <header class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-6 space-y-3">
+        <div class="flex flex-wrap justify-between items-center gap-2">
+          <span class={`px-2 py-0.5 border text-xs font-bold rounded ${
+            article.alertLevel === '红色高危' ? 'border-red-500 text-red-400 bg-red-950/20' : 
+            article.alertLevel === '橙色预警' ? 'border-orange-500 text-orange-300 bg-orange-950/20' : 
+            article.alertLevel === '黄色警示' ? 'border-yellow-500 text-yellow-300 bg-yellow-950/20' : 
+            'border-emerald-500 text-emerald-400 bg-emerald-950/20'
+          }`}>
+            🚨 预警级别：{article.alertLevel}
+          </span>
+          <div class="text-xs text-[var(--fg-dim)] flex gap-4">
+            <span>📅 更新：{article.dateModified}</span>
+            <span>⏱️ 预计阅读：{article.readTime}</span>
+          </div>
+        </div>
+
+        <h1 class="text-lg md:text-2xl font-bold text-red-400 leading-tight">
+          {article.title}
+        </h1>
+        <p class="text-[var(--fg-muted)] font-sans text-sm md:text-base leading-relaxed">
+          {article.subtitle}
+        </p>
+
+        <div class="p-3 bg-[var(--bg-base)] border border-[var(--border-dim)] text-xs text-[var(--fg-dim)] rounded">
+          <span class="text-red-400 font-bold">[防割提要]</span> {article.summary}
+        </div>
+      </header>
+
+      <!-- 文章正文区域 -->
+      <article class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-8 space-y-6 leading-relaxed font-sans text-sm md:text-base prose prose-invert max-w-none">
+        <div class="whitespace-pre-line text-[var(--fg-main)]">
+          {article.content}
+        </div>
+      </article>
+
+      <!-- 光速云难民避难所高转化入口 -->
+      <div class="border-2 border-emerald-500/80 bg-gradient-to-r from-emerald-950/30 via-[var(--bg-card)] to-green-950/20 p-5 md:p-6 rounded space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🛡️</span>
+          <div>
+            <h3 class="text-base md:text-lg font-bold text-emerald-300">
+              拒绝成为韭菜！选择老牌无跑路历史的安全避难所【光速云】
+            </h3>
+            <p class="text-xs text-[var(--fg-muted)]">
+              四年持续合规运营，自主 IEPL 企业内网专线。不靠超售杀鸡取卵，用硬核实力抵御风险。
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+          <div class="p-3 border border-emerald-500/30 bg-black/40 rounded">
+            <span class="text-emerald-400 font-bold block mb-1">🎯 永久不限时 147元</span>
+            <span class="text-[var(--fg-dim)]">斯诺克147G，用完为止永不过期，双机场互备首选</span>
+          </div>
+          <div class="p-3 border border-emerald-500/30 bg-black/40 rounded">
+            <span class="text-emerald-400 font-bold block mb-1">🚀 旗舰年付 99元起</span>
+            <span class="text-[var(--fg-dim)]">IEPL 内网专线直连，晚高峰丢包率持续 0%，极速稳妥</span>
+          </div>
+          <div class="p-3 border border-emerald-500/30 bg-black/40 rounded">
+            <span class="text-emerald-400 font-bold block mb-1">💼 出海企业定制 680元</span>
+            <span class="text-[var(--fg-dim)]">独享原生住宅 IP，TikTok 直播与海外资产极度安全</span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-emerald-500/20">
+          <div class="text-xs text-[var(--fg-muted)]">
+            专属 8 折避难优惠码：<code class="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40 rounded">AMM</code>
+          </div>
+          <a
+            href="https://gscloud.co/#/register?code=AMM"
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            class="px-5 py-2 bg-emerald-500 text-black font-bold text-xs md:text-sm hover:bg-emerald-400 transition-colors shadow-lg shadow-emerald-500/20 rounded"
+          >
+            立即迁入光速云安全避风港 &gt;&gt;
+          </a>
+        </div>
+      </div>
+
+      <!-- 相关分类与延伸阅读 -->
+      <footer class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 flex flex-wrap justify-between items-center gap-4 text-xs">
+        <a href={`/alerts/${article.category}`} class="text-red-400 hover:underline">
+          &larr; 返回 {category?.name || '分类'} 预警索引
+        </a>
+        <div class="flex gap-4">
+          <a href="/alerts" class="text-[var(--fg-dim)] hover:text-white">预警总览</a>
+          <a href="/faq" class="text-[var(--fg-dim)] hover:text-white">常见问题 FAQ</a>
+          <a href="/brands" class="text-[var(--fg-dim)] hover:text-white">42家品牌库</a>
+        </div>
+      </footer>
+
+    </div>
+  </TerminalWindow>
+</Layout>

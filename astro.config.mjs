@@ -3,16 +3,14 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import process from "node:process";
 
-// Detect build platform: Netlify vs GitHub Pages vs Local
-const isNetlify = Boolean(process.env.NETLIFY);
-const isGitHubPages = Boolean(process.env.GITHUB_ACTIONS) && !isNetlify;
+// 纯净化独立站点 URL 体系，默认绑定自有域名
+const siteUrl = process.env.SITE_URL || "https://jichangwang.cc";
 
 // https://astro.build/config
 export default defineConfig({
-  site: isNetlify
-    ? (process.env.URL || "https://astro-tui-portfolio.netlify.app")
-    : "https://nivinvysakh.github.io",
-  base: isGitHubPages ? "/astro-tui-portfolio/" : "/",
+  site: siteUrl,
+  base: "/",
+  trailingSlash: "ignore",
   devToolbar: {
     enabled: false,
   },
@@ -24,7 +22,7 @@ export default defineConfig({
     // @ts-ignore
     plugins: [tailwindcss()],
     server: {
-      allowedHosts: ["tui-portfolio-dev.tuiportfolio.orb.local", ".orb.local"],
+      allowedHosts: true,
     },
   },
 });

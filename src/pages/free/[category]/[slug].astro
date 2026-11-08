@@ -1,0 +1,117 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TerminalWindow from "../../../components/TerminalWindow.astro";
+import { FREE_ARTICLES, FREE_CATEGORIES, type FreeArticle } from "../../../data/freeResources";
+import { SITE_CONFIG } from "../../../config/siteConfig";
+
+export async function getStaticPaths() {
+  return FREE_ARTICLES.map((article) => {
+    const categoryObj = FREE_CATEGORIES.find((c) => c.slug === article.category);
+    return {
+      params: { category: article.category, slug: article.slug },
+      props: { article, category: categoryObj },
+    };
+  });
+}
+
+interface Props {
+  article: FreeArticle;
+  category: any;
+}
+
+const { article, category } = Astro.props;
+
+const pageTitle = `${article.title} // 机场网 JichangWang.cc`;
+const pageDesc = `${article.subtitle}。${article.summary}`;
+
+// Schema.org Article 结构化数据
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/free/${article.category}/${article.slug}`;
+const schemaJson = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": article.title,
+  "description": article.summary,
+  "datePublished": `${article.datePublished}T08:00:00+08:00`,
+  "dateModified": `${article.dateModified}T08:00:00+08:00`,
+  "inLanguage": "zh-CN",
+  "publisher": {
+    "@type": "Organization",
+    "name": "机场网技术测评实验室",
+    "url": SITE_CONFIG.siteUrl
+  }
+};
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={article.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} />
+
+  <TerminalWindow currentPath={`~/jichangwang/free/${article.category}/${article.slug}`}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-dim)] border-b border-[var(--border-color)] pb-2">
+        <a href="/" class="hover:text-[var(--accent)]">首页</a>
+        <span>&gt;</span>
+        <a href="/free" class="hover:text-[var(--accent)]">免费资源</a>
+        <span>&gt;</span>
+        <a href={`/free/${article.category}`} class="hover:text-[var(--accent)]">{category?.name || article.category}</a>
+        <span>&gt;</span>
+        <span class="text-amber-300 font-bold truncate max-w-[200px]">{article.title}</span>
+      </nav>
+
+      <!-- 文章主标题区 -->
+      <header class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-6 space-y-3">
+        <div class="flex flex-wrap justify-between items-center gap-2">
+          <span class={`px-2 py-0.5 border text-xs font-bold ${
+            article.riskLevel === '高危' ? 'border-red-500 text-red-400 bg-red-950/20' : 
+            article.riskLevel === '中危' ? 'border-yellow-500 text-yellow-300 bg-yellow-950/20' : 
+            'border-emerald-500 text-emerald-400 bg-emerald-950/20'
+          }`}>
+            🚨 风险评级：{article.riskLevel}
+          </span>
+          <span class="text-[11px] text-[var(--fg-dim)]">发布日期：{article.datePublished} // 复核更新：{article.dateModified}</span>
+        </div>
+
+        <h1 class="text-base md:text-xl font-bold text-[var(--fg-bright)] leading-snug">
+          {article.title}
+        </h1>
+        <p class="text-xs md:text-sm text-[var(--accent)] font-bold">
+          // {article.subtitle}
+        </p>
+        <p class="text-xs text-[var(--fg-dim)] leading-relaxed border-t border-[var(--border-color)] pt-3">
+          <strong>摘要导读：</strong>{article.summary}
+        </p>
+      </header>
+
+      <!-- 文章正文区域 -->
+      <article class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-6 leading-relaxed prose prose-invert max-w-none text-xs md:text-sm">
+        <div set:html={article.content.replace(/\n\n/g, '<br/><br/>').replace(/### (.*?)\n/g, '<h2 class="text-sm md:text-base font-bold text-amber-300 border-b border-[var(--border-color)] pb-2 mt-4 mb-2">$1</h2>').replace(/## (.*?)\n/g, '<h2 class="text-base md:text-lg font-bold text-[var(--fg-bright)] border-b border-[var(--border-color)] pb-2 mt-6 mb-3">$1</h2>')} />
+      </article>
+
+      <!-- 底部安全平替转化卡片 -->
+      <div class="border-2 border-[var(--accent)] bg-[var(--bg-main)] p-4 space-y-3">
+        <div class="flex justify-between items-center">
+          <strong class="text-xs text-[var(--accent)]">🛡️ 编辑部推荐：告别免费节点断流与安全风险</strong>
+          <span class="text-[10px] bg-black text-amber-300 border border-amber-400 px-2 py-0.5 font-bold">优惠码: AMM</span>
+        </div>
+        <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+          免费节点随时失效且存在严重嗅探隐患。首推【光速云】致敬斯诺克147永久套餐（147元买断247GB永久有效，永不清零），或轻量版年付99元（折合8.25元/月），全节点2.5Gbps专线，流媒体与AI全量绿标解锁。
+        </p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <a
+            href="https://gsy01.vip/#/register?code=wY5yvR82"
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            class="py-2 px-4 bg-[var(--accent)] text-black font-bold text-xs hover:brightness-110"
+          >
+            直达光速云官网 (码 AMM) →
+          </a>
+          <a href={`/free/${article.category}`} class="py-2 px-3 border border-[var(--border-color)] text-xs text-[var(--fg-bright)] hover:border-[var(--accent)]">
+            返回 {category?.name} 目录
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </TerminalWindow>
+</Layout>

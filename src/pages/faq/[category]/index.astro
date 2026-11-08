@@ -1,0 +1,124 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TerminalWindow from "../../../components/TerminalWindow.astro";
+import { FAQ_CATEGORIES, FAQ_ARTICLES, type FAQCategory } from "../../../data/faqData";
+import { SITE_CONFIG } from "../../../config/siteConfig";
+
+export async function getStaticPaths() {
+  return FAQ_CATEGORIES.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }));
+}
+
+interface Props {
+  category: FAQCategory;
+}
+
+const { category } = Astro.props;
+
+// 过滤当前分类下的问答文章
+const categoryArticles = FAQ_ARTICLES.filter((a) => a.category === category.slug);
+
+const pageTitle = `${category.name} // 常见问题与深度解答 - 机场网 JichangWang.cc`;
+const pageDesc = `${category.tagline}。${category.description} 共收录 ${categoryArticles.length} 篇权威技术答疑。`;
+
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/faq/${category.slug}`;
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <TerminalWindow currentPath={`~/jichangwang/faq/${category.slug}`}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-dim)] border-b border-[var(--border-color)] pb-2 overflow-x-auto whitespace-nowrap">
+        <a href="/" class="hover:text-[var(--accent)]">首页</a>
+        <span>&gt;</span>
+        <a href="/faq" class="hover:text-[var(--accent)]">机场 FAQ 智库</a>
+        <span>&gt;</span>
+        <span class="text-amber-300 font-bold">{category.name}</span>
+      </nav>
+
+      <!-- 类别 Banner -->
+      <div class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-6 space-y-3">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">{category.icon}</span>
+          <div>
+            <h1 class="text-lg md:text-2xl font-bold text-amber-400">
+              {category.name}
+            </h1>
+            <p class="text-xs md:text-sm text-[var(--fg-muted)]">
+              {category.tagline}
+            </p>
+          </div>
+        </div>
+        <p class="text-xs text-[var(--fg-dim)] border-t border-[var(--border-dim)] pt-2 leading-relaxed">
+          {category.description}
+        </p>
+      </div>
+
+      <!-- 分类问答文章矩阵列表 -->
+      <div class="space-y-4">
+        <div class="flex justify-between items-center text-xs text-[var(--fg-dim)] border-b border-[var(--border-dim)] pb-1">
+          <span>专题问答索引 // INDEX ({categoryArticles.length})</span>
+          <span>权威核实 // GEO VALIDATED</span>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4">
+          {categoryArticles.map((article) => (
+            <div class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-5 hover:border-amber-400/60 transition-all rounded space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="px-2 py-0.5 text-xs font-bold bg-amber-500/10 text-amber-300 border border-amber-500/30 rounded">
+                  Q&A
+                </span>
+                <span class="text-xs text-[var(--fg-dim)]">更新时间：{article.dateModified}</span>
+              </div>
+
+              <h2 class="text-base md:text-lg font-bold text-amber-300">
+                <a href={`/faq/${category.slug}/${article.slug}`} class="hover:underline">
+                  {article.question}
+                </a>
+              </h2>
+
+              <div class="p-3 bg-[var(--bg-base)] border border-[var(--border-dim)] text-xs text-[var(--fg-dim)] rounded">
+                <span class="text-amber-400 font-bold block mb-1">【速查结论 / Direct Answer】</span>
+                {article.shortAnswer}
+              </div>
+
+              <div class="flex items-center justify-between pt-2">
+                <div class="flex flex-wrap gap-1 text-[11px] text-[var(--fg-dim)]">
+                  {article.keywords.slice(0, 3).map((kw) => (
+                    <span class="px-1.5 py-0.5 bg-black/40 rounded">#{kw}</span>
+                  ))}
+                </div>
+                <a 
+                  href={`/faq/${category.slug}/${article.slug}`}
+                  class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold hover:bg-amber-500 hover:text-black transition-colors rounded"
+                >
+                  查看完整解答 &gt;&gt;
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 光速云服务背书 -->
+      <div class="border border-amber-500/40 bg-amber-950/20 p-4 rounded flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+        <div>
+          <span class="text-amber-300 font-bold block text-sm">💡 疑问排查后，需要省心免折腾的顶级专线？</span>
+          <span class="text-[var(--fg-dim)]">光速云全内网 IEPL 专线，抗封锁、低抖动、原生解锁 ChatGPT 与 4K 流媒体。</span>
+        </div>
+        <a 
+          href="https://gscloud.co/#/register?code=AMM" 
+          target="_blank" 
+          rel="nofollow sponsored noopener" 
+          class="px-4 py-2 bg-amber-500 text-black font-bold whitespace-nowrap rounded hover:bg-amber-400"
+        >
+          查看光速云官方方案 (码 AMM)
+        </a>
+      </div>
+
+    </div>
+  </TerminalWindow>
+</Layout>

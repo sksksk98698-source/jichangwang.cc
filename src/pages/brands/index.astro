@@ -1,0 +1,344 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import TerminalWindow from "../../components/TerminalWindow.astro";
+import { AIRPORTS_DATA, TOP10_AIRPORTS, FEATURED_AIRPORT } from "../../data/airports";
+import { SITE_CONFIG } from "../../config/siteConfig";
+
+const pageTitle = "42家主流机场品牌库大全与晚高峰测速天梯榜 // 机场网 JichangWang.cc";
+const pageDesc = "2026年全网 42 家精选机场品牌综合库。涵盖光速云、暮光加速、飞猫云、微风网络等主流专线服务商，汇集真实晚高峰测速、流媒体与 ChatGPT/Claude 解锁矩阵及独家优惠码。";
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={["42家机场品牌库", "机场推荐2026", "光速云", "IPLC专线机场", "IEPL专线", "翻墙机场推荐", "便宜机场", "ChatGPT解锁机场"]}>
+  <h1 class="sr-only">{pageTitle}</h1>
+
+  <TerminalWindow currentPath="~/jichangwang/brands" showModeTabs={false}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text">
+      <!-- 页面顶部终端徽标与说明 -->
+      <div class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-color)] pb-2">
+          <div class="text-[var(--fg-bright)] font-bold text-sm sm:text-base flex items-center gap-2">
+            <span class="text-[var(--accent)] font-bold">></span>
+            <span>AIRPORTS DIRECTORY // 42 家机场品牌库完整档案</span>
+          </div>
+          <span class="text-[10px] text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 px-2 py-0.5">
+            42_NODES_RECORDED
+          </span>
+        </div>
+        <p class="text-[var(--fg-main)] leading-relaxed text-xs">
+          本库收录了当前主流的 42 家专线网络服务商，所有数据均基于实际测试与品牌官方资料整理。
+          <span class="text-amber-400">第一主推为【光速云】</span>，前十名综合加权考量了专线稳定性、晚高峰丢包率、流媒体/AI 解锁与性价比。
+          推广链接均规范配置 <code class="text-[var(--accent)]">rel="nofollow sponsored noopener"</code>，确保客观中立并符合搜索引擎规范。
+        </p>
+      </div>
+
+      <!-- 🏆 第一主推：光速云 专享头牌黄金展台 -->
+      <div class="border-2 border-amber-500/80 bg-gradient-to-r from-amber-950/30 to-[var(--bg-card)] p-4 sm:p-5 relative overflow-hidden shadow-lg">
+        <div class="absolute -right-12 -top-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-500/30 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🏆</span>
+            <div>
+              <div class="text-base sm:text-lg font-bold text-amber-300 flex items-center gap-2">
+                <span>TOP 1 镇站主推：光速云 (GuangSu Cloud)</span>
+                <span class="text-[10px] px-2 py-0.5 bg-amber-500 text-black font-extrabold uppercase">编辑部首选</span>
+              </div>
+              <div class="text-[11px] text-[var(--fg-dim)] mt-0.5">{FEATURED_AIRPORT.tagline}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="text-right">
+              <div class="text-xs text-[var(--fg-dim)]">特惠入门价</div>
+              <div class="text-base font-bold text-emerald-400">{FEATURED_AIRPORT.entryPrice}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 my-3 text-xs">
+          <div class="p-2 border border-amber-500/30 bg-black/40">
+            <span class="text-[10px] text-[var(--fg-dim)] block">线路架构</span>
+            <span class="text-[var(--fg-bright)] font-bold">{FEATURED_AIRPORT.lineType}</span>
+          </div>
+          <div class="p-2 border border-amber-500/30 bg-black/40">
+            <span class="text-[10px] text-[var(--fg-dim)] block">独家优惠码</span>
+            <span class="text-amber-300 font-bold tracking-wider">{FEATURED_AIRPORT.coupon}</span>
+            <span class="text-[10px] text-[var(--fg-dim)] ml-1">({FEATURED_AIRPORT.couponDiscount})</span>
+          </div>
+          <div class="p-2 border border-amber-500/30 bg-black/40">
+            <span class="text-[10px] text-[var(--fg-dim)] block">晚高峰实测</span>
+            <span class="text-emerald-400 font-bold">香港 22ms / 529Mbps</span>
+          </div>
+          <div class="p-2 border border-amber-500/30 bg-black/40">
+            <span class="text-[10px] text-[var(--fg-dim)] block">AI & 流媒体</span>
+            <span class="text-sky-300 font-bold">ChatGPT / Claude / 4K秒开</span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+          <div class="text-xs text-[var(--fg-dim)]">
+            特色套餐：<span class="text-[var(--fg-bright)] font-bold">致敬斯诺克147永久套餐 (247GB不过期)</span> | 轻量版 99元/年
+          </div>
+          <div class="flex items-center gap-2">
+            <a
+              href="/brands/guangsu"
+              class="px-3 py-1.5 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-bright)] text-xs font-bold transition-colors"
+            >
+              查看深度实测 ↗
+            </a>
+            <a
+              href={FEATURED_AIRPORT.affLink}
+              target="_blank"
+              rel="nofollow sponsored noopener"
+              class="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs transition-colors flex items-center gap-1.5 shadow"
+            >
+              <span>立即直达官网开通</span>
+              <span>⚡</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 交互式搜索与筛选控制栏 -->
+      <div class="p-4 border border-[var(--border-color)] bg-[var(--bg-card)] space-y-3">
+        <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+          <div class="relative w-full sm:w-80">
+            <input
+              type="text"
+              id="brand-search-input"
+              placeholder="快速搜索 42 家机场 (如 光速云, 飞猫云, 5.6元, IEPL...)"
+              class="w-full bg-[var(--bg-main)] text-[var(--fg-bright)] border border-[var(--border-color)] focus:border-[var(--accent)] px-3 py-1.5 text-xs font-mono focus:outline-none"
+            />
+            <span class="absolute right-2.5 top-1.5 text-[var(--fg-dim)] text-xs pointer-events-none">🔍</span>
+          </div>
+
+          <!-- 分类标签过滤器 -->
+          <div class="flex flex-wrap gap-1.5 text-xs font-mono w-full sm:w-auto">
+            <button
+              class="filter-tag-btn px-2.5 py-1 border border-[var(--accent)] bg-[var(--border-color)] text-[var(--fg-bright)] font-bold cursor-pointer"
+              data-filter="all"
+            >
+              全部 (42)
+            </button>
+            <button
+              class="filter-tag-btn px-2.5 py-1 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-dim)] hover:text-[var(--fg-bright)] font-bold cursor-pointer"
+              data-filter="top10"
+            >
+              🏆 TOP 10
+            </button>
+            <button
+              class="filter-tag-btn px-2.5 py-1 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-dim)] hover:text-[var(--fg-bright)] font-bold cursor-pointer"
+              data-filter="iepl"
+            >
+              ⚡ 专线架构
+            </button>
+            <button
+              class="filter-tag-btn px-2.5 py-1 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-dim)] hover:text-[var(--fg-bright)] font-bold cursor-pointer"
+              data-filter="budget"
+            >
+              💰 平价 (&lt;¥10)
+            </button>
+            <button
+              class="filter-tag-btn px-2.5 py-1 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-dim)] hover:text-[var(--fg-bright)] font-bold cursor-pointer"
+              data-filter="speedtest"
+            >
+              📊 有测速实测
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 42 品牌卡片网格列表 -->
+      <div id="brands-card-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {AIRPORTS_DATA.map((brand) => (
+          <div
+            class="brand-card border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent)] transition-all p-4 space-y-3 flex flex-col justify-between group"
+            data-name={brand.name.toLowerCase()}
+            data-slug={brand.slug}
+            data-is-top10={brand.isTop10 ? "true" : "false"}
+            data-is-featured={brand.isFeatured ? "true" : "false"}
+            data-line-type={brand.lineType.toLowerCase()}
+            data-min-price={brand.minMonthlyPrice}
+            data-has-speedtest={brand.speedtestImage ? "true" : "false"}
+          >
+            <div>
+              <!-- 顶部序号与排名徽章 -->
+              <div class="flex items-center justify-between gap-2 border-b border-[var(--border-color)] pb-2">
+                <div class="flex items-center gap-2">
+                  <span class={`font-mono text-xs px-1.5 py-0.5 font-bold ${brand.isFeatured ? 'bg-amber-500 text-black' : brand.isTop10 ? 'bg-emerald-900/60 text-emerald-300 border border-emerald-700/60' : 'bg-[var(--border-color)] text-[var(--fg-dim)]'}`}>
+                    #{brand.rank}
+                  </span>
+                  <h3 class="text-sm font-bold text-[var(--fg-bright)] group-hover:text-[var(--accent)] transition-colors">
+                    {brand.name}
+                  </h3>
+                </div>
+                {brand.isTop10 && (
+                  <span class="text-[10px] text-amber-400 font-bold border border-amber-500/40 px-1">
+                    TOP 10
+                  </span>
+                )}
+              </div>
+
+              <!-- 标语与核心卖点 -->
+              <div class="text-[11px] text-[var(--fg-dim)] py-2 line-clamp-2 leading-relaxed">
+                {brand.tagline}
+              </div>
+
+              <!-- 核心技术参数列表 -->
+              <div class="space-y-1.5 text-xs py-1 border-t border-b border-[var(--border-color)]">
+                <div class="flex justify-between">
+                  <span class="text-[var(--fg-dim)] text-[11px]">线路架构:</span>
+                  <span class="text-[var(--fg-bright)] font-bold truncate max-w-[170px]">{brand.lineType}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-[var(--fg-dim)] text-[11px]">入门价格:</span>
+                  <span class="text-emerald-400 font-bold">{brand.entryPrice}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-[var(--fg-dim)] text-[11px]">优惠码:</span>
+                  <div class="flex items-center gap-1">
+                    <code class="text-amber-300 font-bold text-[11px] bg-black/40 px-1 border border-[var(--border-color)]">{brand.coupon}</code>
+                    <button
+                      type="button"
+                      class="copy-btn text-[10px] text-[var(--accent)] hover:underline cursor-pointer"
+                      data-coupon={brand.coupon}
+                    >
+                      复制
+                    </button>
+                  </div>
+                </div>
+                {brand.speedtestImage && (
+                  <div class="flex justify-between text-[11px]">
+                    <span class="text-[var(--fg-dim)]">晚高峰测速:</span>
+                    <span class="text-sky-300 font-bold">已收录实测图 📊</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <!-- 卡片操作底部按钮 -->
+            <div class="pt-2 flex items-center justify-between gap-2">
+              <a
+                href={`/brands/${brand.slug}`}
+                class="flex-1 text-center py-1.5 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-bright)] text-xs font-bold transition-colors"
+              >
+                测评报告 ↗
+              </a>
+              <a
+                href={brand.affLink}
+                target="_blank"
+                rel="nofollow sponsored noopener"
+                class="flex-1 text-center py-1.5 border border-[var(--border-active)] bg-[var(--border-color)] hover:bg-[var(--border-active)] text-[var(--fg-bright)] text-xs font-bold transition-colors"
+              >
+                直达官网 ⚡
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- 无搜索结果提示框 -->
+      <div id="no-results-box" class="hidden border border-dashed border-red-500/50 p-6 text-center text-xs font-mono space-y-2">
+        <div class="text-red-400 font-bold text-sm">⚠️ 未找到符合条件的机场品牌</div>
+        <p class="text-[var(--fg-dim)]">请尝试更换关键字（例如 "光速云"、"专线"、"7元"）或点击上方「全部」标签重置筛选。</p>
+      </div>
+
+      <!-- 合规与佣金透明度说明 -->
+      <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 text-[11px] text-[var(--fg-dim)] space-y-1">
+        <div class="font-bold text-[var(--fg-bright)]">⚖️ 机场网测试原则与合规声明：</div>
+        <p>1. 本站所有机场品牌数据均基于真实环境实测或品牌公开资料客观整理，不编造速度与虚假承诺。</p>
+        <p>2. 链接含推广参数（rel="nofollow sponsored noopener"），通过链接注册可能为本实验室测速探针维护带来佣金，绝不影响用户实际支付价格与折扣优惠。</p>
+      </div>
+    </div>
+  </TerminalWindow>
+</Layout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("brand-search-input") as HTMLInputElement;
+    const filterBtns = document.querySelectorAll(".filter-tag-btn");
+    const cards = document.querySelectorAll(".brand-card") as NodeListOf<HTMLElement>;
+    const noResults = document.getElementById("no-results-box");
+
+    let currentFilter = "all";
+    let searchQuery = "";
+
+    function filterCards() {
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const name = card.getAttribute("data-name") || "";
+        const slug = card.getAttribute("data-slug") || "";
+        const lineType = card.getAttribute("data-line-type") || "";
+        const isTop10 = card.getAttribute("data-is-top10") === "true";
+        const hasSpeedtest = card.getAttribute("data-has-speedtest") === "true";
+        const minPrice = parseFloat(card.getAttribute("data-min-price") || "999");
+
+        // 匹配搜索词
+        const matchSearch =
+          !searchQuery ||
+          name.includes(searchQuery) ||
+          slug.includes(searchQuery) ||
+          lineType.includes(searchQuery);
+
+        // 匹配分类标签
+        let matchFilter = true;
+        if (currentFilter === "top10") {
+          matchFilter = isTop10;
+        } else if (currentFilter === "iepl") {
+          matchFilter = lineType.includes("iepl") || lineType.includes("iplc") || lineType.includes("专线");
+        } else if (currentFilter === "budget") {
+          matchFilter = minPrice <= 10;
+        } else if (currentFilter === "speedtest") {
+          matchFilter = hasSpeedtest;
+        }
+
+        if (matchSearch && matchFilter) {
+          card.classList.remove("hidden");
+          visibleCount++;
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+
+      if (noResults) {
+        if (visibleCount === 0) {
+          noResults.classList.remove("hidden");
+        } else {
+          noResults.classList.add("hidden");
+        }
+      }
+    }
+
+    searchInput?.addEventListener("input", (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+      filterCards();
+    });
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach((b) => {
+          b.classList.remove("border-[var(--accent)]", "bg-[var(--border-color)]", "text-[var(--fg-bright)]");
+          b.classList.add("border-[var(--border-color)]", "bg-[var(--bg-main)]", "text-[var(--fg-dim)]");
+        });
+        btn.classList.remove("border-[var(--border-color)]", "bg-[var(--bg-main)]", "text-[var(--fg-dim)]");
+        btn.classList.add("border-[var(--accent)]", "bg-[var(--border-color)]", "text-[var(--fg-bright)]");
+
+        currentFilter = btn.getAttribute("data-filter") || "all";
+        filterCards();
+      });
+    });
+
+    // 复制优惠码交互
+    document.querySelectorAll(".copy-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const coupon = btn.getAttribute("data-coupon");
+        if (coupon) {
+          navigator.clipboard.writeText(coupon);
+          const origText = btn.textContent;
+          btn.textContent = "已复制✓";
+          setTimeout(() => {
+            btn.textContent = origText;
+          }, 2000);
+        }
+      });
+    });
+  });
+</script>

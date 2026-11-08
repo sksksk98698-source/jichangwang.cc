@@ -1,0 +1,150 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TerminalWindow from "../../../components/TerminalWindow.astro";
+import { FAQ_ARTICLES, FAQ_CATEGORIES, type FAQArticle } from "../../../data/faqData";
+import { SITE_CONFIG } from "../../../config/siteConfig";
+
+export async function getStaticPaths() {
+  return FAQ_ARTICLES.map((article) => {
+    const categoryObj = FAQ_CATEGORIES.find((c) => c.slug === article.category);
+    return {
+      params: { category: article.category, slug: article.slug },
+      props: { article, category: categoryObj },
+    };
+  });
+}
+
+interface Props {
+  article: FAQArticle;
+  category: any;
+}
+
+const { article, category } = Astro.props;
+
+const pageTitle = `${article.question} // 机场网技术智库 JichangWang.cc`;
+const pageDesc = `${article.shortAnswer}。${article.summary}`;
+
+// Schema.org FAQPage 结构化数据
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/faq/${article.category}/${article.slug}`;
+const schemaJson = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": article.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": article.shortAnswer + " " + article.summary
+      }
+    }
+  ]
+};
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={article.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} />
+
+  <TerminalWindow currentPath={`~/jichangwang/faq/${article.category}/${article.slug}`}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-dim)] border-b border-[var(--border-color)] pb-2 overflow-x-auto whitespace-nowrap">
+        <a href="/" class="hover:text-[var(--accent)]">首页</a>
+        <span>&gt;</span>
+        <a href="/faq" class="hover:text-[var(--accent)]">机场 FAQ 智库</a>
+        <span>&gt;</span>
+        <a href={`/faq/${article.category}`} class="hover:text-[var(--accent)]">{category?.name || article.category}</a>
+        <span>&gt;</span>
+        <span class="text-amber-300 font-bold truncate max-w-[200px]">{article.question}</span>
+      </nav>
+
+      <!-- 问答主标题区 -->
+      <header class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-6 space-y-3">
+        <div class="flex flex-wrap justify-between items-center gap-2">
+          <span class="px-2 py-0.5 border border-amber-500/40 text-amber-300 bg-amber-950/20 text-xs font-bold rounded">
+            📌 官方技术解答 // FAQ
+          </span>
+          <div class="text-xs text-[var(--fg-dim)] flex gap-4">
+            <span>📅 更新：{article.dateModified}</span>
+            <span>⏱️ 预计阅读：{article.readTime}</span>
+          </div>
+        </div>
+
+        <h1 class="text-lg md:text-2xl font-bold text-amber-400 leading-tight">
+          {article.question}
+        </h1>
+
+        <!-- 直给答案区（核心搜索意图首屏解决） -->
+        <div class="p-4 bg-emerald-950/20 border-l-4 border-emerald-400 text-xs md:text-sm text-emerald-200 rounded-r space-y-1">
+          <span class="font-bold text-emerald-300 block text-xs">【直接结论 / Direct Answer】</span>
+          <p class="leading-relaxed">{article.shortAnswer}</p>
+        </div>
+      </header>
+
+      <!-- 文章深度解答正文 -->
+      <article class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-8 space-y-6 leading-relaxed font-sans text-sm md:text-base prose prose-invert max-w-none">
+        <div class="whitespace-pre-line text-[var(--fg-main)]">
+          {article.content}
+        </div>
+      </article>
+
+      <!-- 光速云高转化原生推荐入口 -->
+      <div class="border-2 border-amber-500/80 bg-gradient-to-r from-amber-950/30 via-[var(--bg-card)] to-yellow-950/20 p-5 md:p-6 rounded space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">⚡</span>
+          <div>
+            <h3 class="text-base md:text-lg font-bold text-amber-300">
+              拒绝折腾各种网络玄学报错，推荐【光速云】IEPL 全专线网络
+            </h3>
+            <p class="text-xs text-[var(--fg-muted)]">
+              全节点 BGP 入口与专线传输，真正杜绝 IP 污染、DNS 泄露与晚高峰丢包。
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+          <div class="p-3 border border-amber-500/30 bg-black/40 rounded">
+            <span class="text-amber-400 font-bold block mb-1">🎯 永久不限时 147元</span>
+            <span class="text-[var(--fg-dim)]">斯诺克147G，不过期用完为止，零月租备用首选</span>
+          </div>
+          <div class="p-3 border border-amber-500/30 bg-black/40 rounded">
+            <span class="text-amber-400 font-bold block mb-1">🚀 旗舰年付 99元起</span>
+            <span class="text-[var(--fg-dim)]">每月充足高速流量，ChatGPT / 4K 丝滑不卡顿</span>
+          </div>
+          <div class="p-3 border border-amber-500/30 bg-black/40 rounded">
+            <span class="text-amber-400 font-bold block mb-1">💼 出海企业定制 680元</span>
+            <span class="text-[var(--fg-dim)]">独享原生住宅 IP，TikTok 矩阵与 AI 调优专用</span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-amber-500/20">
+          <div class="text-xs text-[var(--fg-muted)]">
+            专属 8 折优惠码：<code class="px-1.5 py-0.5 bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 rounded">AMM</code>
+          </div>
+          <a
+            href="https://gscloud.co/#/register?code=AMM"
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            class="px-5 py-2 bg-amber-500 text-black font-bold text-xs md:text-sm hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20 rounded"
+          >
+            直达光速云官网一键选购 &gt;&gt;
+          </a>
+        </div>
+      </div>
+
+      <!-- 相关分类与延伸阅读 -->
+      <footer class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 flex flex-wrap justify-between items-center gap-4 text-xs">
+        <a href={`/faq/${article.category}`} class="text-amber-400 hover:underline">
+          &larr; 返回 {category?.name || '分类'} 问答索引
+        </a>
+        <div class="flex gap-4">
+          <a href="/faq" class="text-[var(--fg-dim)] hover:text-white">FAQ 总览</a>
+          <a href="/clients" class="text-[var(--fg-dim)] hover:text-white">客户端配置</a>
+          <a href="/alerts" class="text-[var(--fg-dim)] hover:text-white">跑路避坑指南</a>
+        </div>
+      </footer>
+
+    </div>
+  </TerminalWindow>
+</Layout>

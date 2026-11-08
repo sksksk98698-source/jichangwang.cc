@@ -1,0 +1,157 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TerminalWindow from "../../../components/TerminalWindow.astro";
+import { TOOL_ARTICLES, TOOL_PLATFORMS, type ToolArticle } from "../../../data/toolsData";
+import { SITE_CONFIG } from "../../../config/siteConfig";
+
+export async function getStaticPaths() {
+  return TOOL_ARTICLES.map((article) => {
+    const platformObj = TOOL_PLATFORMS.find((p) => p.slug === article.platform);
+    return {
+      params: { platform: article.platform, slug: article.slug },
+      props: { article, platform: platformObj },
+    };
+  });
+}
+
+interface Props {
+  article: ToolArticle;
+  platform: any;
+}
+
+const { article, platform } = Astro.props;
+
+const pageTitle = `${article.title} // 机场网 JichangWang.cc`;
+const pageDesc = `${article.subtitle}。${article.summary}`;
+
+// Schema.org Article 结构化数据
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/clients/${article.platform}/${article.slug}`;
+const schemaJson = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": article.title,
+  "description": article.summary,
+  "datePublished": `${article.datePublished}T08:00:00+08:00`,
+  "dateModified": `${article.dateModified}T08:00:00+08:00`,
+  "inLanguage": "zh-CN",
+  "dependencies": article.platform,
+  "proficiencyLevel": article.difficulty,
+  "publisher": {
+    "@type": "Organization",
+    "name": "机场网技术测评实验室",
+    "url": SITE_CONFIG.siteUrl
+  }
+};
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={article.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} />
+
+  <TerminalWindow currentPath={`~/jichangwang/clients/${article.platform}/${article.slug}`}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-dim)] border-b border-[var(--border-color)] pb-2 overflow-x-auto whitespace-nowrap">
+        <a href="/" class="hover:text-[var(--accent)]">首页</a>
+        <span>&gt;</span>
+        <a href="/clients" class="hover:text-[var(--accent)]">梯子工具</a>
+        <span>&gt;</span>
+        <a href={`/clients/${article.platform}`} class="hover:text-[var(--accent)]">{platform?.name || article.platform}</a>
+        <span>&gt;</span>
+        <span class="text-amber-300 font-bold truncate max-w-[200px]">{article.title}</span>
+      </nav>
+
+      <!-- 文章主标题区 -->
+      <header class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-6 space-y-3">
+        <div class="flex flex-wrap justify-between items-center gap-2">
+          <span class={`px-2 py-0.5 border text-xs font-bold ${
+            article.difficulty === '极客' ? 'border-purple-500 text-purple-400 bg-purple-950/20' : 
+            article.difficulty === '进阶' ? 'border-yellow-500 text-yellow-300 bg-yellow-950/20' : 
+            'border-emerald-500 text-emerald-400 bg-emerald-950/20'
+          }`}>
+            🛠️ 难度等级：{article.difficulty}
+          </span>
+          <div class="text-xs text-[var(--fg-dim)] flex gap-4">
+            <span>📅 发布：{article.datePublished}</span>
+            <span>⏱️ 预计阅读：{article.readTime}</span>
+          </div>
+        </div>
+
+        <h1 class="text-lg md:text-2xl font-bold text-amber-400 leading-tight">
+          {article.title}
+        </h1>
+        <p class="text-[var(--fg-muted)] font-sans text-sm md:text-base leading-relaxed">
+          {article.subtitle}
+        </p>
+
+        <div class="p-3 bg-[var(--bg-base)] border border-[var(--border-dim)] text-xs text-[var(--fg-dim)] rounded">
+          <span class="text-amber-400 font-bold">[摘要概要]</span> {article.summary}
+        </div>
+      </header>
+
+      <!-- 文章正文区域 -->
+      <article class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-8 space-y-6 leading-relaxed font-sans text-sm md:text-base prose prose-invert max-w-none">
+        <div class="whitespace-pre-line text-[var(--fg-main)]">
+          {article.content}
+        </div>
+      </article>
+
+      <!-- 光速云高转化原生推荐入口 -->
+      <div class="border-2 border-amber-500/80 bg-gradient-to-r from-amber-950/30 via-[var(--bg-card)] to-yellow-950/20 p-5 md:p-6 rounded space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">⚡</span>
+          <div>
+            <h3 class="text-base md:text-lg font-bold text-amber-300">
+              客户端配置好了，缺少高稳定、低延迟的专线节点？
+            </h3>
+            <p class="text-xs text-[var(--fg-muted)]">
+              再好的客户端也需要顶级的后端专线支撑。推荐搭配 2026 稳定评测冠军【光速云】
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+          <div class="p-3 border border-amber-500/30 bg-black/40 rounded">
+            <span class="text-amber-400 font-bold block mb-1">🎯 永久不限时 147元</span>
+            <span class="text-[var(--fg-dim)]">斯诺克147G，用完为止不过期，备用保活终极神器</span>
+          </div>
+          <div class="p-3 border border-amber-500/30 bg-black/40 rounded">
+            <span class="text-amber-400 font-bold block mb-1">🚀 旗舰年付 99元起</span>
+            <span class="text-[var(--fg-dim)]">IEPL 全内网专线，晚高峰 4K 秒开，0% 丢包率</span>
+          </div>
+          <div class="p-3 border border-amber-500/30 bg-black/40 rounded">
+            <span class="text-amber-400 font-bold block mb-1">💼 出海企业定制版 680元</span>
+            <span class="text-[var(--fg-dim)]">独享原生住宅 IP，TikTok 运营与 AI 训练防封</span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-amber-500/20">
+          <div class="text-xs text-[var(--fg-muted)]">
+            专属 8 折优惠码：<code class="px-1.5 py-0.5 bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 rounded">AMM</code>
+          </div>
+          <a
+            href="https://gscloud.co/#/register?code=AMM"
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            class="px-5 py-2 bg-amber-500 text-black font-bold text-xs md:text-sm hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20 rounded"
+          >
+            直达光速云官网一键导入订阅 &gt;&gt;
+          </a>
+        </div>
+      </div>
+
+      <!-- 相关平台与延伸阅读 -->
+      <footer class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 flex flex-wrap justify-between items-center gap-4 text-xs">
+        <a href={`/clients/${article.platform}`} class="text-amber-400 hover:underline">
+          &larr; 返回 {platform?.name || '平台'} 目录
+        </a>
+        <div class="flex gap-4">
+          <a href="/clients" class="text-[var(--fg-dim)] hover:text-white">全平台总览</a>
+          <a href="/faq" class="text-[var(--fg-dim)] hover:text-white">常见问题 FAQ</a>
+          <a href="/alerts" class="text-[var(--fg-dim)] hover:text-white">跑路避坑预警</a>
+        </div>
+      </footer>
+
+    </div>
+  </TerminalWindow>
+</Layout>

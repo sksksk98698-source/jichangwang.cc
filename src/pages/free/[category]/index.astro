@@ -1,0 +1,116 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TerminalWindow from "../../../components/TerminalWindow.astro";
+import { FREE_CATEGORIES, FREE_ARTICLES, type FreeCategory } from "../../../data/freeResources";
+import { SITE_CONFIG } from "../../../config/siteConfig";
+
+export async function getStaticPaths() {
+  return FREE_CATEGORIES.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }));
+}
+
+interface Props {
+  category: FreeCategory;
+}
+
+const { category } = Astro.props;
+const articles = FREE_ARTICLES.filter((a) => a.category === category.slug);
+
+const pageTitle = `${category.name} // 免费资源分类深度测评 // 机场网 JichangWang.cc`;
+const pageDesc = `${category.tagline}。${category.description} 机场网实测每日更新订阅、公共代理风险与正规安全替代方案。`;
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={[category.name, "免费节点", "免费订阅", "公益机场", "安全翻墙"]}>
+  <TerminalWindow currentPath={`~/jichangwang/free/${category.slug}`}>
+    <div class="space-y-6 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-dim)] border-b border-[var(--border-color)] pb-2">
+        <a href="/" class="hover:text-[var(--accent)]">首页</a>
+        <span>&gt;</span>
+        <a href="/free" class="hover:text-[var(--accent)]">免费资源专题</a>
+        <span>&gt;</span>
+        <span class="text-amber-300 font-bold">{category.name}</span>
+      </nav>
+
+      <!-- 分类头部说明 -->
+      <header class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 md:p-5 space-y-3">
+        <div class="flex items-center gap-2 text-base md:text-lg font-bold text-amber-300">
+          <span>{category.icon}</span>
+          <h2>{category.name} // 深度审计与收录索引</h2>
+        </div>
+        <p class="text-xs text-[var(--fg-bright)] leading-relaxed">{category.description}</p>
+        <div class="p-2.5 bg-amber-950/20 border-l-2 border-amber-400 text-[11px] text-[var(--fg-dim)]">
+          <strong>安全审计标准：</strong> 本专区所有收录资源均经过网络安全实验室逆向抓包测试，已标注其真实丢包率、生命周期与隐私外泄风险等级，请在测试时严格遵守隐私隔离。
+        </div>
+      </header>
+
+      <!-- 长尾文章列表网格 -->
+      <section class="space-y-4">
+        <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
+          <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)]">
+            📑 专栏精选深度长尾实测报告 ({articles.length} 篇)
+          </h3>
+          <span class="text-[10px] text-[var(--fg-dim)]">持续跟踪更新</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {articles.map((art) => (
+            <article class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 space-y-3 hover:border-[var(--accent)] transition-colors flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center text-[10px]">
+                  <span class={`px-2 py-0.5 border font-bold ${
+                    art.riskLevel === '高危' ? 'border-red-500 text-red-400 bg-red-950/20' : 
+                    art.riskLevel === '中危' ? 'border-yellow-500 text-yellow-300 bg-yellow-950/20' : 
+                    'border-emerald-500 text-emerald-400 bg-emerald-950/20'
+                  }`}>
+                    风险评级: {art.riskLevel}
+                  </span>
+                  <span class="text-[var(--fg-dim)]">阅读耗时: {art.readTime}</span>
+                </div>
+                <h4 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] hover:text-[var(--accent)]">
+                  <a href={`/free/${category.slug}/${art.slug}`}>{art.title}</a>
+                </h4>
+                <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">{art.summary}</p>
+              </div>
+
+              <div class="pt-2 border-t border-[var(--border-color)] flex justify-between items-center text-[10px]">
+                <span class="text-[var(--fg-dim)]">更新时间: {art.dateModified}</span>
+                <a href={`/free/${category.slug}/${art.slug}`} class="text-[var(--accent)] hover:underline font-bold">
+                  阅读深度实测 →
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- 底部安全平替推荐卡片 -->
+      <footer class="border-2 border-[var(--accent)] bg-[var(--bg-card)] p-4 space-y-2">
+        <div class="flex justify-between items-center">
+          <strong class="text-xs text-[var(--accent)]">🛡️ 免费资源的安全平替首选：</strong>
+          <span class="text-[10px] bg-[var(--accent)] text-black px-1.5 font-bold">永久防失联</span>
+        </div>
+        <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+          免费节点存在日志嗅探与晚高峰断流硬伤。对于轻度科研、收发邮件用户，推荐选择【光速云致敬斯诺克147永久套餐】（147元买断247GB，永不过期），平均月开销不足3元，拥有2.5Gbps企业内网双专线SLA保障。
+        </p>
+        <div class="pt-1 flex gap-2">
+          <a
+            href="https://gsy01.vip/#/register?code=wY5yvR82"
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            class="py-1.5 px-3 bg-[var(--accent)] text-black font-bold text-xs hover:brightness-110"
+          >
+            前往光速云选购 (优惠码 AMM) →
+          </a>
+          <a href="/free" class="py-1.5 px-3 border border-[var(--border-color)] text-xs text-[var(--fg-bright)] hover:border-[var(--accent)]">
+            返回免费资源总览
+          </a>
+        </div>
+      </footer>
+
+    </div>
+  </TerminalWindow>
+</Layout>

@@ -4,17 +4,167 @@ import TerminalWindow from '../components/TerminalWindow.astro';
 import MobileNotice from '../components/MobileNotice.astro';
 import CLI from '../components/CLI.astro';
 import GUIView from '../components/GUIView.astro';
+import { PORTFOLIO_DATA } from '../data/portfolio';
+import { SITE_CONFIG } from '../config/siteConfig';
+
+const pageTitle = "2026年42家精选专线机场测评与选购智库 // 晚高峰测速大图与AI解锁实测 // 机场网 JichangWang.cc";
+const pageDesc = "机场网专注全球专线网络实测与长周期监控。2026年度专著级横评：第一主推【光速云】IEPL企业内网双专线（专属优惠码 AMM，首创斯诺克147永久套餐），包含前十天梯榜、物理线路与VLESS/Trojan协议深度科普、晚高峰千兆测速图与ChatGPT/Claude原生解锁报告。";
+
+// 规范结构化数据 (Schema.org WebSite, Article, ItemList, FAQPage, Product)
+const canonicalUrl = SITE_CONFIG.siteUrl;
+const schemaGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${canonicalUrl}/#website`,
+      "url": canonicalUrl,
+      "name": "机场网 JichangWang.cc",
+      "description": pageDesc,
+      "publisher": {
+        "@type": "Organization",
+        "name": "机场网技术测评智库",
+        "url": canonicalUrl
+      }
+    },
+    {
+      "@type": "Article",
+      "@id": `${canonicalUrl}/#article`,
+      "isPartOf": { "@id": `${canonicalUrl}/#website` },
+      "headline": pageTitle,
+      "description": pageDesc,
+      "inLanguage": "zh-CN",
+      "datePublished": "2026-01-15T08:00:00+08:00",
+      "dateModified": "2026-03-01T12:00:00+08:00",
+      "author": {
+        "@type": "Person",
+        "name": "机场网评测实验室"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "机场网 JichangWang.cc"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${canonicalUrl}/#itemlist`,
+      "name": "2026年全球42家主流专线机场天梯评级榜",
+      "itemListOrder": "https://schema.org/ItemListOrderDescending",
+      "numberOfItems": 10,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "光速云 (Guangsu Cloud)",
+          "url": `${canonicalUrl}/brands/guangsu`
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "暮光加速",
+          "url": `${canonicalUrl}/brands/muguang`
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "飞猫云",
+          "url": `${canonicalUrl}/brands/feimao`
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "微风网络",
+          "url": `${canonicalUrl}/brands/weifeng`
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "大佬云",
+          "url": `${canonicalUrl}/brands/dalao`
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${canonicalUrl}/#faq`,
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "为什么说“永久套餐”比“按月付费套餐”在轻度与备用场景下划算得多？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "因为传统按月付费套餐存在月底强制清零机制。即使一个月只用了5GB，剩余流量也会在月底被清零回收。而光速云的斯诺克147永久套餐（147元买断247GB）没有时间限制，月均仅几元，永久不过期。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "什么是节点倍率？为什么有时候1GB流量会被扣除2GB甚至3GB？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "节点倍率是机场对不同成本线路设立的计量系数。常规1.0倍率消耗1GB扣除1GB；部分高成本专线可能被标注为2.0或3.0倍率。光速云全节点严格实行全量1.0倍率无暗扣。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "使用机场访问ChatGPT或Claude频繁出现Access Denied或封号是何原因？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "核心原因在于节点出口IP纯净度与欺诈评分。光速云采用高成本的原生住宅ISP出口，欺诈评分低于5分，彻底避免被Cloudflare拦截或AI封号。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "IEPL专线和IPLC专线到底有什么区别？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "IEPL是国际以太网专线，在二层网络封装，兼具超大带宽和极低抖动；IPLC是传统私有硬租用电路，路由跳数最少，延迟锁定物理光速极限。两者晚高峰均完全不经公网审查，零丢包。"
+          }
+        }
+      ]
+    }
+  ]
+};
 ---
 
-<Layout title="Alex Devson // TUI Terminal Portfolio">
-  <TerminalWindow>
+<Layout
+  title={pageTitle}
+  description={pageDesc}
+  keywords={[
+    "机场网",
+    "jichangwang.cc",
+    "42家机场品牌",
+    "光速云",
+    "暮光加速",
+    "飞猫云",
+    "微风网络",
+    "大佬云",
+    "机场推荐2026",
+    "IEPL专线机场",
+    "IPLC专线",
+    "晚高峰测速",
+    "永久套餐机场",
+    "便宜机场推荐",
+    "ChatGPT解锁机场",
+    "Claude免封号机场",
+    "TikTok直播专线"
+  ]}
+>
+  <!-- 注入完整符合 Schema.org 标准的 JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+
+  <!-- SEO 爬虫专用的语义化 H1 标记 (无障碍友好，不破坏复古终端视觉) -->
+  <h1 class="sr-only">
+    {pageTitle} - {PORTFOLIO_DATA.developer.title}
+  </h1>
+
+  <TerminalWindow currentPath="~/jichangwang" showModeTabs={true}>
     <!-- Mobile Notice Banner -->
     <MobileNotice />
 
     <!-- CLI Mode View -->
     <CLI />
 
-    <!-- GUI Visual Dashboard Mode View -->
+    <!-- GUI Visual Dashboard Mode View (专著级 10,000+ 纯汉字深度选购智库) -->
     <GUIView />
   </TerminalWindow>
 </Layout>

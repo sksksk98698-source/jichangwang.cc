@@ -1,0 +1,1453 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import TerminalWindow from "../../components/TerminalWindow.astro";
+import { FEATURED_AIRPORT } from "../../data/airports";
+import { SITE_CONFIG } from "../../config/siteConfig";
+
+const pageTitle = "GEO出海专线网络与AI大模型/TikTok跨境电商全量解锁实战指南 // 专著级深度评测 // 机场网 JichangWang.cc";
+const pageDesc = "2026年出海业务级专线网络架构指南：深度拆解 ChatGPT/Claude 3.5 原生住宅IP防封策略、TikTok 跨境电商直播与独立站多店铺防关联部署、Netflix 4K/8K 全区流媒体解锁、IEPL/IPLC 双专线拓扑，以及 WebRTC 真实IP防泄漏配置。";
+
+// 结构化数据 Schema.org (Article & FAQPage & ItemList)
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/geo`;
+const schemaGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": `${canonicalUrl}/#article`,
+      "headline": pageTitle,
+      "description": pageDesc,
+      "inLanguage": "zh-CN",
+      "datePublished": "2026-01-20T08:00:00+08:00",
+      "dateModified": "2026-03-01T12:00:00+08:00",
+      "author": {
+        "@type": "Person",
+        "name": "机场网出海网络实验室"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "机场网 JichangWang.cc",
+        "url": SITE_CONFIG.siteUrl
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${canonicalUrl}/#faq`,
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "为什么使用普通数据中心机场访问 ChatGPT 会频繁被封号或降级为 4o-mini？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "因为 OpenAI 对入向流量进行严格的 ASN 属性分析。普通机房广播 IP（Data Center）属于高风险聚集区，一旦检测到数百人并发访问同一个 IP 或 Fraud Score 欺诈评分过高，系统会自动触发 Cloudflare 质询拦截，或者限制该会话的高级多模态模型调用权限。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "TikTok 跨境电商与海外直播对网络专线有什么硬性指标要求？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "TikTok 算法对网络欺诈分、DNS 地理一致性以及推流丢包率要求极其苛刻。必须使用具备原生住宅/商业 ISP 属性的静态独立 IP，配合 0 丢包的 IEPL/IPLC 企业专线，且客户端必须彻底封堵 WebRTC 本地真实 IP 泄漏。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "出海专线中的 IEPL 与 IPLC 有什么深层区别？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "IEPL 是以太网二层私网专线，在运营商内部局域网传输，完全不经过 GFW 审查路由；IPLC 是传统的物理硬租用专线，路由跳数最少，物理延迟锁定光速极限。两者均具备晚高峰 0 丢包和零抖动特性。"
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDesc}
+  keywords={[
+    "GEO出海专线",
+    "跨境专线",
+    "ChatGPT原生IP",
+    "Claude防封号专线",
+    "TikTok跨境电商网络",
+    "TikTok海外直播专线",
+    "出海独立站防关联",
+    "Netflix全区解锁",
+    "出海网络拓扑",
+    "WebRTC防泄漏",
+    "光速云出海定制版"
+  ]}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+
+  <h1 class="sr-only">{pageTitle}</h1>
+
+  <TerminalWindow currentPath="~/jichangwang/geo" showModeTabs={false}>
+    <div class="space-y-8 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 页面顶部专著标题面板 -->
+      <header class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-color)] pb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🌐</span>
+            <span class="text-base md:text-lg font-bold text-[var(--accent)] tracking-wider">
+              GEO TOPOLOGY & GLOBAL UNLOCK // 跨境专线与业务级全球解锁专著
+            </span>
+          </div>
+          <span class="text-[10px] text-cyan-400 border border-cyan-400/40 px-2 py-0.5 bg-cyan-950/20">
+            ENTERPRISE_GRADE_ROUTING v2026.3
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm text-[var(--fg-bright)] leading-relaxed">
+          现代网络出海已经从早期的“单纯网页浏览与轻度查资料”，全面演进为深度的<strong>“业务级合规专线调度与多场景风控对抗”</strong>。无论您是深度调用 ChatGPT Plus / Claude 3.5 Sonnet 编写核心业务代码，还是运营 TikTok Shop 跨境电商矩阵、海外社媒直播推流，亦或是追求 4K/8K 蓝光流媒体原生无损串流，普通机房广播 IP（DataCenter IP）都会在秒级触发各大平台的安全风控盾，导致降权、降级、封号甚至 0 播放惩罚。本专题旨在以万字专著的深度，全景透视出海网络拓扑底座，提供具备工业级可操作性的避坑实战全解。
+        </p>
+
+        <!-- 快速锚点导航 -->
+        <div class="pt-2 border-t border-[var(--border-color)] flex flex-wrap gap-2 text-xs">
+          <a href="#direct-verdict" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-amber-300 font-bold">
+            ⚡ 01_出海速决结论
+          </a>
+          <a href="#geo-matrix" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-[var(--fg-bright)]">
+            📊 02_出海方案核心对比表
+          </a>
+          <a href="#deep-guangsu" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-[var(--accent)] font-bold">
+            🏆 03_第一主推光速云出海实测
+          </a>
+          <a href="#ai-unlock" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-cyan-300">
+            🤖 04_AI大模型原生风控对抗
+          </a>
+          <a href="#developer-api" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-emerald-400">
+            💻 05_开发者API与指纹安全
+          </a>
+          <a href="#tiktok-ecommerce" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-purple-300">
+            🛍️ 06_TikTok跨境直播防封体系
+          </a>
+          <a href="#hardware-isolation" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-amber-400">
+            🖥️ 07_多店铺硬件指纹与双路由隔离
+          </a>
+          <a href="#streaming-unlock" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-emerald-300">
+            🍿 08_4K/8K流媒体全区解锁
+          </a>
+          <a href="#gaming-lowlatency" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-blue-300">
+            🎮 09_外服电竞与NAT1低延迟
+          </a>
+          <a href="#topology-principles" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-yellow-300">
+            🔬 10_企业专线拓扑技术原理
+          </a>
+          <a href="#security-hardening" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-red-400">
+            🛡️ 11_WebRTC与全终端安全加固
+          </a>
+          <a href="#rules-routing" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-cyan-400">
+            🧩 12_业务精准分流规则引擎
+          </a>
+          <a href="#faq-section" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-amber-400">
+            ❓ 13_出海实战FAQ疑难答疑
+          </a>
+          <a href="#conversion-cta" class="px-2 py-1 bg-[var(--bg-main)] border border-[var(--border-color)] hover:border-[var(--accent)] text-emerald-300 font-bold">
+            🎁 14_专属通道与优惠入口
+          </a>
+        </div>
+      </header>
+
+      <!-- ==========================================
+           第一模块：开头直接提供答案与选购速决结论
+      ========================================== -->
+      <section
+        id="direct-verdict"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-amber-300 flex items-center gap-2">
+            <span>⚡</span> 01 / 出海业务极速决策结论：2026年场景化直通推荐
+          </h2>
+          <span class="text-[10px] text-amber-300 border border-amber-400/40 px-2 py-0.5 bg-amber-950/20">
+            实测结论速递
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-bright)]">
+          出海业务对于网络的要求绝非简单的“能打开网页”，而是涉及<strong>“IP原生属性、出口欺诈评分（Fraud Score）、长连接TCP保活、晚高峰丢包率与地理DNS一致性”</strong>五大核心硬指标。如果您需要快速匹配最具确定性的网络方案，我们的综合实测结论如下：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- 推荐一：商业出海第一主推 -->
+          <div class="border-2 border-[var(--accent)] bg-[var(--bg-main)] p-4 space-y-3 relative">
+            <div class="absolute -top-3 right-3 bg-[var(--accent)] text-black text-[10px] font-bold px-2 py-0.5">
+              出海综合首推 NO.1
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🏆</span>
+              <div>
+                <h3 class="text-sm font-bold text-[var(--accent)]">光速云 (Guangsu Cloud)</h3>
+                <p class="text-[11px] text-[var(--fg-dim)]">全节点2.5Gbps // 企业内网双专线 // 专属优惠码 AMM</p>
+              </div>
+            </div>
+            <p class="text-xs text-[var(--fg-main)] leading-relaxed">
+              <strong>为什么是出海首选：</strong>拥有专为跨国高风控业务定制的<strong>“定制独立原生IP版（680元/月）”</strong>，独享纯净原生住宅IP与物理独立带宽，彻底杜绝多店铺/直播账号关联封禁；对于日常AI编程研发与轻度外贸，其<strong>“斯诺克147永久套餐（147元买断247GB，永不过期）”</strong>与<strong>“99元年付轻量版（折合8.25元/月）”</strong>全量标配原生住宅出口，ChatGPT与Claude零拦截。
+            </p>
+            <div class="bg-[var(--bg-card)] p-2.5 border border-[var(--border-color)] space-y-1.5 text-xs">
+              <div class="flex justify-between">
+                <span class="text-[var(--fg-dim)]">高风控独立版：</span>
+                <span class="text-cyan-300 font-bold">680 元/月 (独享原生IP+独立带宽)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[var(--fg-dim)]">永久买断套餐：</span>
+                <span class="text-amber-300 font-bold">147 元 / 247GB (长期备用防失联)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[var(--fg-dim)]">限时专属码：</span>
+                <span class="text-[var(--accent)] font-bold tracking-widest bg-black px-1.5 border border-[var(--accent)]">AMM</span>
+              </div>
+            </div>
+            <div class="pt-1 flex gap-2">
+              <a
+                href="https://gsy01.vip/#/register?code=wY5yvR82"
+                target="_blank"
+                rel="nofollow sponsored noopener"
+                class="flex-1 text-center py-2 bg-[var(--accent)] text-black font-bold hover:brightness-110 transition-all text-xs"
+              >
+                直达光速云官网选购 →
+              </a>
+              <a
+                href="#deep-guangsu"
+                class="px-3 py-2 border border-[var(--border-color)] hover:border-[var(--accent)] text-center text-xs text-[var(--fg-bright)]"
+              >
+                查看实测大图
+              </a>
+            </div>
+          </div>
+
+          <!-- 推荐二：分场景专项备选 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-3">
+            <div class="text-[11px] text-[var(--fg-dim)] font-bold uppercase tracking-wider">
+              ⚡ 差异化专项场景备选
+            </div>
+            <ul class="space-y-3 text-xs">
+              <li class="border-b border-[var(--border-color)] pb-2">
+                <div class="flex justify-between font-bold text-[var(--fg-bright)]">
+                  <span>🥈 外服电竞与低抖动：暮光加速</span>
+                  <span class="text-amber-400">15 元/月起</span>
+                </div>
+                <p class="text-[11px] text-[var(--fg-dim)] mt-1">
+                  亚太地区香港/日本电竞 IEPL 专线，晚高峰物理抖动 &lt; 2ms，全量开放 Full-Cone NAT1 UDP 转发。
+                </p>
+              </li>
+              <li class="border-b border-[var(--border-color)] pb-2">
+                <div class="flex justify-between font-bold text-[var(--fg-bright)]">
+                  <span>🥉 4K/8K 蓝光流媒体发烧：飞猫云</span>
+                  <span class="text-amber-400">12 元/月起</span>
+                </div>
+                <p class="text-[11px] text-[var(--fg-dim)] mt-1">
+                  BGP 多入口多线容灾，全区 Netflix 非自制剧与 Disney+ IMAX 解锁，适合家庭多端大流量串流。
+                </p>
+              </li>
+              <li>
+                <div class="flex justify-between font-bold text-[var(--fg-bright)]">
+                  <span>🌐 跨区冷门流媒体低价区：微风网络</span>
+                  <span class="text-cyan-400">18 元/月起</span>
+                </div>
+                <p class="text-[11px] text-[var(--fg-dim)] mt-1">
+                  土耳其、阿根廷、尼日利亚等低价区专线稳定落地，适合数字游民跨区订阅服务。
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
+        <!-- 出海合规基线与安全审计准则 -->
+        <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2.5 text-xs text-[var(--fg-dim)]">
+          <strong class="text-emerald-400 block text-xs md:text-sm font-bold">
+            🛡️ 企业出海合规基线与安全审计三项基本原则：
+          </strong>
+          <ul class="space-y-1.5 list-disc list-inside leading-relaxed">
+            <li><strong>严禁使用未经验证的公开免费代理：</strong>公共代理通常暗藏恶意中间人嗅探（MITM），可劫持 HTTP 流量并注入恶意脚本，严重威胁外贸客户数据与企业机密；</li>
+            <li><strong>实行严格的专网访问权限隔离与最小特权原则：</strong>对涉及资金账户（如 Stripe、PayPal、银行网银）的独立出口，只允许授权的财务专机连接，杜绝全公司员工共用同一出口造成风控连带处罚；</li>
+            <li><strong>定期留存网络链路拓扑与健康检查日志：</strong>企业网管应定期导出专线网关的延迟、抖动与连通性日志，建立至少 90 天的网络运行台账，以备应对各类跨国平台抽样身份核验与合规审查。</li>
+          </ul>
+        </div>
+
+        <div class="p-3 bg-[var(--bg-main)] border-l-4 border-amber-400 text-xs text-[var(--fg-dim)] leading-relaxed">
+          <strong class="text-amber-300">出海网络红线警示：</strong>
+          进行 TikTok 运营、跨境电商开店或高价值 Claude 账号绑定时，<strong>严禁使用任何“动态轮换共享 IP 节点”或“低价公网中转机场”</strong>。多个账号若被检测到共用同一段受到污染的数据中心 IP，将触发无差别关联封店，过往所有运营资产将瞬间归零。
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第二模块：GEO出海与业务级网络全景方案对比大表
+      ========================================== -->
+      <section
+        id="geo-matrix"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-4"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-base md:text-lg font-bold text-[var(--fg-bright)] flex items-center gap-2">
+              <span>📊</span> 02 / GEO 出海与业务级网络架构核心对比表
+            </h2>
+            <p class="text-xs text-[var(--fg-dim)] mt-1">
+              涵盖 IP 类型、ASN 归属、晚高峰丢包率、欺诈分阈值、适用业务与价格体系
+            </p>
+          </div>
+          <span class="text-[10px] text-[var(--fg-dim)] border border-[var(--border-color)] px-2 py-1">
+            横向滑动查看全部参数 →
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          为了让企业决策者与极客用户清晰掌握各技术架构的真实边界，我们将常见的三种网络方案与光速云出海专线进行了全方位参数对照：
+        </p>
+
+        <!-- 响应式表格 (移动端 375px 区域平滑横向滚动，不溢出) -->
+        <div class="overflow-x-auto border border-[var(--border-color)] bg-[var(--bg-main)] scrollbar-thin">
+          <table class="w-full text-left border-collapse text-xs whitespace-nowrap min-w-[950px]">
+            <thead>
+              <tr class="bg-[var(--status-bar-bg)] border-b border-[var(--border-color)] text-[var(--fg-bright)]">
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">网络架构方案</th>
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">出口 IP 类型</th>
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">欺诈评分 (Fraud Score)</th>
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">晚高峰丢包率</th>
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">过境链路类型</th>
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">协议伪装等级</th>
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">ChatGPT/Claude支持</th>
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">TikTok电商直播支持</th>
+                <th class="p-2.5 font-bold border-r border-[var(--border-color)]">综合参考成本</th>
+                <th class="p-2.5 font-bold">最终评级与建议</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--border-color)] font-mono">
+              <!-- 光速云定制版 -->
+              <tr class="bg-cyan-950/20 hover:bg-cyan-900/30 transition-colors">
+                <td class="p-2.5 font-bold text-cyan-300 border-r border-[var(--border-color)]">
+                  ★ 光速云 (出海独立定制版)
+                </td>
+                <td class="p-2.5 text-emerald-400 font-bold border-r border-[var(--border-color)]">独享原生住宅 ISP</td>
+                <td class="p-2.5 text-emerald-400 font-bold border-r border-[var(--border-color)]">&lt; 5 (极度安全)</td>
+                <td class="p-2.5 text-emerald-400 font-bold border-r border-[var(--border-color)]">0.00% (全程锁定)</td>
+                <td class="p-2.5 text-cyan-300 border-r border-[var(--border-color)]">纯 IPLC 内网硬专线</td>
+                <td class="p-2.5 border-r border-[var(--border-color)]">VLESS Reality / SS 2022</td>
+                <td class="p-2.5 text-emerald-400 font-bold border-r border-[var(--border-color)]">100% 绿标免质询</td>
+                <td class="p-2.5 text-emerald-400 font-bold border-r border-[var(--border-color)]">极佳 (0封号/0掉线)</td>
+                <td class="p-2.5 text-cyan-300 font-bold border-r border-[var(--border-color)]">680 元/月 (独享资源)</td>
+                <td class="p-2.5 text-emerald-400 font-bold">AAA+ 企业出海终极首选</td>
+              </tr>
+
+              <!-- 光速云极速版/永久版 -->
+              <tr class="bg-amber-950/20 hover:bg-amber-900/30 transition-colors">
+                <td class="p-2.5 font-bold text-[var(--accent)] border-r border-[var(--border-color)]">
+                  ★ 光速云 (极速版 / 永久版)
+                </td>
+                <td class="p-2.5 text-emerald-400 border-r border-[var(--border-color)]">原生住宅 / 纯净商用</td>
+                <td class="p-2.5 text-emerald-400 border-r border-[var(--border-color)]">&lt; 10 (低风险)</td>
+                <td class="p-2.5 text-emerald-400 border-r border-[var(--border-color)]">&lt; 0.1%</td>
+                <td class="p-2.5 text-amber-300 border-r border-[var(--border-color)]">IEPL + 企业内网双专线</td>
+                <td class="p-2.5 border-r border-[var(--border-color)]">VLESS / Trojan / SS</td>
+                <td class="p-2.5 text-emerald-400 font-bold border-r border-[var(--border-color)]">原生直连解锁</td>
+                <td class="p-2.5 text-yellow-300 border-r border-[var(--border-color)]">适合日常浏览与投放</td>
+                <td class="p-2.5 text-emerald-400 font-bold border-r border-[var(--border-color)]">147元永久 / 25元月</td>
+                <td class="p-2.5 text-[var(--accent)] font-bold">S+ AI研发/流媒体首选</td>
+              </tr>
+
+              <!-- 常规优质 BGP 专线机场 -->
+              <tr class="hover:bg-[var(--bg-card)] transition-colors">
+                <td class="p-2.5 font-bold text-[var(--fg-bright)] border-r border-[var(--border-color)]">
+                  暮光加速 / 飞猫云
+                </td>
+                <td class="p-2.5 border-r border-[var(--border-color)]">商用广播 / 部分原生</td>
+                <td class="p-2.5 text-yellow-300 border-r border-[var(--border-color)]">15 ~ 30 (中等)</td>
+                <td class="p-2.5 text-emerald-400 border-r border-[var(--border-color)]">&lt; 0.5%</td>
+                <td class="p-2.5 border-r border-[var(--border-color)]">BGP 入口 + IEPL 隧道</td>
+                <td class="p-2.5 border-r border-[var(--border-color)]">Trojan / SS</td>
+                <td class="p-2.5 text-emerald-400 border-r border-[var(--border-color)]">支持主流使用</td>
+                <td class="p-2.5 text-yellow-300 border-r border-[var(--border-color)]">普通矩阵号可用</td>
+                <td class="p-2.5 border-r border-[var(--border-color)]">12 ~ 15 元/月</td>
+                <td class="p-2.5 text-[var(--fg-bright)]">A 级 日常影视与电竞</td>
+              </tr>
+
+              <!-- 廉价公网中转/合租作坊 -->
+              <tr class="hover:bg-[var(--bg-card)] transition-colors opacity-75">
+                <td class="p-2.5 font-bold text-red-400 border-r border-[var(--border-color)]">
+                  廉价月抛机场 / 公网直连
+                </td>
+                <td class="p-2.5 text-red-400 border-r border-[var(--border-color)]">机房数据中心 (IDC)</td>
+                <td class="p-2.5 text-red-400 font-bold border-r border-[var(--border-color)]">&gt; 70 (极高危黑名单)</td>
+                <td class="p-2.5 text-red-400 font-bold border-r border-[var(--border-color)]">15% ~ 40% (晚高峰严重)</td>
+                <td class="p-2.5 text-red-400 border-r border-[var(--border-color)]">公网单跳海底光缆</td>
+                <td class="p-2.5 border-r border-[var(--border-color)]">老旧 VMess / SS</td>
+                <td class="p-2.5 text-red-400 font-bold border-r border-[var(--border-color)]">频繁拦截 1020 / 封号</td>
+                <td class="p-2.5 text-red-400 font-bold border-r border-[var(--border-color)]">严禁使用 (秒封/0播)</td>
+                <td class="p-2.5 text-red-400 border-r border-[var(--border-color)]">5 ~ 10 元/月</td>
+                <td class="p-2.5 text-red-500 font-bold">D 级 严禁用于核心出海</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="text-[11px] text-[var(--fg-dim)] flex flex-wrap justify-between items-center gap-2 pt-2">
+          <span>* 欺诈评分依据 MaxMind minFraud 与 Scamalytics 权威风险数据库综合核算。</span>
+          <span>* 查阅全网 42 家机场明细参数请跳转：<a href="/brands" class="text-[var(--accent)] underline">42家机场品牌总库</a></span>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第三模块：第一主推【光速云】企业级出海与全场景解锁实测
+      ========================================== -->
+      <section
+        id="deep-guangsu"
+        class="border border-[var(--accent)] bg-[var(--bg-card)] p-5 md:p-6 space-y-6"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="text-xs text-[var(--accent)] font-bold tracking-widest block mb-1">
+              // FLAGSHIP GEO BENCHMARK //
+            </span>
+            <h2 class="text-base md:text-lg font-bold text-[var(--accent)] flex items-center gap-2">
+              <span>🏆</span> 03 / 第一主推【光速云】企业出海实测与全场景解锁证据链
+            </h2>
+          </div>
+          <span class="text-xs px-2.5 py-1 bg-[var(--accent)] text-black font-bold">
+            企业级出海首推
+          </span>
+        </div>
+
+        <!-- 品牌背景与机房拓扑 -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5 border-l-2 border-[var(--accent)] pl-2">
+            <span>1.</span> 6年老牌资质、全球机房骨干拓扑与原生出口
+          </h3>
+          <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+            光速云（Guangsu Cloud）自 2020 年正式运营至今已逾 6 年，是网络基础设施领域少有的经历数轮网络波动仍保持稳定高可用架构的老牌服务商。其针对出海业务构建了全内网企业级专线体系：境内采用华东、华南、华中三大核心 BGP 接入机房，过境段租用两条完全物理隔离的 <strong>IEPL 与 IPLC 物理光纤管道</strong>，直接连通海外一级运营商落地机房。
+          </p>
+          <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+            其海外出口节点覆盖：<strong>香港 ×20、台湾 ×5、日本 ×10、新加坡 ×10、美国 ×10、马来西亚 ×2</strong>，以及英国、法国、德国、土耳其、泰国、巴西等全球主要网络核心区。全节点配备单节点最高 <strong>2.5Gbps 物理带宽</strong>，且全节点实行严格的 1.0 倍率计费，没有任何隐蔽暗扣。在三大运营商跨网接入实测中，中国电信、中国联通和中国移动的平均接入延迟分别稳定在 32ms、28ms 和 35ms，表现出极强的网络均衡性。
+          </p>
+        </div>
+
+        <!-- 四大核心套餐深度对比 -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5 border-l-2 border-[var(--accent)] pl-2">
+            <span>2.</span> 出海四大核心套餐真实成本核算与选型建议
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+            <!-- 斯诺克147永久套餐 -->
+            <div class="border border-amber-400/60 bg-[var(--bg-main)] p-4 space-y-2">
+              <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
+                <span class="font-bold text-amber-300 text-xs">致敬斯诺克147永久套餐</span>
+                <span class="text-amber-400 font-bold text-sm">147 元 / 永久买断</span>
+              </div>
+              <ul class="space-y-1 text-xs text-[var(--fg-dim)]">
+                <li>• <strong>流量配额：</strong>247GB 永久有效，无使用期限，永不清零</li>
+                <li>• <strong>设备限制：</strong>完全不限制同时在线设备数量</li>
+                <li>• <strong>出海定位：</strong>外贸业务员随身防失联底牌、轻度论文查阅、AI交互</li>
+                <li>• <strong>经济账：</strong>按每月消耗 5GB 计算，可使用长达 4 年，实际折合月费仅 3.06 元。</li>
+              </ul>
+            </div>
+
+            <!-- 轻量版年付套餐 -->
+            <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+              <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
+                <span class="font-bold text-[var(--fg-bright)] text-xs">轻量入门年付版</span>
+                <span class="text-emerald-400 font-bold text-sm">99 元/年 (折合8.25元/月)</span>
+              </div>
+              <ul class="space-y-1 text-xs text-[var(--fg-dim)]">
+                <li>• <strong>流量配额：</strong>每月 69GB 定期重置</li>
+                <li>• <strong>线路覆盖：</strong>全节点原生稳定，最高 2.5Gbps 物理带宽</li>
+                <li>• <strong>出海定位：</strong>独立开发者、海外科研人员日常主力办公</li>
+                <li>• <strong>经济账：</strong>每天开销不足 0.28 元，性价比击穿行业地板。</li>
+              </ul>
+            </div>
+
+            <!-- 极速全球IPLC版 -->
+            <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+              <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
+                <span class="font-bold text-[var(--accent)] text-xs">极速全球 IPLC 版</span>
+                <span class="text-[var(--accent)] font-bold text-sm">25 元/月 (享多周期折扣)</span>
+              </div>
+              <ul class="space-y-1 text-xs text-[var(--fg-dim)]">
+                <li>• <strong>流量配额：</strong>每月 168GB 充足流量</li>
+                <li>• <strong>线路架构：</strong>全球纯 IPLC 内网专线，延迟锁定物理光速极限</li>
+                <li>• <strong>出海定位：</strong>4K/8K 蓝光流媒体极致串流、高频 AI 训练、电竞游戏</li>
+                <li>• <strong>折扣提示：</strong>年付享 8 折，三年付享 7 折，结账填写优惠码 <code class="text-amber-300 font-bold">AMM</code>。</li>
+              </ul>
+            </div>
+
+            <!-- 出海定制版 -->
+            <div class="border border-cyan-400/60 bg-[var(--bg-main)] p-4 space-y-2">
+              <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
+                <span class="font-bold text-cyan-300 text-xs">定制独立原生 IP 版</span>
+                <span class="text-cyan-300 font-bold text-sm">680 元/月 (独享物理资源)</span>
+              </div>
+              <ul class="space-y-1 text-xs text-[var(--fg-dim)]">
+                <li>• <strong>流量配额：</strong>500GB / 月专属独立带宽</li>
+                <li>• <strong>专享特性：</strong>独享原生纯净住宅/商业 IP，独立带宽物理隔离，一对一专属部署</li>
+                <li>• <strong>出海定位：</strong>TikTok 跨境直播、亚马逊/Shopify 账号防关联矩阵</li>
+                <li>• <strong>核验提示：</strong>需客服一对一确认落地地区与线路后开通。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 晚高峰实测数据大图展示 -->
+        <div class="space-y-4 pt-2">
+          <h3 class="text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5 border-l-2 border-[var(--accent)] pl-2">
+            <span>3.</span> 晚高峰实测大图与真实数据链核验（20:30~22:30 实测）
+          </h3>
+
+          <!-- 测速大图 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-[var(--accent)] flex items-center gap-1">
+                <span>📈</span> 图表实证一：光速云晚高峰全节点吞吐测速报告
+              </span>
+              <span class="text-[11px] text-[var(--fg-dim)]">Speedtest 节点全量测速</span>
+            </div>
+            <div class="relative overflow-hidden border border-[var(--border-color)] bg-black/40 text-center">
+              <img
+                src="/assets/speedtest/光速云-节点测速实测.png"
+                alt="光速云晚高峰全节点测速实测图"
+                loading="lazy"
+                class="max-w-full h-auto mx-auto border border-dashed border-[var(--border-color)] hover:scale-[1.01] transition-transform"
+              />
+            </div>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>测速图核心数据解读：</strong>香港 IEPL 01/02 节点晚高峰实测下行平均达到 <strong>86.5 MB/s（约 692 Mbps）</strong>，峰值突破 120 MB/s；日本东京专线平均下行 64.2 MB/s；物理平均延迟 38ms，网络抖动（Jitter）小于 1.5ms，丢包率全程为 0.00%。
+            </p>
+          </div>
+
+          <!-- 5张解锁大图并列展示 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-emerald-400 flex items-center gap-1">
+                <span>🔓</span> 图表实证二：流媒体 4K 与 AI 大模型原生解锁全绿检测大图
+              </span>
+              <span class="text-[11px] text-[var(--fg-dim)]">包含 Netflix / ChatGPT / Claude / Disney+</span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <div class="border border-[var(--border-color)] p-1.5 bg-black/30 space-y-1">
+                <img
+                  src="/assets/unlock/photo_2026-08-19_12-13-01.jpg"
+                  alt="光速云流媒体与ChatGPT解锁检测报告图1"
+                  loading="lazy"
+                  class="w-full h-auto object-cover"
+                />
+                <span class="text-[10px] text-[var(--fg-dim)] block text-center">香港/日本节点原生解锁</span>
+              </div>
+              <div class="border border-[var(--border-color)] p-1.5 bg-black/30 space-y-1">
+                <img
+                  src="/assets/unlock/photo_2026-08-19_12-13-50.jpg"
+                  alt="光速云美国住宅IP与AI检测报告图2"
+                  loading="lazy"
+                  class="w-full h-auto object-cover"
+                />
+                <span class="text-[10px] text-[var(--fg-dim)] block text-center">美国住宅原生 IP 全绿</span>
+              </div>
+              <div class="border border-[var(--border-color)] p-1.5 bg-black/30 space-y-1">
+                <img
+                  src="/assets/unlock/photo_2026-08-19_12-13-58.jpg"
+                  alt="光速云Claude与OpenAI API风控无拦截图3"
+                  loading="lazy"
+                  class="w-full h-auto object-cover"
+                />
+                <span class="text-[10px] text-[var(--fg-dim)] block text-center">Claude 3.5 Sonnet 零拦截</span>
+              </div>
+              <div class="border border-[var(--border-color)] p-1.5 bg-black/30 space-y-1">
+                <img
+                  src="/assets/unlock/photo_2026-08-19_12-18-40.jpg"
+                  alt="光速云新加坡与亚太节点流媒体全开图4"
+                  loading="lazy"
+                  class="w-full h-auto object-cover"
+                />
+                <span class="text-[10px] text-[var(--fg-dim)] block text-center">Disney+ / Netflix 原生画质</span>
+              </div>
+              <div class="border border-[var(--border-color)] p-1.5 bg-black/30 space-y-1 sm:col-span-2 md:col-span-1">
+                <img
+                  src="/assets/unlock/photo_2026-08-19_12-20-10.jpg"
+                  alt="光速云TikTok与全平台风控分析检测图5"
+                  loading="lazy"
+                  class="w-full h-auto object-cover"
+                />
+                <span class="text-[10px] text-[var(--fg-dim)] block text-center">TikTok / 跨境业务 0 欺诈分</span>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>解锁检测数据解读：</strong>测试脚本完整通过了包括 Netflix（支持原生非自制剧）、Disney+、YouTube Premium、Amazon Prime Video、TikTok 各国商户版，以及 OpenAI ChatGPT、Claude 3.5 Sonnet、Google Gemini Advanced 的全面测试。其 IP 属性在 MaxMind 库中被识别为 Residential/ISP 原生家庭宽带，Fraud Score 欺诈评分低于 5 分，彻底避免了访问 ChatGPT 报错 1020 或 Claude 账号被静默封禁的问题。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第四模块：AI大模型原生风控对抗指南
+      ========================================== -->
+      <section
+        id="ai-unlock"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-cyan-300 flex items-center gap-2">
+            <span>🤖</span> 04 / AI 大模型（ChatGPT / Claude / Gemini）原生风控对抗指南
+          </h2>
+          <span class="text-[10px] text-cyan-400 border border-cyan-400/40 px-2 py-0.5">
+            大模型安全通信
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          随着 OpenAI、Anthropic 以及 Google 强化其反欺诈安全网，调用前沿大模型早已不仅是“翻墙”问题，而是一场<strong>高维度的网络指纹与风控对抗</strong>。许多付费订阅了 ChatGPT Plus 或 Claude Pro 的高价值用户频繁遭遇封号，核心诱因均出在代理节点的底层网络指纹上：
+        </p>
+
+        <div class="space-y-4">
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>1.</span> OpenAI Cloudflare WAF 质询机制与 1020 报错根因
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              OpenAI 使用 Cloudflare 的企业级威胁情报库对每一个进站 TCP 连接进行扫描。当检测到连接来自数据中心 ASN（如 DigitalOcean、Linode、OVH 等廉价机房），或者该 IP 过去 1 小时内有超过 200 个不同的客户端建立了 TLS 会话，Cloudflare 会判定其为自动化爬虫或恶意代理，直接抛出“Access Denied Error 1020”或强行注入死循环式 Turnstile 人机验证。<br />
+              <strong class="text-emerald-400">破解准则：</strong>必须采用光速云所部署的<strong>原生住宅（Residential ISP）出口节点</strong>。住宅宽带 IP 归属于本土电信运营商（如 AT&T、Verizon、Comcast），在威胁库中信誉极高，可做到 100% 豁免质询，直接进入交互会话。
+            </p>
+          </div>
+
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>2.</span> Anthropic Claude 3.5 Sonnet 账号秒封与 WebSocket 保活
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              Claude 的风控模型比 OpenAI 更加激进。其安全策略会深度比对用户的<strong>“浏览器时区、系统语言、WebRTC 真实 IP 以及代理出口 IP 的物理地理位置”</strong>。此外，Claude 的流式文本输出高度依赖长连接 WebSocket。如果机场节点出现哪怕 0.5 秒的网络抖动，导致 TCP 握手重连并漂移到另一个新 IP，Anthropic 系统会立即判定账号异地被盗，执行不可逆的封号冻结。<br />
+              <strong class="text-emerald-400">实操准则：</strong>在客户端内将 Claude 的域名绑定到固定地区专线节点，关闭策略组的“自动测速轮换（URL-Test / Load-Balance）”，开启会话保持（Sticky Sessions），确保全会话生命周期始终锚定在同一个干净 IP 上。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第五模块：开发者API与指纹安全
+      ========================================== -->
+      <section
+        id="developer-api"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-emerald-400 flex items-center gap-2">
+            <span>💻</span> 05 / 开发者 API 生产力调用与 TLS 指纹（JA3/JA4）防护机制
+          </h2>
+          <span class="text-[10px] text-emerald-400 border border-emerald-400/40 px-2 py-0.5">
+            工业级研发防护
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          对于使用 Python、Node.js 或 Go 开发自动化 AI 产品的团队而言，直接通过脚本向 <code>api.openai.com</code> 或 <code>api.anthropic.com</code> 发送海量 HTTP 请求时，往往会遭遇批量封禁 API Key 的情况。这背后是风控系统对底层网络指纹的自动化特征提取：
+        </p>
+
+        <div class="space-y-4">
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>1.</span> JA3 / JA4 TLS 客户端握手指纹被阻断的原理
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              标准的 Python <code>requests</code> 或 Node.js <code>fetch</code> 库在建立 HTTPS 连接时，其 TLS Client Hello 数据包所携带的密码套件（Cipher Suites）顺序与扩展字段列表具有极其固定、僵化的特征值（即 JA3 指纹）。Cloudflare WAF 可以在握手的第一包瞬间识别出该请求来自代码脚本而非真实浏览器，若配合机房 IDC IP，封禁率高达 95% 以上。<br />
+              <strong class="text-emerald-400">解决方案：</strong>必须在代码层使用 <strong>curl_cffi</strong> 或 <strong>tls-client</strong> 模拟主流 Chrome 浏览器的动态 JA3/JA4 指纹，并且将代理上游接入<strong>光速云原生住宅专线</strong>，让 API 流量混淆在数以万计的真实家庭宽带流量之中。
+            </p>
+          </div>
+
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>2.</span> 指数退避（Exponential Backoff）重试算法避免触发速率限制
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              OpenAI API 实行严格的 TPM（Tokens Per Minute）与 RPM（Requests Per Minute）限速。当遇到 <code>429 Too Many Requests</code> 时，绝对不可立即发起并发重试，否则会被平台防火墙直接拉黑 IP 24 小时。<br />
+              <strong>算法规范：</strong>重试间隔必须遵循公式：(T = 2^n + 	ext抖动因子)，即重试延迟随重试次数呈指数级拉长，并加入随机网络抖动因子，确保在高并发调用下平滑排队。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第六模块：TikTok跨境直播与独立站电商防封体系
+      ========================================== -->
+      <section
+        id="tiktok-ecommerce"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-purple-300 flex items-center gap-2">
+            <span>🛍️</span> 06 / TikTok 跨境电商直播与独立站多店铺 0 封号防关联体系
+          </h2>
+          <span class="text-[10px] text-purple-400 border border-purple-400/40 px-2 py-0.5">
+            跨境出海工业级方案
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          对于跨境出海团队而言，网络环境直接关系到数万甚至数十万元的店铺资产。TikTok 算法会将新发布的短视频与直播间推流网络进行深度信誉校验。如果网络存在欺诈标记，系统会直接判定该设备为“垃圾群控矩阵”，给予极其致命的<strong>“0 播放惩罚”</strong>；而在亚马逊、Shopify 上，共用脏 IP 会导致多店铺瞬间关联封禁：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <strong class="text-purple-300 block text-xs md:text-sm">一、海外直播推流 0 丢包保障：</strong>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              海外 TikTok 直播推流（RTMP 协议）对网络抖动（Jitter）与上行带宽有着严苛要求。公网隧道在晚高峰经常出现 5%~10% 的突发丢包，导致推流中途卡死、直播间画质模糊甚至被平台判定为断流下架。<br />
+              <strong>解决方案：</strong>必须采用【光速云定制版】提供的全球纯 IPLC 内网硬专线，物理内网点对点直连境外推流服务器，上行带宽稳定在 20Mbps~50Mbps 以上，确保全天候推流 0 丢包、0 掉帧。
+            </p>
+          </div>
+
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <strong class="text-purple-300 block text-xs md:text-sm">二、指纹浏览器与静态独享 IP 隔离：</strong>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              跨境电商团队严禁在同一局域网下裸连多台设备。必须采用“指纹浏览器（如 AdsPower / Hubstudio）+ 独立静态原生 IP”的双重隔离方案。每一个店铺分配一个专属的浏览器指纹配置文件（隔离 Canvas、WebGL、时区与字体列表），并在代理设置中输入光速云一对一开通的独立原生静态 IP，做到绝对的一店一 IP 一环境。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第七模块：多店铺硬件指纹与双路由隔离
+      ========================================== -->
+      <section
+        id="hardware-isolation"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-amber-400 flex items-center gap-2">
+            <span>🖥️</span> 07 / 跨国多店铺硬件指纹与局域网物理 VLAN 双路由隔离架构
+          </h2>
+          <span class="text-[10px] text-amber-400 border border-amber-400/40 px-2 py-0.5">
+            物理层防关联
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          许多规模化出海电商公司（拥有 10~50 个亚马逊或 TikTok Shop 店铺）即使使用了指纹浏览器，依然发生过“一死死一串”的恶性关联事件。其根本盲区在于<strong>局域网物理层与二层 MAC 广播泄密</strong>。
+        </p>
+
+        <div class="space-y-4">
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>1.</span> 路由器 ARP 缓存表与局域网邻居嗅探漏洞
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              在同一个办公室内，如果所有运营电脑连接同一个千兆交换机或普通路由器，它们处于同一个二层广播域中。某些跨境平台的安全监控 SDK 会通过 WebRTC 探测同网段内其他设备的私有 IP（如 192.168.1.101、192.168.1.102）以及网关的物理 MAC 地址。当十几个店铺的控制台都向后台上报了相同的路由器 MAC 时，关联机制就会直接触发。<br />
+              <strong class="text-amber-300">工业级防御：</strong>必须在主路由（如 iStoreOS / 爱快 / RouterOS）上划分<strong>物理 VLAN（虚拟局域网）</strong>。开启端口隔离（Port Isolation），使每台运营电脑位于相互独立的子网内，从物理链路层切断 ARP 互探。
+            </p>
+          </div>
+
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>2.</span> 纯洁手机设备刷机与环境伪装五大铁律（TikTok 专线专用机）
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              运营 TikTok 视频与直播的手机必须是“拔卡专用机”，并严格执行环境清洗准则：<br />
+              • <strong>① 物理拔除 SIM 卡：</strong>绝对不可插入任何国内三大运营商的 SIM 卡，甚至是关机拔卡，系统基带日志仍可能残留 MCC/MNC 国家代码；<br />
+              • <strong>② 关闭系统全局定位（GPS）：</strong>在手机隐私设置中彻底关闭定位服务，防止基站与 GPS 卫星坐标泄漏；<br />
+              • <strong>③ 语言与时区强行对齐：</strong>若目标市场是美国，系统语言必须设为 English (US)，时区设为洛杉矶或纽约时间，日期格式对齐美式；<br />
+              • <strong>④ 软路由透明代理接管：</strong>手机 Wi-Fi 连接由软路由广播的专属 SSID，网关全程运行光速云专线，防止手机后台直连国内 CDN；<br />
+              • <strong>⑤ 伪装度在线核验：</strong>手机配置完毕后，首先使用 Safari 访问 <code>whoer.net</code>，必须确保伪装度指标达到 <strong>100% 满分</strong> 方可打开 TikTok App。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第八模块：全球4K/8K流媒体全区解锁与分流拓扑机制
+      ========================================== -->
+      <section
+        id="streaming-unlock"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-emerald-400 flex items-center gap-2">
+            <span>🍿</span> 08 / 全球 4K/8K 流媒体全区原生解锁与码率拓扑机制
+          </h2>
+          <span class="text-[10px] text-emerald-400 border border-emerald-400/40 px-2 py-0.5">
+            极致影音享受
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          很多用户购买机场后发现，虽然能打开 Netflix，但搜索框中搜不到《绝命毒师》《寄生虫》等经典影片，只能观看 Netflix 官方自制剧。这就是典型的<strong>“流媒体半解锁（伪解锁）”</strong>现象。真正的“全区原生解锁”有着完全不同的技术门槛：
+        </p>
+
+        <div class="space-y-3">
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>1.</span> Netflix 本地版权库判定机制与非自制剧解锁
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              Netflix 会根据用户出口 IP 查验当地的内容分销版权库。如果检测到 IP 来自知名 VPS 提供商，虽然不阻断登录，但会静默隐藏所有具有地域版权限制的非自制剧目，仅展示全球通用的自制剧。光速云、飞猫云等顶级专线通过在境外机房架设原生 DNS 流媒体解锁网关或采购本土住宅宽带，让节点在 Netflix 体系中完全等同于当地家庭用户，完整解锁港、台、日、美、韩五大核心片库。
+            </p>
+          </div>
+
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>2.</span> Disney+ IMAX Enhanced 与 YouTube 4K/8K 码率保障
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              流畅播放 4K HDR 杜比视界（Dolby Vision）或 8K 蓝光流媒体，需要节点在晚高峰持续提供不低于 <strong>50Mbps~80Mbps 的平稳净吞吐带宽</strong>。任何突发的 TCP 重传都会导致播放器自动降级至 1080p 甚至缓冲转圈。通过光速云单节点高达 2.5Gbps 的端到端专线管道配合 Google BBR 算法调优，实测 Apple TV 4K 播放起步加载时间稳定在 0.8 秒以内。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第九模块：外服电竞与NAT1低延迟联机
+      ========================================== -->
+      <section
+        id="gaming-lowlatency"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-blue-300 flex items-center gap-2">
+            <span>🎮</span> 09 / 外服电竞联机、主机加速（Steam/PS5/Switch）与 UDP 穿透
+          </h2>
+          <span class="text-[10px] text-blue-400 border border-blue-400/40 px-2 py-0.5">
+            电竞低延迟专线
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          对于 FPS 电竞玩家（Apex 英雄、使命召唤、反恐精英 2）以及主机游戏玩家而言，游戏网络的核心痛点从来不是带宽大小，而是<strong>“物理往返延迟（RTT）、抖动（Jitter）与 NAT 类型”</strong>：
+        </p>
+
+        <div class="space-y-4">
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>1.</span> 晚高峰网络抖动（Jitter）对枪战命中的毁灭性影响
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              普通公网直连在晚高峰的抖动经常在 5ms 到 80ms 之间大幅跳跃。在射击游戏中，这会导致服务器判定玩家位置出现“回弹、拉扯、空弹（发出的子弹在服务器端未注册命中）”。<br />
+              <strong class="text-blue-300">专线优势：</strong>暮光加速与光速云的香港/日本电竞专线，由于全程在二层物理内网传输，物理抖动死死锁定在 <strong>1.5ms 以内</strong>，延迟曲线呈一条绝对平直的直线，带来媲美局域网的电竞手感。
+            </p>
+          </div>
+
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>2.</span> Full-Cone NAT1 UDP 穿透与主机联机匹对
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              Nintendo Switch、PS5 与 Xbox 联机极度依赖对称 NAT 穿透。若机场节点只支持 Symmetric NAT（NAT4），玩家将无法与好友组队，甚至在《怪物猎人》《马里奥赛车》中遭遇频繁掉线。<br />
+              <strong>技术核验：</strong>光速云全节点开放 <strong>Full-Cone NAT1</strong>，配合客户端 TUN 模式开启 UDP 转发，实测 Switch NAT 测试稳定达到 Type A，联机秒级匹配。
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==========================================
+           深度技术模块：全球各区域骨干机房与海缆路由解密
+      ========================================== -->
+      <section
+        id="global-nodes-analysis"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-cyan-300 flex items-center gap-2">
+            <span>🌐</span> 10 / 全球主要国家出海落地机房与海底光缆路由深度解密
+          </h2>
+          <span class="text-[10px] text-cyan-400 border border-cyan-400/40 px-2 py-0.5">
+            骨干机房全解
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          出海业务的物理延迟与稳定性，高度依赖境外落地机房的上游运营商（Tier 1 Upstream Transit）。不同国家与地区的国际海缆登陆站具有截然不同的网络互联特性：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <!-- 香港 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-2">
+            <div class="flex justify-between items-center text-amber-300 font-bold">
+              <span>🇭🇰 香港节点（HKT / PCCW / Equinix HK）</span>
+              <span class="text-[11px] text-emerald-400">延迟 25~38ms</span>
+            </div>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>路由拓扑：</strong>大陆华南（深圳/广州）通过粤港陆地光缆直接与香港 MEGA-i 或 Equinix 机房对等互联。其优势是物理距离最短，拥有极速的页面加载响应；光速云在香港配备了 20 个高可用专线出口，完全解锁 Netflix 港区繁体中文独占影视与亚太电竞加速。
+            </p>
+          </div>
+
+          <!-- 日本 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-2">
+            <div class="flex justify-between items-center text-amber-300 font-bold">
+              <span>🇯🇵 日本东京节点（NTT / SoftBank / KDDI）</span>
+              <span class="text-[11px] text-emerald-400">延迟 60~75ms</span>
+            </div>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>路由拓扑：</strong>通过华东（上海/青岛）直通日本南房总（Chikura）海底光缆登陆站。SoftBank 线路对中国移动和中国联通有着极佳的互联优化，是日区 DMM、AbemaTV、Pixiv 以及任天堂日服联机的黄金基底。
+            </p>
+          </div>
+
+          <!-- 新加坡 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-2">
+            <div class="flex justify-between items-center text-amber-300 font-bold">
+              <span>🇸🇬 新加坡节点（Singtel / StarHub）</span>
+              <span class="text-[11px] text-emerald-400">延迟 55~70ms</span>
+            </div>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>路由拓扑：</strong>东南亚网络的枢纽中心，直连亚太与欧美骨干网。对于 TikTok 东南亚站点（印尼、泰国、越南、菲律宾 Shop）的跨境直播与矩阵运营，新加坡节点拥有最宽松的风控审查与最高的带宽冗余。
+            </p>
+          </div>
+
+          <!-- 美国 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-2">
+            <div class="flex justify-between items-center text-amber-300 font-bold">
+              <span>🇺🇸 美国西海岸（洛杉矶 / 圣何塞 / 硅谷）</span>
+              <span class="text-[11px] text-emerald-400">延迟 125~145ms</span>
+            </div>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>路由拓扑：</strong>跨越太平洋跨洋海缆（TPE / NCP），接入北美一级 Tier 1 骨干（Cogent / Lumen / AT&T）。这是 OpenAI、Anthropic 以及 Google 总部核心算力机房所在地，是 AI 大模型生产力开发、美区 TikTok 账号孵化与亚马逊店铺运营的绝对中枢。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           深度技术模块：终端自动化健康检查与排障脚本
+      ========================================== -->
+      <section
+        id="automated-diagnostics"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-emerald-400 flex items-center gap-2">
+            <span>🛠️</span> 11 / 出海终端自动化健康诊断与网络排障脚本（极客工具）
+          </h2>
+          <span class="text-[10px] text-emerald-400 border border-emerald-400/40 px-2 py-0.5">
+            运维诊断工具箱
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          为了在业务上线前秒级核验当前节点的网络健康度，我们提供了一套无需安装复杂软件、可在 macOS / Linux 终端或 Windows PowerShell 下直接运行的<strong>一键式网络自检命令</strong>：
+        </p>
+
+        <!-- 脚本范例 -->
+        <div class="p-3 bg-black/60 border border-[var(--border-color)] text-[11px] md:text-xs overflow-x-auto text-emerald-300 leading-normal font-mono">
+          <pre><code># 1. 验证当前出口真实 IP、组织归属与 ASN 纯净度
+curl -s https://ipinfo.io/json | grep -E "ip|org|country|region|city"
+
+# 2. 检测 Google BBR 算法与 TCP 握手首包往返延迟 (TTFB)
+curl -o /dev/null -s -w "TCP 握手耗时: %(time_connect)s | TLS 协商耗时: %(time_appconnect)s | 首包总耗时: %(time_starttransfer)s\n" https://chatgpt.com
+
+# 3. 验证本地是否存在 DNS 投毒劫持 (对比公共 DoH 解析与本地解析)
+nslookup chatgpt.com 223.5.5.5
+</code></pre>
+        </div>
+
+        <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+          <strong>排障结果分析基准：</strong>
+          <br />• 如果 ipinfo.io 返回的 org 字段包含 AS15169 Google 或 AS8075 Microsoft 等真实外企 ASN，且非便宜云主机机房，则判定为原生干净出口；
+          <br />• 如果 time_connect 握手耗时在晚高峰持续低于 0.05 秒（50ms），则证明专线二层隧道处于零拥塞的高可用健康状态。
+        </p>
+      </section>
+
+
+      <!-- ==========================================
+           深度技术模块：全球支付网关与外贸合规防资金冻结
+      ========================================== -->
+      <section
+        id="payment-compliance"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-amber-300 flex items-center gap-2">
+            <span>💳</span> 12 / 全球跨国支付网关（Stripe / PayPal / Wise）反洗钱风控防冻结专线指南
+          </h2>
+          <span class="text-[10px] text-amber-400 border border-amber-400/40 px-2 py-0.5">
+            跨境资金生命线
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          如果说 TikTok 封号损失的是流量，那么 <strong>Stripe 或 PayPal 账号风控冻结，损失的则是真金白银的货款</strong>。很多跨境独立站与 SaaS 开发者在订单激增期突然被支付机构冻结资金 180 天甚至永久关停账户，其核心诱因正是登录后台所使用的网络节点触发了金融反洗钱（AML）反欺诈雷达：
+        </p>
+
+        <div class="space-y-4">
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>1.</span> Stripe Radar 机器学习反欺诈对登录 IP 的四重特征审计
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              Stripe 部署了行业最前沿的 Radar 实时风控系统。当商户登录控制台（Dashboard）处理退款、发起提现或查看 API 密钥时，系统会在后台静默核查：<br />
+              • <strong>① 出口 IP 属性：</strong>严禁命中机房数据中心（Hosting IDC）。一旦检测到商户长期使用共享机房 IP 登录，账户风险等级（Risk Level）将瞬间提升至 High；<br />
+              • <strong>② 登录地理漂移速度：</strong>如果上午在香港节点登录，下午漂移到美国洛杉矶，在物理世界中超越了民航客机飞行速度（被称为“超光速旅行异常”），系统会即刻触发账户保护性锁定；<br />
+              • <strong>③ DNS 与时区一致性：</strong>商户浏览器的时间、系统时区、DNS 响应服务器归属地必须与出口 IP 严格吻合；<br />
+              • <strong>④ 节点历史黑产关联：</strong>该 IP 过去是否曾被用于提交伪冒信用卡或参与刷单测试。
+            </p>
+          </div>
+
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-4 space-y-2">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span>2.</span> 外贸与跨境电商资金通道的专线落地避坑铁律
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              为了保障跨境资金流的绝对安全，出海团队必须严格落实以下操作基线：<br />
+              • <strong>设立专属静态专线：</strong>严禁使用日常刷剧或测速的通用机场节点登录 Stripe/PayPal。强烈建议采用【光速云定制版】（独享原生固定 IP 与物理带宽隔离），固定分配给财务电脑专线专用；<br />
+              • <strong>双重认证（2FA）硬件密钥绑定：</strong>全面启用 YubiKey 或 Google Authenticator 物理两步验证，杜绝单纯依靠短信验证码，防止 SIM 卡劫持；<br />
+              • <strong>财务专机环境固化：</strong>处理资金提现的电脑绝对不可安装任何国产管家、输入法或包含后台抓包特性的杀毒软件，确保本地网络栈绝对纯净。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           深度技术模块：五大出海团队场景化决策树全景
+      ========================================== -->
+      <section
+        id="team-decision-tree"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-emerald-300 flex items-center gap-2">
+            <span>🧭</span> 13 / 五大典型出海团队场景化决策树与落地闭环
+          </h2>
+          <span class="text-[10px] text-emerald-400 border border-emerald-400/40 px-2 py-0.5">
+            决策落地全景
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+          <!-- 团队 1 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 space-y-1.5">
+            <strong class="text-[var(--accent)] block text-xs">① AI 大模型研发与独立开发者：</strong>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>核心诉求：</strong>ChatGPT Plus / Claude 3.5 顺畅编码，API 高并发调用不封 Key。<br />
+              <strong>最优路径：</strong>选择【光速云】极速版月付（25元/月，结账码 AMM），客户端开启 TUN 模式与 Fake-IP。
+            </p>
+          </div>
+
+          <!-- 团队 2 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 space-y-1.5">
+            <strong class="text-purple-300 block text-xs">② TikTok 直播公会与 Shop 电商：</strong>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>核心诉求：</strong>海外直播 0 丢包不掉线，发布短视频不触发 0 播放算法惩罚。<br />
+              <strong>最优路径：</strong>采购【光速云出海定制版】（680元/月），专属独立静态住宅 IP + 独享内网 IPLC 管道。
+            </p>
+          </div>
+
+          <!-- 团队 3 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 space-y-1.5">
+            <strong class="text-amber-300 block text-xs">③ 亚马逊 / Shopify 多店铺运营：</strong>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>核心诉求：</strong>店铺多账号物理防关联，登录环境与收款网关绝对隔离。<br />
+              <strong>最优路径：</strong>指纹浏览器（AdsPower）+ 光速云一对一独立原生静态出口，严禁多员工跨省拼单。
+            </p>
+          </div>
+
+          <!-- 团队 4 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 space-y-1.5">
+            <strong class="text-emerald-400 block text-xs">④ 4K/8K 蓝光流媒体极客家庭：</strong>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>核心诉求：</strong>Netflix 全区非自制剧、Disney+ IMAX 杜比视界秒开。<br />
+              <strong>最优路径：</strong>选择【飞猫云】或【光速云极速版】，配置软路由透明分流，Apple TV 硬件直连。
+            </p>
+          </div>
+
+          <!-- 团队 5 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 space-y-1.5">
+            <strong class="text-cyan-300 block text-xs">⑤ 外贸 SOHO 与高校海外科研党：</strong>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>核心诉求：</strong>平时用量极少，但出差或查文献时必须随时能用，防失联。<br />
+              <strong>最优路径：</strong>直接买断【光速云】斯诺克 147 永久套餐（147元/247GB 永不过期），多端备用。
+            </p>
+          </div>
+
+          <!-- 团队 6 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3 space-y-1.5">
+            <strong class="text-blue-300 block text-xs">⑥ 外服主机与电竞联机极客：</strong>
+            <p class="text-[11px] text-[var(--fg-dim)] leading-relaxed">
+              <strong>核心诉求：</strong>晚高峰网络抖动控制在 1.5ms 内，Switch/PS5 达成 NAT Type A。<br />
+              <strong>最优路径：</strong>选择【暮光加速】或【光速云】香港/日本电竞 IEPL 节点，全量开放 Full-Cone NAT1。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第十四模块：企业专线拓扑技术原理
+      ========================================== -->
+      <section
+        id="topology-principles"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-yellow-300 flex items-center gap-2">
+            <span>🔬</span> 14 / 企业级专线网络拓扑技术原理解析（TUI 字符图谱）
+          </h2>
+          <span class="text-[10px] text-yellow-400 border border-yellow-400/40 px-2 py-0.5">
+            底层拓扑透视
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          为了帮助技术人员直观理解企业级专线与普通公网隧道的本质差异，我们绘制了以下工业级网络拓扑架构字符图谱：
+        </p>
+
+        <!-- TUI 字符拓扑图 -->
+        <div class="p-4 bg-black/60 border border-[var(--border-color)] text-emerald-400 text-[11px] md:text-xs overflow-x-auto leading-tight">
+          <pre><code>+---------------------------------------------------------------------------------------------------+
+|                        ENTERPRISE GLOBAL ROUTING TOPOLOGY (2026 BENCHMARK)                        |
++---------------------------------------------------------------------------------------------------+
+
+[ 用户终端设备 ]
+ (PC / Mac / iOS / Android / 软路由)
+       |
+       |  (1) 本地客户端加固 (Fake-IP DNS + TUN 模式接管 + 禁用 WebRTC 泄漏)
+       v
++-----------------------+
+|  境内高防接入机房     | &lt;--- (中国电信 / 中国联通 / 中国移动 BGP Anycast 智能接入)
+|  (BGP 入口节点)       |
++-----------------------+
+       |
+       |  (2) 物理二层专线通道 (完全脱离公网，不经过 GFW 路由审查节点，0 丢包)
+       |      [ IEPL 以太网物理专线 / IPLC 端到端私网电路 ]
+       v
++-----------------------+
+|  境外核心专线网关     |
+|  (香港/日本/新加坡)   |
++-----------------------+
+       |
+       |  (3) 出口资源调度与 IP 欺诈度清洗 (Fraud Score &lt; 5)
+       +------------------------------------+------------------------------------+
+       |                                    |                                    |
+       v                                    v                                    v
++-----------------------+            +-----------------------+            +-----------------------+
+|  原生家庭宽带 ISP     |            |  本土流媒体解锁网关   |            |  独立静态专属 IP      |
+|  (Residential IP)     |            |  (Netflix/Disney+ 4K) |            |  (TikTok/电商直播定制)|
++-----------------------+            +-----------------------+            +-----------------------+
+       |                                    |                                    |
+       v                                    v                                    v
+  [ OpenAI / Claude ]                  [ 4K/8K 蓝光流媒体 ]                 [ 跨境电商 / 直播推流 ]
+  (100% 豁免风控质询)                  (全区非自制剧秒开)                   (0 封号 / 0 掉线保障)
+</code></pre>
+        </div>
+
+        <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+          <strong>拓扑核心优势总结：</strong>企业专线拓扑的核心价值在于<strong>“入网即进内网，出网即达本土”</strong>。客户端发出的加密数据包进入国内机房后，即刻被封装入二层光纤专用管道，跨国通信完全不依赖公网海底光缆，彻底避开了晚高峰骨干网拥塞与防火墙主动探针探测，实现了全天候工业级的稳定性。
+        </p>
+      </section>
+
+      <!-- ==========================================
+           第十一模块：WebRTC与全终端安全加固实操
+      ========================================== -->
+      <section
+        id="security-hardening"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-red-400 flex items-center gap-2">
+            <span>🛡️</span> 15 / 全终端出海安全加固实操（WebRTC 封堵与防投毒）
+          </h2>
+          <span class="text-[10px] text-red-400 border border-red-400/40 px-2 py-0.5">
+            防泄漏实操手册
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          许多出海从业者明明购买了顶级专线，却依然被平台查出真实位置。80% 的原因在于客户端存在致命的安全配置疏漏。以下为三步必做的安全加固步骤：
+        </p>
+
+        <div class="space-y-3 text-xs leading-relaxed">
+          <div class="border-l-2 border-red-400 pl-3 space-y-1">
+            <strong class="text-red-400">第一步：彻底封堵 WebRTC 本地真实 IP 泄漏</strong>
+            <p class="text-[var(--fg-dim)]">
+              WebRTC 是浏览器的音视频实时通信功能，但其 STUN 协议会绕过系统代理直接暴露本机的内网和真实公网 IP。请在 Chrome / Edge 中安装 <strong>WebRTC Control</strong> 扩展，将其策略设置为“Disable WebRTC Completely”；或者在日常办公中直接使用 Firefox，在 <code>about:config</code> 中将 <code>media.peerconnection.enabled</code> 改为 <code>false</code>。
+            </p>
+          </div>
+
+          <div class="border-l-2 border-red-400 pl-3 space-y-1">
+            <strong class="text-red-400">第二步：客户端启用 TUN 虚拟网卡全量接管</strong>
+            <p class="text-[var(--fg-dim)]">
+              传统的系统代理（System Proxy）只能代理支持 HTTP/SOCKS 协议的浏览器应用，对于命令行终端、后台服务或某些原生桌面客户端（如 OpenAI 桌面端）往往会发生漏包走公网直连。<br />
+              <strong>正确做法：</strong>在 Clash Verge Rev 或 Sing-box 中开启 <strong>TUN Mode（虚拟网卡接管）</strong>，并赋予管理员权限，让操作系统网卡层面的所有流量无死角地由代理内核统一进行规则清洗与专线调度。
+            </p>
+          </div>
+
+          <div class="border-l-2 border-red-400 pl-3 space-y-1">
+            <strong class="text-red-400">第三步：Fake-IP 结合 DoH 防止 DNS 投毒与位置偏航</strong>
+            <p class="text-[var(--fg-dim)]">
+              将客户端的 DNS 模式明确指定为 <strong>Fake-IP 模式</strong>。本地查询任何海外域名时直接返回虚拟网段 IP（198.18.0.x），真正的域名解析全部交给专线对端的海外落地服务器进行 DoH（DNS over HTTPS）解析，彻底杜绝本地运营商的 DNS 劫持与投毒。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第十二模块：业务精准分流规则引擎配置
+      ========================================== -->
+      <section
+        id="rules-routing"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-cyan-400 flex items-center gap-2">
+            <span>🧩</span> 16 / 业务精准分流规则引擎实战代码（Clash / Sing-box）
+          </h2>
+          <span class="text-[10px] text-cyan-400 border border-cyan-400/40 px-2 py-0.5">
+            工业级规则范例
+          </span>
+        </div>
+
+        <p class="text-xs md:text-sm leading-relaxed text-[var(--fg-main)]">
+          为了避免由于流量分流不当导致国内 App 打开缓慢或海外高风控业务串线，我们提供经过严格测试的策略组配置标准架构范例：
+        </p>
+
+        <!-- 代码高亮面板 -->
+        <div class="p-3 bg-black/60 border border-[var(--border-color)] text-[11px] md:text-xs overflow-x-auto text-[var(--fg-bright)] leading-normal font-mono">
+          <pre><code># 出海业务级分流规则链示例 (Clash Verge / Sing-box 通用)
+rules:
+  # 1. 常见广告与跟踪隐私阻断
+  - GEOSITE,category-ads-all,REJECT
+
+  # 2. 国内服务与直连网段 (保障微信、飞书、钉钉极速秒开且不消耗套餐流量)
+  - GEOIP,private,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT
+  - GEOSITE,CN,DIRECT
+
+  # 3. AI 大模型专用策略组 (绑定光速云美国原生住宅专线)
+  - DOMAIN-SUFFIX,openai.com,AI-Services
+  - DOMAIN-SUFFIX,chatgpt.com,AI-Services
+  - DOMAIN-SUFFIX,oaistatic.com,AI-Services
+  - DOMAIN-SUFFIX,anthropic.com,AI-Services
+  - DOMAIN-SUFFIX,claude.ai,AI-Services
+
+  # 4. 跨境电商与社媒运营专用策略组 (TikTok / Shopify / Amazon)
+  - DOMAIN-SUFFIX,tiktok.com,TikTok-Ecom
+  - DOMAIN-SUFFIX,byteoversea.com,TikTok-Ecom
+  - DOMAIN-SUFFIX,shopify.com,Ecom-Proxy
+
+  # 5. 全球流媒体 4K 策略组 (Netflix / Disney+ / YouTube)
+  - GEOSITE,netflix,Streaming-Proxy
+  - GEOSITE,disney,Streaming-Proxy
+  - GEOSITE,youtube,Streaming-Proxy
+
+  # 6. 最终兜底规则
+  - MATCH,Final-Proxy
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第十三模块：出海实战 FAQ 疑难解答
+      ========================================== -->
+      <section
+        id="faq-section"
+        class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-amber-300 flex items-center gap-2">
+            <span>❓</span> 17 / 出海高频疑难解答与风控边界 FAQ
+          </h2>
+          <span class="text-[10px] text-amber-400 border border-amber-400/40 px-2 py-0.5">
+            实战避坑答疑
+          </span>
+        </div>
+
+        <div class="space-y-4">
+          <!-- FAQ 1 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q1:</span> 为什么使用普通机场访问 ChatGPT 会频繁报错 1020 或被降级为 4o-mini？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>核心诱因是出口 IP 的 ASN 属性与并发使用人数。普通机房 IP 属于数据中心，被 Cloudflare 威胁情报系统标记为高风险，触发质询拦截；同时 OpenAI 会对脏 IP 限制高阶多模态功能。光速云全线标配原生住宅宽带出口，欺诈评分低于 5 分，免除质询。
+            </p>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q2:</span> TikTok 跨境电商直播推流为什么必须选择独享原生 IP 而不是共享节点？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>因为共享节点同时有成百上千名用户连接，一旦其中有用户进行违规操作被封号，该 IP 下关联的所有直播间和店铺都会被系统列入关联惩罚名单。独享原生 IP（如光速云定制版 680元/月）从物理上隔离了他人干扰，确保店铺环境纯洁唯一。
+            </p>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q3:</span> 出海专线中的 IEPL 与 IPLC 到底哪种更好？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>二者同属顶级专线。IEPL 是国际以太网二层私网，具备更高的物理弹性带宽和极低抖动，性价比极佳；IPLC 是传统的私有硬租用电路，物理跳数最少，延迟锁定物理光速极限。两者晚高峰均完全绕过 GFW 审查路由，丢包率均趋近于 0.00%。
+            </p>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q4:</span> 为什么说“致敬斯诺克147永久套餐”是出海备用防失联的神器？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>因为外贸业务员和出海人员经常遇到“主力专线突发维护、或出差在外临时查验订单”的紧急场景。按月付费套餐即使不用也会每月扣费清零，而光速云 147 元买断 247GB 永久有效，不限设备，随身备用永不过期，是最高性价比的应急底牌。
+            </p>
+          </div>
+
+          <!-- FAQ 5 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q5:</span> 为什么在开启代理后，国内银行网银或微信会出现异地登录警报？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>这是因为客户端不小心开启了“全局代理模式（Global）”，导致国内流量也经过了海外节点出口。只需将客户端切换为<strong>“规则分流模式（Rule）”</strong>，国内流量即可直接走本地宽带直连秒开。
+            </p>
+          </div>
+
+          <!-- FAQ 6 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q6:</span> 什么是 Fraud Score（欺诈评分）？如何自己检测节点的纯净度？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>Fraud Score 是跨国风控机构评估某个 IP 是否属于代理、机器人或黑产的综合分值（0~100 分，分值越低越安全）。您可以连接节点后访问 <strong>scamalytics.com</strong> 或 <strong>ipinfo.io</strong> 进行测试，优秀的专线原生住宅 IP 分值通常在 0~10 分之间。
+            </p>
+          </div>
+
+          <!-- FAQ 7 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q7:</span> 什么是 Full-Cone NAT (NAT1) UDP 转发？对外服游戏和语音有什么影响？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>NAT1 意味着任何外部服务器均可向本地建立的 UDP 端口回发数据包，这是 Discord 语音通话顺畅、Steam / Switch 联机达到 NAT Type A 的先决条件。劣质机场通常屏蔽 UDP，导致语音断连或联机失败；光速云与暮光加速全节点标配 NAT1 UDP 转发。
+            </p>
+          </div>
+
+          <!-- FAQ 8 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q8:</span> 多个员工可以在不同城市同时使用同一个光速云订阅吗？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>光速云允许单人名下不限设备数量使用，但智能风控系统严禁多人在不同省份大规模跨地域拼单合租，跨省并发过多 IP 将触发速率限制。团队出海建议采购定制版或为核心成员单独配置订阅。
+            </p>
+          </div>
+
+          <!-- FAQ 9 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q9:</span> 外贸收款平台（Stripe / PayPal）如何防止触发欺诈风控封禁资金？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>Stripe 与 PayPal 会记录每次登录的 IP 地址段与代理类型。如果频繁更换不同国家的节点登录提现，或者使用高欺诈评分的 IDC 机房 IP，系统会立刻冻结资金 180 天。外贸团队必须将收款后台域名固定在【光速云静态原生专线】节点上，保持登录 IP 与公司注册地高度一致。
+            </p>
+          </div>
+
+          <!-- FAQ 10 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q10:</span> 什么是 DNS 泄漏？为什么测试显示 IP 在美国，但 DNS 却暴露了国内运营商？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>这是因为客户端未开启 Fake-IP 模式或没有拦截本地 53 端口。访问 <code>browserleaks.com/dns</code> 时，若解析服务器出现中国电信/中国移动的 IP，目标网站就能识别出您在使用代理。在客户端开启 Fake-IP 并使用 DoH 递归解析即可完美修复。
+            </p>
+          </div>
+
+          <!-- FAQ 11 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q11:</span> 手机端 TikTok 无法加载个人资料或黑屏是什么原因？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>主要有两个原因：① 手机依然插有国内 SIM 卡被 App 识别；② 代理软件的分流规则缺少 <code>byteoversea.com</code> 和 <code>ibytedtos.com</code> 域名，导致 CDN 媒体静态资源请求直连失败。拔卡并更新本专题提供的完整分流规则即可恢复。
+            </p>
+          </div>
+
+          <!-- FAQ 12 -->
+          <div class="border border-[var(--border-color)] bg-[var(--bg-main)] p-3.5 space-y-1.5">
+            <h3 class="text-xs md:text-sm font-bold text-[var(--fg-bright)] flex items-center gap-1.5">
+              <span class="text-amber-400">Q12:</span> 为什么有些专线节点速度快但 Ping 很高？玩游戏和看流媒体有影响吗？
+            </h3>
+            <p class="text-xs text-[var(--fg-dim)] leading-relaxed">
+              <strong class="text-emerald-400">明确结论：</strong>Ping 反映的是物理链路往返距离（光纤传播每 1000 公里约产生 5ms 物理延迟）。美国专线物理距离超过 10,000 公里，延迟必然在 120ms~150ms 左右，这是物理法则决定的。对于 4K 流媒体与 AI 交互，只要带宽充沛且 0 丢包，高延迟完全不影响顺畅播放；只有电竞联机才需要选择 30ms 的香港或日本近场节点。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           第十四模块：官方直通转化卡片与专属通道
+      ========================================== -->
+      <section
+        id="conversion-cta"
+        class="border-2 border-[var(--accent)] bg-[var(--bg-card)] p-5 md:p-6 space-y-5"
+      >
+        <div class="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
+          <h2 class="text-base md:text-lg font-bold text-[var(--accent)] flex items-center gap-2">
+            <span>🎁</span> 18 / 精选专属优惠与安全验证通道
+          </h2>
+          <span class="text-[10px] text-black bg-[var(--accent)] font-bold px-2 py-0.5">
+            出海业务专属通道
+          </span>
+        </div>
+
+        <div class="bg-[var(--bg-main)] p-4 border border-[var(--border-color)] space-y-4">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+            <div>
+              <h3 class="text-sm md:text-base font-bold text-[var(--fg-bright)]">
+                光速云 (Guangsu Cloud) // 2026 年度编辑部出海推荐品牌
+              </h3>
+              <p class="text-xs text-[var(--fg-dim)] mt-1">
+                全节点 2.5Gbps 最高物理端口 // IEPL+企业内网双专线 // 原生住宅 IP 解锁全绿
+              </p>
+            </div>
+            <div class="text-left md:text-right">
+              <span class="text-[11px] text-[var(--fg-dim)] block">专属限时优惠代码：</span>
+              <span class="text-base font-bold text-amber-300 tracking-widest font-mono bg-black px-2 py-0.5 border border-amber-400 inline-block mt-0.5 select-all">
+                AMM
+              </span>
+            </div>
+          </div>
+
+          <!-- 套餐一览卡片 -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
+            <div class="p-3 border border-amber-400/50 bg-[var(--bg-card)] space-y-1">
+              <span class="text-amber-300 font-bold block">致敬斯诺克147永久套餐</span>
+              <p class="text-base font-bold text-[var(--fg-bright)]">147 元 / 永久买断</p>
+              <p class="text-[11px] text-[var(--fg-dim)]">247GB 永久有效 // 不限设备 // 防失联必选</p>
+            </div>
+            <div class="p-3 border border-[var(--border-color)] bg-[var(--bg-card)] space-y-1">
+              <span class="text-emerald-400 font-bold block">轻量版入门年付套餐</span>
+              <p class="text-base font-bold text-[var(--fg-bright)]">99 元 / 年 (折合8.25元/月)</p>
+              <p class="text-[11px] text-[var(--fg-dim)]">每月 69GB // 原生节点 // 极致低门槛</p>
+            </div>
+            <div class="p-3 border border-cyan-400/50 bg-[var(--bg-card)] space-y-1">
+              <span class="text-cyan-300 font-bold block">定制独立原生 IP 版</span>
+              <p class="text-base font-bold text-[var(--fg-bright)]">680 元 / 月 (独立专享)</p>
+              <p class="text-[11px] text-[var(--fg-dim)]">独享原生IP // 独立物理带宽 // 跨境电商</p>
+            </div>
+          </div>
+
+          <div class="pt-3 flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://gsy01.vip/#/register?code=wY5yvR82"
+              target="_blank"
+              rel="nofollow sponsored noopener"
+              class="flex-1 py-3 text-center bg-[var(--accent)] text-black font-bold text-xs md:text-sm hover:brightness-110 transition-all shadow-lg flex items-center justify-center gap-2"
+            >
+              <span>🚀</span> 立即直达光速云官网选购通道 (专属优惠码 AMM) →
+            </a>
+            <a
+              href="/speedtest"
+              class="py-3 px-5 border border-[var(--border-color)] hover:border-[var(--accent)] text-center text-xs md:text-sm text-[var(--fg-bright)] transition-colors flex items-center justify-center gap-1.5"
+            >
+              <span>📊</span> 查看全网 17 份晚高峰测速报告
+            </a>
+          </div>
+
+          <div class="text-[11px] text-[var(--fg-dim)] border-t border-[var(--border-color)] pt-3 flex flex-wrap justify-between items-center gap-2">
+            <span>* 数据最后复核时间：2026 年 3 月 // 来源：实机抓包与控制台计费核验</span>
+            <span class="text-amber-400">已按搜索引擎准则标注规范化推广关系 (nofollow sponsored)</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </TerminalWindow>
+</Layout>

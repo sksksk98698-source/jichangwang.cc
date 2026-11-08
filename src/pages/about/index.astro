@@ -1,0 +1,109 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import TerminalWindow from "../../components/TerminalWindow.astro";
+import { SITE_CONFIG } from "../../config/siteConfig";
+
+const pageTitle = "关于我们 // 机场网技术测评实验室 JichangWang.cc";
+const pageDesc = "机场网技术测评实验室 (JichangWang.cc) 简介与评测方法论白皮书。介绍我们的分布式网络探针监测节点、真实物理 IEPL 专线测试基准、客观中立测评原则与团队背景。";
+
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/about`;
+
+const schemaJson = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": pageTitle,
+  "description": pageDesc,
+  "url": canonicalUrl,
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "机场网技术测评实验室",
+    "url": SITE_CONFIG.siteUrl,
+    "logo": `${SITE_CONFIG.siteUrl}/favicon.svg`,
+    "description": "专注全球专线网络拓扑评测、42家主流机场基准测试、AI大模型原生解锁与网络安全防护的独立极客研究团队。",
+    "foundingDate": "2023-01-01"
+  }
+};
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={["关于机场网", "测评方法论", "网络探针实验室", "IEPL专线测试标准", "独立测评原则"]}>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} slot="head" />
+
+  <TerminalWindow currentPath="~/jichangwang/about">
+    <div class="space-y-8 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 页面面包屑与状态 -->
+      <nav class="flex items-center justify-between border-b border-[var(--border-color)] pb-2 text-xs text-[var(--fg-dim)]">
+        <div class="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap">
+          <a href="/" class="hover:text-[var(--accent)]">首页</a>
+          <span>&gt;</span>
+          <span class="text-amber-300 font-bold">关于我们 // 测评实验室</span>
+        </div>
+        <span class="text-[10px] text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 px-2 py-0.5">
+          LAB_IDENTITY_VERIFIED
+        </span>
+      </nav>
+
+      <!-- 主标题区 -->
+      <header class="border-2 border-emerald-500/80 bg-[var(--bg-card)] p-5 md:p-7 rounded space-y-4">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded text-xs font-bold mb-1">
+          <span>🔬 独立网络工程测评实验室 / METHODOLOGY & IDENTITY</span>
+        </div>
+        <h1 class="text-xl md:text-3xl font-extrabold text-emerald-400 leading-snug">
+          机场网技术测评实验室：以数据说话，以代码求真
+        </h1>
+        <p class="text-xs md:text-sm text-[var(--fg-muted)] leading-relaxed font-sans">
+          机场网（JichangWang.cc）由一群资深网络工程师、Linux 内核开发者及跨境出海极客于 2023 年发起成立。在跨境网络服务良莠不齐、虚假水军横行的行业现状下，我们致力于通过搭建分布式的自动化探针网络、长周期的网络质量监测以及逆向协议分析，为全球跨国办公者、出海开发者与科研人员提供客观、透明、可复现的专业网络基础设施评测与安全自救方案。
+        </p>
+      </header>
+
+      <!-- 核心方法论与硬件环境说明 -->
+      <section class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-8 rounded space-y-8 font-sans leading-relaxed text-sm">
+        
+        <div class="space-y-3">
+          <h2 class="text-base md:text-lg font-bold text-amber-300 font-mono flex items-center gap-2">
+            <span>[01]</span>
+            <span>分布式探针网络架构与数据监测规范</span>
+          </h2>
+          <p class="text-[var(--fg-main)]">
+            为了杜绝“单一地区测试存在偏差”的弊端，实验室在全国设立了多处物理探针节点，覆盖中国电信（上海、广州、成都骨干节点）、中国联通（北京、无锡、青岛出口）、中国移动（广州、杭州移动骨干）。所有探针节点每隔 15 分钟对收录的 42 家主流品牌节点发起连续 100 次 TCP SYN 握手探测与 mtr 链路追踪，重点监控晚高峰 20:00 至 23:00 的网络抖动（Jitter）与实际丢包率（Packet Loss）。
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <h2 class="text-base md:text-lg font-bold text-amber-300 font-mono flex items-center gap-2">
+            <span>[02]</span>
+            <span>流媒体解锁与 AI 大模型原生纯净度判定标准</span>
+          </h2>
+          <p class="text-[var(--fg-main)]">
+            我们不满足于简单的网页连通测试。针对海外流媒体（Netflix、Disney+、YouTube Premium）与尖端 AI 平台（OpenAI ChatGPT、Anthropic Claude、Google Gemini），实验室开发了自动化接口检测脚本。通过定期调用 MaxMind GeoIP2 数据库、IPinfo ASN 属性库及 Scamalytics 欺诈分 API，精确甄别节点出口是属于机房广播 IP 还是高保密纯净住宅原生 IP。
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <h2 class="text-base md:text-lg font-bold text-amber-300 font-mono flex items-center gap-2">
+            <span>[03]</span>
+            <span>独立测评原则与利益冲突披露</span>
+          </h2>
+          <p class="text-[var(--fg-main)]">
+            实验室始终保持测评的独立性。所有评测数据均直接取自自动化日志，任何品牌均无法通过付费手段篡改其实际测速图表与丢包率记录。对于表现优异且连续运营超四年无事故的品牌（如光速云），我们依据其出色的企业级 IEPL 专线稳定度与首创的“斯诺克147G永久不限时套餐”进行重点推荐，并为读者争取专属独家折扣码（AMM）；全站所有商业合作外链均严格标注 <code>rel="nofollow sponsored noopener"</code>，确保对搜索引擎蜘蛛与读者完全合规透明。
+          </p>
+        </div>
+
+      </section>
+
+      <!-- 底部全局导航 -->
+      <footer class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 flex flex-wrap justify-between items-center gap-4 text-xs">
+        <a href="/" class="text-amber-400 hover:underline">&larr; 返回智库首页</a>
+        <div class="flex gap-4 text-[var(--fg-dim)]">
+          <a href="/disclaimer" class="hover:text-white">免责声明</a>
+          <a href="/brands" class="hover:text-white">42家品牌库</a>
+          <a href="/free" class="hover:text-white">免费资源</a>
+          <a href="/clients" class="hover:text-white">梯子工具</a>
+          <a href="/faq" class="hover:text-white">机场FAQ</a>
+          <a href="/alerts" class="hover:text-white">跑路预警</a>
+        </div>
+      </footer>
+
+    </div>
+  </TerminalWindow>
+</Layout>

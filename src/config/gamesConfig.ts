@@ -16,98 +16,39 @@ export interface GamesConfig {
 }
 
 /**
- * 🎮 LIVE GAME ACTIVITY CONFIGURATION
- * Stream live gaming activity from your Discord presence via Lanyard API!
+ * 🎮 游戏状态与终端街机模块配置 (Gaming & Arcade Configuration)
+ * 100% 独立无外部商业 API 密钥外泄
  */
 export const GAMES_CONFIG: GamesConfig = {
   enabled: false,
-  lanyardUserId: "your_discord_id",
+  lanyardUserId: "",
 };
 
-const gameIconCache: Record<string, string> = {};
+// 纯本地内联 SVG 游戏图标（零外部依赖、零网络追踪）
+const DEFAULT_RETRO_GAME_ICON = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2300ff66"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`;
 
-/**
- * Dynamically fetch high-resolution game icons from RAWG API
- */
 export async function fetchGameIconByName(gameName: string): Promise<string> {
-  if (!gameName) return "";
-  const key = gameName.toLowerCase().trim();
-  if (gameIconCache[key]) return gameIconCache[key];
-
-  try {
-    const res = await fetch(`https://api.rawg.io/api/games?search=${encodeURIComponent(gameName)}&key=c5425b741b0b4317a7885b0d02ae7e74&page_size=1`);
-    const data = await res.json();
-    if (data.results && data.results.length > 0) {
-      const img = data.results[0].background_image;
-      if (img) {
-        gameIconCache[key] = img;
-        return img;
-      }
-    }
-  } catch { }
-
-  return "";
+  return DEFAULT_RETRO_GAME_ICON;
 }
 
-/**
- * Robust asset parser for Discord Game Rich Presence icons
- */
 export function parseGameAsset(game: any): string {
-  if (!game) return "";
+  if (!game) return DEFAULT_RETRO_GAME_ICON;
 
-  // 1. Check assets.large_image or small_image
   const asset = game.assets?.large_image || game.assets?.small_image;
   if (asset) {
-    if (asset.startsWith("spotify:")) {
-      return `https://i.scdn.co/image/${asset.replace("spotify:", "")}`;
-    }
-    if (asset.startsWith("mp:external/")) {
-      return `https://media.discordapp.net/external/${asset.replace("mp:external/", "")}`;
-    }
-    if (asset.startsWith("external/")) {
-      const match = asset.match(/https?\/.*/);
-      if (match) return `https://${match[0].replace(/^https?\//, "")}`;
-    }
-    if (game.application_id) {
+    if (game.application_id && !asset.startsWith("http")) {
       return `https://cdn.discordapp.com/app-assets/${game.application_id}/${asset}.png`;
     }
   }
 
-  // 2. Check application_id icon
-  if (game.icon && game.application_id) {
-    return `https://cdn.discordapp.com/app-icons/${game.application_id}/${game.icon}.png`;
-  }
-
-  // 3. Popular games fallback icon map (Roblox, Minecraft, Valorant, GTA V, etc.)
-  const knownGameIcons: Record<string, string> = {
-    roblox: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmHAHSmS08T6uotljZiAy9SkzIqJG7DSxecb7BSMhJGw&s=10",
-    minecraft: "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover_art.png",
-    valorant: "https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_symbol_only.svg",
-    "league of legends": "https://upload.wikimedia.org/wikipedia/commons/d/d8/League_of_Legends_2019_vector.svg",
-    "grand theft auto": "https://upload.wikimedia.org/wikipedia/commons/5/53/Grand_Theft_Auto_V_Logo.svg",
-    "gta v": "https://upload.wikimedia.org/wikipedia/commons/5/53/Grand_Theft_Auto_V_Logo.svg",
-    fortnite: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Fortnite_F_lettermark_logo.svg",
-    "counter-strike": "https://upload.wikimedia.org/wikipedia/commons/8/87/Counter-Strike_2_logo.svg",
-    genshin: "https://upload.wikimedia.org/wikipedia/en/5/5d/Genshin_Impact_logo.svg",
-    overwatch: "https://upload.wikimedia.org/wikipedia/commons/5/55/Overwatch_circle_logo.svg",
-    rocket: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Rocket_League_cover_art.jpg",
-  };
-
-  const nameLower = (game.name || "").toLowerCase().trim();
-  for (const [key, iconUrl] of Object.entries(knownGameIcons)) {
-    if (nameLower.includes(key)) {
-      return iconUrl;
-    }
-  }
-
-  return "";
+  return DEFAULT_RETRO_GAME_ICON;
 }
 
 /**
  * Helper to fetch live Game activity from Lanyard API
  */
 export async function getLiveGameActivity(): Promise<GameActivity | null> {
-  if (GAMES_CONFIG.lanyardUserId) {
+  if (GAMES_CONFIG.enabled && GAMES_CONFIG.lanyardUserId) {
     try {
       const res = await fetch(`https://api.lanyard.rest/v1/users/${GAMES_CONFIG.lanyardUserId}`);
       const data = await res.json();
@@ -119,17 +60,13 @@ export async function getLiveGameActivity(): Promise<GameActivity | null> {
         if (game) {
           const now = Date.now();
           const start = game.timestamps?.start || now;
-          let largeImg = parseGameAsset(game);
-
-          if (!largeImg) {
-            largeImg = await fetchGameIconByName(game.name);
-          }
+          const largeImg = parseGameAsset(game);
 
           return {
             isPlaying: true,
             gameName: game.name,
-            details: game.details || "In Game",
-            state: game.state || "",
+            details: game.details || "Retro Gaming Session",
+            state: game.state || "Active",
             largeImage: largeImg,
             startTimestamp: start,
             elapsedMs: Math.max(0, now - start),
@@ -137,7 +74,7 @@ export async function getLiveGameActivity(): Promise<GameActivity | null> {
         }
       }
     } catch {
-      // Network error fallback
+      // Network fallback
     }
   }
 

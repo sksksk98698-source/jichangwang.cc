@@ -1,0 +1,986 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import TerminalWindow from "../../components/TerminalWindow.astro";
+import { FAQ_CATEGORIES, FAQ_ARTICLES } from "../../data/faqData";
+import { SITE_CONFIG } from "../../config/siteConfig";
+
+const pageTitle = "机场常见问题技术答疑与全景排障百科 // 机场网 JichangWang.cc";
+const pageDesc = "2026年机场选购、网络协议、客户端排障与海外AI解锁全景问答智库。深入解答 IEPL 专线原理、VLESS Reality 协议、ChatGPT 1020 报错、Netflix 伪解锁以及关闭代理无法上网等高频疑难杂症。";
+
+const canonicalUrl = `${SITE_CONFIG.siteUrl}/faq`;
+
+// 提取核心高频问题生成 Schema.org FAQPage 富媒体结构化数据
+const schemaJson = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "IEPL 内网专线和普通公网中继机场有什么本质区别？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "IEPL 是两端机房之间通过物理光纤直接打通的内网专线，数据完全不过公网国际出口防火墙，晚高峰丢包率为 0%，且物理延迟恒定。而公网中继依然走公网民用骨干网，晚高峰拥塞严重且存在被阻断断连的风险。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "关掉代理客户端后电脑彻底断网，打不开任何国内网页怎么办？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按 Win + R 打开运行输入 inetcpl.cpl，在连接-局域网设置中取消勾选“为 LAN 使用代理服务器”，即可一秒恢复网络。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "访问 ChatGPT 提示 Access Denied 1020 是什么原因？如何解决？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这是由于当前节点 IP 被 Cloudflare 与 OpenAI 标记为机房高危垃圾广播 IP。解决办法是选用具备海外纯净原生 IP 或住宅 IP 的专线机场（如光速云），并保持浏览器无痕模式登录。"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDesc}
+  keywords={[
+    "机场FAQ",
+    "IEPL专线是什么",
+    "ChatGPT 1020报错",
+    "代理关闭打不开网页",
+    "Fake-IP原理",
+    "Netflix解锁检测",
+    "机场倍率是什么意思",
+    "光速云优惠码"
+  ]}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} />
+
+  <TerminalWindow currentPath="~/jichangwang/faq">
+    <div class="space-y-8 font-mono text-xs md:text-sm select-text text-[var(--fg-main)]">
+      
+      <!-- 页面面包屑与状态 -->
+      <nav class="flex items-center justify-between border-b border-[var(--border-color)] pb-2 text-xs text-[var(--fg-dim)]">
+        <div class="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap">
+          <a href="/" class="hover:text-[var(--accent)]">首页</a>
+          <span>&gt;</span>
+          <span class="text-amber-300 font-bold">机场 FAQ 常见问题智库</span>
+        </div>
+        <span class="text-[10px] text-amber-400 bg-amber-950/40 border border-amber-800/50 px-2 py-0.5">
+          KNOWLEDGE_BASE_2026
+        </span>
+      </nav>
+
+      <!-- 核心速查提要：开头直接提供答案 -->
+      <header class="border-2 border-amber-500/80 bg-[var(--bg-card)] p-5 md:p-7 rounded space-y-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded text-xs font-bold mb-2">
+              <span>💡 机场网问答智库核心答疑索引 / DIRECT ANSWER CENTER</span>
+            </div>
+            <h1 class="text-xl md:text-3xl font-extrabold text-amber-400 leading-snug">
+              机场常见技术疑问、网络协议与故障排查权威百科全书
+            </h1>
+          </div>
+        </div>
+
+        <p class="text-xs md:text-sm text-[var(--fg-muted)] leading-relaxed font-sans">
+          跨境网络涉及传输层加密、物理专线承载、跨国 BGP 路由、DNS 解析与海外风控识别等多维复杂工程体系。面对琳琅满目的技术术语与偶发网络故障，绝大多数用户往往无从下手。
+          本专题汇聚了机场网技术实验室历经 4 年、测试 42 家主流品牌沉淀下来的核心技术问答库，涵盖从<strong>底层线路原理、客户端疑难报错、流媒体与大模型防封到商业模式避坑</strong>的全部细节，一站式解决所有用网疑难。
+        </p>
+
+        <!-- 关键高频问题极速直达卡片 -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-center font-mono">
+          <a href="#section-protocols" class="p-3 bg-black/40 border border-[var(--border-dim)] hover:border-amber-400/60 rounded block">
+            <span class="text-[10px] text-[var(--fg-dim)] block">线路原理篇</span>
+            <span class="text-amber-300 font-bold text-xs md:text-sm">IEPL vs IPLC 区别</span>
+          </a>
+          <a href="#section-troubleshooting" class="p-3 bg-black/40 border border-[var(--border-dim)] hover:border-amber-400/60 rounded block">
+            <span class="text-[10px] text-[var(--fg-dim)] block">故障排障篇</span>
+            <span class="text-emerald-400 font-bold text-xs md:text-sm">关代理断网一键修</span>
+          </a>
+          <a href="#section-ai-streaming" class="p-3 bg-black/40 border border-[var(--border-dim)] hover:border-amber-400/60 rounded block">
+            <span class="text-[10px] text-[var(--fg-dim)] block">AI 与流媒体</span>
+            <span class="text-purple-400 font-bold text-xs md:text-sm">解决 1020 报错</span>
+          </a>
+          <a href="#section-recommendation" class="p-3 bg-black/40 border border-[var(--border-dim)] hover:border-amber-400/60 rounded block">
+            <span class="text-[10px] text-[var(--fg-dim)] block">省心推荐</span>
+            <span class="text-amber-400 font-bold text-xs md:text-sm">光速云 IEPL 专线</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- 核心分类 Hub 入口矩阵 -->
+      <section class="space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border-color)] pb-2">
+          <h2 class="text-base md:text-lg font-bold text-amber-300 flex items-center gap-2">
+            <span>[01]</span>
+            <span>三大核心分类问答 Hub 与长尾专题文献</span>
+          </h2>
+          <span class="text-xs text-[var(--fg-dim)]">点击进入分类专区</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {FAQ_CATEGORIES.map((cat) => {
+            const count = FAQ_ARTICLES.filter((a) => a.category === cat.slug).length;
+            return (
+              <div class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 rounded space-y-3 hover:border-amber-400/60 transition-colors flex flex-col justify-between">
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-3xl">{cat.icon}</span>
+                    <span class="text-[10px] text-amber-400 bg-amber-950/40 border border-amber-800/40 px-2 py-0.5 rounded font-mono">
+                      {count} 篇精选
+                    </span>
+                  </div>
+                  <h3 class="text-base font-bold text-white">
+                    <a href={`/faq/${cat.slug}`} class="hover:underline">{cat.name}</a>
+                  </h3>
+                  <p class="text-xs text-[var(--fg-muted)] leading-relaxed font-sans">
+                    {cat.description}
+                  </p>
+                </div>
+                <div class="pt-2 border-t border-[var(--border-dim)] flex items-center justify-between">
+                  <span class="text-[11px] text-[var(--fg-dim)] font-mono">{cat.tagline}</span>
+                  <a href={`/faq/${cat.slug}`} class="text-xs text-amber-400 hover:underline font-bold">
+                    浏览专区 &gt;&gt;
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- 长尾精选问答深度文章直达 -->
+        <div class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 rounded space-y-3">
+          <span class="text-xs font-bold text-amber-300 block">📚 重点精选长尾实战解答文献：</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            {FAQ_ARTICLES.map((art) => (
+              <a href={`/faq/${art.category}/${art.slug}`} class="p-2.5 bg-[var(--bg-main)] hover:bg-white/5 border border-[var(--border-dim)] hover:border-amber-400/40 rounded flex items-center justify-between gap-2 group">
+                <span class="text-[var(--fg-main)] group-hover:text-amber-300 truncate">{art.question}</span>
+                <span class="text-[10px] text-amber-400 border border-amber-900/60 px-1.5 py-0.2 shrink-0">{art.category}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- 专著级系统性技术问答正文长文 -->
+      <section class="border border-[var(--border-color)] bg-[var(--bg-card)] p-5 md:p-8 rounded space-y-12 font-sans leading-relaxed text-sm">
+        
+        <!-- 模块一：底层物理链路与专线机房篇 -->
+        <div id="section-protocols" class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[02]</span>
+              <span>模块一：物理链路与专线机房架构篇（IEPL / IPLC / BGP / 直连）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q1-1：IEPL 与 IPLC 物理专线到底是什么？为什么说它们永远不被封锁？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【底层本质解答】：
+                IPLC（International Private Leased Circuit，国际私有租用线路）与 IEPL（International Ethernet Private Line，国际以太网私网专线）在物理层面上是电信运营商在两地机房之间拉设的一根“点对点内网以太网光纤通道”。
+                传统翻墙需要把数据包发往国内公网、经过层层国际出口网关并接受深度包检测（DPI）。而 IEPL 专线完全脱离公网，你的数据包在进入境内机房入口后，直接被封装进运营商内部的二层以太网帧中，通过海底物理光缆直达香港或日本对端机房。由于整个物理传输链路根本不路过公网国际防火墙，因此从数学和物理原理上实现了<strong>0% 阻断、0% 敏感时期封锁</strong>。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q1-2：IEPL 和 IPLC 有什么技术差别？为什么现在主流机场以 IEPL 为主？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【技术对比解答】：
+                IPLC 是基于传统 SDH/SONET 物理时分复用架构的早期专线，调度灵活性较差、起租带宽费用极度高昂。
+                而 IEPL 是基于现代以太网协议标准的增强型物理专线，支持更灵活的突发带宽弹性扩容（Jumbo Frame 支持达 9000 字节），并具备多路径自动物理保护倒换能力。对于现代高并发视频与大规模数据传输而言，IEPL 在保持 0 丢包的同时具备更好的成本效益，因此 2026 年一线高品质机场（如光速云）全部以企业级 IEPL 作为核心骨干基石。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q1-3：什么是 BGP 入口？单线入口与多线 BGP 入口差距有多大？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【网络工程解答】：
+                BGP（Border Gateway Protocol，边界网关协议）入口机房同时接入了中国电信、中国联通、中国移动、教育网等国内所有主流运营商的骨干核心网。
+                如果机场使用的是廉价的“单线电信入口”，联通和移动用户在连接时必须发生跨运营商跨网结算跳转，导致延迟剧烈增加 40ms 以上并产生丢包。而具备全 BGP 入口的机场，电信走电信、联通走联通、移动走移动，自动就近接入运营商骨干交换中心，实现全国任意地区客户端进入专线机房的延迟均控制在 15ms 以内的极致水准。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q1-4：公网中继（Relay）机场为什么在晚高峰经常大面积卡顿？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【瓶颈成因解答】：
+                公网中继机场虽然也使用了境内入口服务器，但境内服务器与境外落地服务器之间并没有昂贵的物理专线，而是通过普通的 163/169 国际公网进行数据转发。每到晚高峰 20:00 至 23:00，全中国民用宽带国际出口带宽发生严重拥塞，运营商的公网网关启动严格的 QoS 丢包惩罚机制。公网中继节点丢包率往往瞬间飙升至 50% 以上，在客户端中直观表现为测速全红、看视频频繁缓冲。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q1-5：为什么机场节点列表中通常有 0.1x、1.0x、3.0x 不同的倍率标注？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【计费机制解答】：
+                倍率是机场根据后端不同物理线路的真实采购成本设定的流量消耗乘数：
+                • <strong>0.1x / 0.2x 节点：</strong> 属于超低倍率线路，消耗 10GB 实际流量只扣除账户 1GB 配额，通常为普通公网直连链路，适合下载冷门超大文件；
+                • <strong>1.0x 节点：</strong> 标准企业级 IEPL 专线，消耗与扣除 1:1，性能稳定，是日常主力首选；
+                • <strong>3.0x / 5.0x 节点：</strong> 通常配备了极度昂贵的海外独享原生住宅 IP、或极端低延迟定制专线，适合跨境电商核心运营或关键跨国视频会议。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q1-6：很多机场标榜自己拥有“千兆内网专线”，普通用户如何识别真伪？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【技术鉴别解答】：
+                在晚高峰 21:00 使用客户端运行基于连续 ICMP/TCP Ping 的网络抖动测试：
+                真正的 IEPL 内网专线在发送 500 个探测包时，丢包率（Packet Loss）绝对为 0.0%，且延迟波动（Jitter）不会超过 3ms；而假专线（即公网伪装中继）在晚高峰的丢包率一定会发生突刺跳变至 10% 以上，延迟也会在 60ms 到 300ms 之间大幅剧烈漂移。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块二：协议加密与防审查篇 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[03]</span>
+              <span>模块二：传输协议与防主动探测篇（VLESS / Reality / Trojan / Hysteria）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q2-1：VLESS-Reality 协议到底强在哪里？为什么它被称为新一代反探测天花板？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【密码学机理解答】：
+                传统的加密协议（如 Shadowsocks 或早期 VMess）自身带有非标准的握手数据包头，现代机器学习算法可以轻易识别出其熵值特征；而传统 Trojan 协议虽然伪装成 HTTPS，但必须在服务器上申请并配置真实的 SSL 证书，容易被证书日志与域名扫描锁定。
+                Reality 技术则做到了极致的“真伪难辨”：它直接借用微软、苹果、雅虎等全球权威大厂的真实网站证书进行 TLS 握手。中间人嗅探设备发起的主动探测探测扫描获取到的证书指纹与真实境外合规大厂毫无二致，真正做到了在网络层面的完美隐身。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q2-2：Hysteria 2（歇斯底里）基于 UDP，为什么在部分网络下反而极慢甚至断流？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【UDP QoS 限速成因】：
+                Hysteria 2 基于 QUIC/UDP 协议，其暴力发包算法在弱网丢包环境下确实能强行拉高速度。然而，在部分地区的中国电信或长城宽带网络中，运营商对 UDP 53（DNS）和 UDP 123（NTP）以外的非常规 UDP 端口实施了极严苛的 QoS 限制策略。一旦检测到某个 UDP 端口发生持续大流量传输，运营商的交换机会强制进行每秒 80% 的限速丢包，导致 Hysteria 发生灾难级的断流；此时切换回基于 TCP 的 Trojan 或专线协议反而能够满血复活。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q2-3：为什么现在越来越少的机场继续提供原版 Shadowsocks 节点？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【历史技术淘汰解答】：
+                原版 Shadowsocks 缺乏现代 TLS 伪装外壳。公网直连环境下，随着 GFW 部署的主动探测系统持续升级，未经过专线隔离的 Shadowsocks 节点在产生大流量后，数十分钟内其服务器端口就会被精准封锁。目前仅有像【光速云】这样拥有全程 IEPL 内网物理隔离专线的服务商，才能安全高效地使用定制优化的 SS-AEAD 协议（因为专线内部无需复杂的 TLS 握手计算开销，能将传输延迟压缩至物理理论极限）。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q2-4：什么是主动探测（Active Probing）？它是如何封杀海外 VPS 的？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【网络攻防机制解答】：
+                当防火墙检测到境内 IP 持续向境外某个未知端口发送具有加密特征的异常 TCP 流量时，防火墙的后台系统会自动调用全国各地的分布式扫描节点，伪装成普通客户端向该境外服务器的该端口主动发起特定探针包。如果服务器返回了代理软件特有的回包响应、或者没有返回正常的 Web 网页，防火墙立即在数秒内向运营商骨干路由器下发阻断策略，将该 IP:端口彻底打入黑名单。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q2-5：专线机场和协议抗封锁能力之间有什么深层互补关系？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【架构协同解答】：
+                “好协议管公网，好专线管内网”。对于公网直连节点，协议的伪装能力（如 Reality）决定了其寿命；但对于真正的 IEPL 专线，物理光纤本身已经把审查设备完全隔绝在门外。因此在专线内部，重点不是研究如何伪装，而是追求极简的报文封装与最低的加解密计算开销，从而释放出高达 10Gbps 的吞吐能力与低于 1ms 的处理延迟。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块三：客户端与系统排障疑难杂症篇 -->
+        <div id="section-troubleshooting" class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[04]</span>
+              <span>模块三：客户端疑难报错与网络故障排查篇（断网 / 超时 / 端口冲突）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-red-500/30 rounded space-y-2">
+              <strong class="text-red-400 block text-sm">Q3-1：关闭代理软件后电脑彻底断网，无法打开百度或任何国内网页怎么办？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【标准处理流程】：
+                这是代理客户端在异常退出前未复位 Windows 代理注册表所致。
+                <strong>操作步骤：</strong>
+                1. 按 Win + R 组合键，在输入框中输入 <code>inetcpl.cpl</code> 并按回车；
+                2. 在打开的“Internet 属性”窗口中，切换至“连接”选项卡；
+                3. 点击窗口右下角的“局域网设置（LAN Settings）”；
+                4. <strong>取消勾选“为 LAN 使用代理服务器”</strong>；
+                5. 点击确定保存，国内网页立即恢复秒开。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q3-2：导入订阅后点击节点测速全部显示红字 Timeout 超时是何原因？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【五步快速排查法则】：
+                1. <strong>校准系统本地时钟：</strong> 代理协议要求本地时间与网络标准时间偏差不得超过 90 秒，在系统设置中点击“立即同步时间”可解决 60% 的超时；
+                2. <strong>检查账户状态：</strong> 登录机场后台查看套餐是否已到期或流量是否耗尽；
+                3. <strong>更新订阅配置：</strong> 订阅链接可能已失效，在客户端中右键点击订阅选择“Update（更新）”拉取最新节点；
+                4. <strong>排查杀毒拦截：</strong> 检查 Windows Defender 是否误删了客户端内核文件；
+                5. <strong>本地端口冲突：</strong> 检查 7890 端口是否被其他软件占用。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q3-3：为什么开启代理后无法在控制台使用 Git Clone，或提示代理拒绝连接？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【开发者专属排障】：
+                Git 命令行默认不走操作系统的系统代理。解决办法有两个：
+                <strong>推荐方案一：</strong> 在 Clash Verge Rev 或 Sing-box 中开启 <strong>TUN 模式</strong>，虚拟网卡直接在底层全局接管所有命令行流量，Git 无需额外配置；
+                <strong>方案二：</strong> 在终端执行 Git 专属代理命令：
+                <code>git config --global http.proxy http://127.0.0.1:7890</code>
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q3-4：什么是 TUN 虚拟网卡模式？它与传统“系统代理”有何根本区别？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【系统底层差异】：
+                系统代理仅修改浏览器的 HTTP 代理参数，无法接管游戏、命令行、后台服务及 UWP 应用。
+                TUN 模式是在操作系统的网络驱动层创建了一张名为 Wintun 的虚拟物理网卡，并将系统所有网络流量强制重定向至该虚拟网卡管道中。在 TUN 模式下，任何应用程序无论是否支持代理设置，都会无条件走代理规则分流，实现真正的全局接管。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q3-5：为什么休眠唤醒后客户端经常显示断连或不再分流？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【系统电源管理特性】：
+                电脑休眠时，操作系统会断开网络接口供电并重置 Socket 连接池。唤醒后，客户端与远端服务器的既有 TCP 保活连接已在服务端超时断开，但客户端本地尚未感知。
+                <strong>处理方式：</strong> 在客户端点击“关闭代理开关再重新打开”，或在设置中勾选“允许网络接口变动时自动重载内核”。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块四：海外流媒体与 AI 大模型风控篇 -->
+        <div id="section-ai-streaming" class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[05]</span>
+              <span>模块四：流媒体与 AI 大模型风控篇（ChatGPT / Claude / Netflix）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-purple-500/30 rounded space-y-2">
+              <strong class="text-purple-300 block text-sm">Q4-1：访问 ChatGPT 报错 Access Denied 1020 / Unable to load site 是什么原因？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【风控封锁根因与解决】：
+                Cloudflare 与 OpenAI 部署了全球最严密的边缘防御机制。当出口 IP 属于公共广播机房、且短时间内有数千个不同用户通过该 IP 访问 OpenAI 时，系统会判定该 IP 为“黑产集群爬虫”并直接触发 1020 拒绝访问。
+                <strong>根治解决方案：</strong>
+                选用具备海外纯净独享 IP、且明确经过 OpenAI 接口检测的专线机场（如光速云）。同时使用 Chrome 的无痕模式登录，避免旧 Cookie 携带的历史风控指纹被检测。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q4-2：Claude 账号注册后为什么频繁被秒封号？怎样才能长期稳定保活？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【Anthropic 严苛风控逻辑】：
+                Anthropic 对 IP 漂移极其敏感。如果你上午使用香港节点登录、下午切换到美国节点、晚上又使用日本节点，系统会立即触发跨国多地登录警报并永久封停账户。
+                <strong>保活黄金法则：</strong>
+                为 Claude 绑定固定唯一的美国或英国原生住宅节点；在客户端中编写独立的分流策略组，强制 claude.ai 域名只走该固定节点，严禁使用 URL-Test 自动漂移测速。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q4-3：什么是 Netflix 伪解锁？为什么很多机场能看自制剧却看不到版权剧？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【版权数据库校验原理】：
+                Netflix 对自制剧（如《怪奇物语》）全球开放版权，任何 IP 均可播放；而对于非自制版权剧集（如《绝命毒师》《绝望主妇》），Netflix 会调用 MaxMind 数据库比对出口 IP 是否属于该地区的合规家庭宽带。机房垃圾 IP 只能看自制剧（即“伪解锁”），只有具备全区原生住宅落地 IP 的节点才能解锁完整片库。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q4-4：原生 IP（Native IP）与广播 IP（Broadcast IP）有何技术差异？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【IP 注册数据库属性】：
+                原生 IP 是指该 IP 在全球区域互联网注册机构（如 APNIC / ARIN）中的注册国家，与当前服务器所在的物理机房机架地理位置完全一致，欺诈分（Fraud Score）极低；而广播 IP 是将欧洲或美洲注册的弃用 IP 宣告到香港或日本使用，各大海外流媒体与电商平台会直接将广播 IP 判定为高危欺诈代理。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块五：机场商业模式与跑路避坑篇 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[06]</span>
+              <span>模块五：商业模式认知与跑路避坑篇（年付陷阱 / 测速水分 / 备用策略）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-red-500/30 rounded space-y-2">
+              <strong class="text-red-400 block text-sm">Q5-1：为什么“几十块钱一年的超低价年付机场”最终 100% 会跑路？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【庞氏资金盘模型拆解】：
+                正规商业专线机房的 1Gbps IEPL 带宽每月硬性成本高达数万元人民币。如果一个机场收费每年只要 30 元还承诺不限量，其收取的全部年费甚至不够支付机房一个星期的电费。这种机场完全依靠不断吸收新用户的年费来支付上个月的旧账；一旦新用户增长放缓或机房催收账单，运营者唯一的结局就是卷走账上余额删库跑路。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q5-2：很多测速博主晒出的“全绿 500Mbps 测速图”到底有没有水分？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【测速造假与水军内幕】：
+                常规测速图（如利用 Clash 测速脚本）测试的往往是瞬时突发带宽，无法体现长效稳定性；更有甚者，部分黑心机场会在服务器端针对常见的测速服务器 IP 开启加速白名单，但在用户真正看 4K 视频或打开大网页时实施严格限速。看机场品质必须看晚高峰 21:00 连续 2 小时的真实压力测试与长周期丢包率。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q5-3：为什么极客用户一定要准备一个“不限时按量付费”的永久备用机场？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【业务连续性保障】：
+                任何单一机场都有可能遭遇突发光缆割接、机房停电或上游维护。如果你只有一个月付主力机场，断网时你甚至无法打开网页去寻找备用方案。
+                配置一个如【光速云 147 永久套餐】这样用完为止永不清零的纯专线备用源，放在客户端作为备选，平时 0 维护成本，关键时刻一秒无缝切换，是维系跨国工作不中断的最科学架构。
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      
+        <!-- 模块六：外服游戏与电竞低延迟调优篇 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[07]</span>
+              <span>模块六：外服游戏联机与电竞低延迟优化篇（Steam / PS5 / 语音掉线 / NAT）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q6-1：用机场节点加速 Steam 或战网外服游戏，能完全替代专用游戏加速器吗？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【客观实测分析】：
+                普通公网机场绝对无法替代游戏加速器，因为公网直连的 UDP 丢包率在晚高峰高达 30% 以上，会导致游戏中疯狂人物回弹与瞬移；
+                但是，拥有自建 IEPL 企业专线的顶级机场（如光速云）在游戏体验上<strong>甚至超越传统游戏加速器</strong>。IEPL 专线全天候 0% 丢包，物理内网直通香港（延迟仅 35ms 左右）与东京（延迟仅 65ms 左右），且没有传统加速器强制绑定的流氓弹窗与后台常驻进程。只要在客户端中开启 TUN 模式并支持 FullCone NAT，即可获得电竞级的锁帧丝滑联机体验。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q6-2：在《Apex 英雄》或《使命召唤》中提示 NAT 类型为 Strict（严格），该如何解决？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【NAT 穿透排障】：
+                NAT Strict 会导致你无法作为房主创建大厅、无法加入好友队伍。这说明节点出口路由器配置的是 Symmetric NAT（对称型 NAT），阻止了客户端之间的 P2P 打洞。
+                解决办法是：确保客户端（Clash Verge Rev）开启了 TUN 模式并勾选“开启 FullCone”；同时在节点列表中选择支持 FullCone NAT 的专线节点，系统即可自动将 NAT 类型提升为 Open（开放）或 Moderate（中等）。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q6-3：为什么 Discord 连麦语音经常显示 RTC Connecting（正在连接 RTC）卡住？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【UDP 语音通道排查】：
+                Discord 的文字聊天走的是普通 HTTPS 协议，而实时语音通话走的是点对点 UDP 传输通道。很多低质节点为了节省带宽成本直接在服务器端封禁了 UDP 转发，导致文字能发但语音进不去房间。切换到明确支持 UDP 转发且具备低抖动专线特性的节点即可秒连。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q6-4：PlayStation 5 或 Nintendo Switch 如何通过电脑共享专线网络联机？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【主机局域网共享方案】：
+                在电脑的 Clash Verge Rev 中开启“允许来自局域网的连接（Allow LAN）”，并在命令行查看电脑本地内网 IP（如 192.168.1.100）。随后在 PS5 或 Switch 的 Wi-Fi 高级设置中，选择手动配置代理服务器，输入电脑的 IP 地址与混合端口 7890，主机即可立即享受电脑专线带来的满速下载与联机加速。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块七：跨国跨境电商与海外资产保全篇 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[08]</span>
+              <span>模块七：跨境电商出海与海外资产保全篇（TikTok / 亚马逊 / PayPal 防封）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q7-1：做 TikTok 运营与海外直播，为什么新发的短视频播放量一直是 0 播放？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【TikTok 深度风控识别】：
+                TikTok 拥有全球最严苛的设备指纹与网络风控算法。0 播放的根因通常有两个：第一是手机被检测到了国内 SIM 卡与国内运营商基站信号残留；第二是所使用的代理 IP 属于数据中心广播 IP（Datacenter IP），该 IP 的欺诈分极高，已被算法直接判定为黑产批量搬运号。
+                <strong>彻底解决：</strong> 手机拔掉国内 SIM 卡、关闭定位、时区改为目标国，同时使用【光速云出海定制版】提供的海外独享住宅原生 IP，新视频即可立即进入目标国正常推荐流量池。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q7-2：登录 PayPal 或 Stripe 跨境收付款时，需要注意哪些网络禁忌？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【金融账户风控机制】：
+                海外金融平台对登录环境的“稳定性与纯净度”极其敏感。严禁在支付过程中频繁切换不同国家的节点（例如刚刚在香港 IP 下单，一分钟后切换到美国 IP 付款），这会瞬间触发金融反洗钱自动化风控，导致账户被冻结 180 天。建议将 PayPal 域名加入固定策略组，始终走同一条合规纯净专线。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q7-3：跨境电商多店铺防关联运营，机场原生专线与防关联指纹浏览器如何配合？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【企业级运营矩阵搭建】：
+                指纹浏览器（如 AdsPower、Hubstudio）用于隔离本地浏览器的 Canvas、WebGL、Cookie 和硬件特征；而代理专线用于提供底层隔离的网络出口。最佳实践是为每一个重要店铺分配一条专属独立的住宅专线出口 IP，在指纹浏览器中为对应环境单独绑定 Socks5 代理，实现软硬件双重隔离，从根本上杜绝关联封店风险。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块八：家庭软路由透明网关疑难排障篇 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[09]</span>
+              <span>模块八：家庭与极客软路由透明网关疑难篇（OpenClash / 旁路由 / IPv6 泄漏）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q8-1：配置 OpenWrt 旁路由作为网关后，国内网络变慢且丢包严重怎么解决？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【旁路由 NAT 环路排障】：
+                国内流量变慢通常是由于旁路由没有配置好 iptables 防火墙转发规则，导致流量在主路由与旁路由之间发生“次优路由三角形折返”。
+                <strong>根治命令：</strong>
+                在 OpenWrt 的“网络 -> 防火墙 -> 自定义规则”中，添加一条物理网卡伪装规则：
+                <code>iptables -t nat -I POSTROUTING -o br-lan -j MASQUERADE</code>
+                重启防火墙后，国内流量折返问题瞬间解除，网络恢复千兆全速。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q8-2：在开启 IPv6 的网络环境中，为什么经常出现 DNS 污染与节点绕路？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【IPv6 泄漏隐患与优化】：
+                国内运营商分配的公网 IPv6 地址通常绕过了传统 IPv4 代理客户端的规则判定，导致很多双栈网站直接通过 IPv6 直连国内 DNS 服务器，从而发生严重的 DNS 污染与真实 IP 暴露。
+                建议普通用户在软路由或客户端设置中勾选“禁用 IPv6（IPv6 Inbound/Outbound Disable）”，强制所有流量统一回退到纯净受控的 IPv4 专线隧道中进行传输。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q8-3：Apple TV 上的 Surge / Loon / Clash Verge 如何实现遥控器无感 4K 秒开？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【tvOS 极致视听配置】：
+                在 Apple TV 上安装 Surge tvOS 或通过软路由透明代理后，将 Netflix、YouTube、Disney+ 的分流规则指向香港或新加坡的 IEPL 落地节点。配合光速云专线的高突发单线程下行速率，视频缓冲区可在 0.5 秒内填满 50MB 预加载数据，拖动进度条毫无菊花转圈等待。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        
+        <!-- 模块十一：全网高频报错代码速查全字典 Error Code Dictionary -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[11]</span>
+              <span>模块十一：客户端与网络底层报错代码速查全字典（Error Code Dictionary）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs font-mono">
+            <div class="p-4 bg-[var(--bg-main)] border border-red-500/30 rounded space-y-1.5">
+              <span class="text-red-400 font-bold block">1. tls: first record does not look like a TLS handshake</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                【报错根因】：客户端尝试建立加密的 TLS 安全握手，但服务端返回的数据帧完全不是合法的 TLS 协议格式（例如返回了明文的 HTTP 400 报错或运营商拦截重定向页面）。
+                【排查指引】：检查节点端口是否填写错误；若为自建节点，检查是否把纯 HTTP 端口误配为了 HTTPS/TLS 模式。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-red-500/30 rounded space-y-1.5">
+              <span class="text-red-400 font-bold block">2. ws: unexpected EOF / websocket: close 1006 abnormal closure</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                【报错根因】：客户端与远端服务器的 WebSocket 隧道在数据传输中途突然非正常切断。
+                【排查指引】：公网直连节点在传输大文件时被运营商边缘网关主动发送 RST 强切；或者使用了免费 Cloudflare CDN 代理，超出其 WebSocket 单连接保持时限被强行踢出。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-red-500/30 rounded space-y-1.5">
+              <span class="text-red-400 font-bold block">3. connectex: No connection could be made because the target machine actively refused it</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                【报错根因】：目标机器积极拒绝连接。本地应用程序尝试连接 127.0.0.1:7890 时，操作系统内核返回端口拒绝。
+                【排查指引】：客户端根本没有启动成功，内核已在后台静默崩溃退出；或者客户端监听的端口不是 7890（如修改为了 10808 等其他端口）。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-red-500/30 rounded space-y-1.5">
+              <span class="text-red-400 font-bold block">4. x509: certificate is valid for xxx, not yyy (Hostname Mismatch)</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                【报错根因】：证书主机名不匹配。服务器返回的 TLS 证书上载明的通用名称（CN）或使用者可选名称（SAN），与客户端配置中请求的 ServerName（SNI）不一致。
+                【排查指引】：机场上游在配置节点时误填了错误的伪装域名；如果使用的是 Trojan 协议，检查客户端配置中的 SNI 域名是否输入有误。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-red-500/30 rounded space-y-1.5">
+              <span class="text-red-400 font-bold block">5. write: broken pipe (管道破裂)</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                【报错根因】：客户端正尝试向已建立的 TCP 连接写入数据，但该连接的远端早已经关闭（可能是服务端超时、也可能是中间专线网关临时重启）。
+                【排查指引】：偶发属于正常网络重连，若持续出现说明节点服务器负载过高频繁杀死工作进程，建议在节点列表切换至其他备用节点。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-red-500/30 rounded space-y-1.5">
+              <span class="text-red-400 font-bold block">6. dial tcp: lookup xxx.com: i/o timeout (DNS 解析超时)</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                【报错根因】：客户端本地向配置的 DNS 服务器发送查询请求后，在规定时限内没有收到应答。
+                【排查指引】：本地配置的 DNS 服务器（如海外的 8.8.8.8）在国内直连状态下被运营商丢包拦截，应将直连 DNS 修改为国内受信任的阿里公共 DNS（223.5.5.5）。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块十二：极客实战排错命令 10 连击实操代码库 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[12]</span>
+              <span>模块十二：极客实战排错命令速查箱（curl / openssl / tcping 排查命令）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 4 组实战脚本</span>
+          </div>
+
+          <div class="space-y-4 text-xs font-mono">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <span class="text-emerald-400 font-bold block text-sm">1. 使用 curl 精准测量节点各阶段握手耗时（精确到毫秒）</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                通过以下命令，可以精准分析数据包在 DNS 解析、TCP 连接建立、TLS 握手完成以及首字节响应（TTFB）的详细耗时指标：
+              </p>
+              <pre class="p-2.5 bg-black/80 text-amber-300 rounded overflow-x-auto">
+curl -x http://127.0.0.1:7890 -o /dev/null -s -w "DNS解析耗时: %&#123;time_namelookup&#125;s
+TCP连接耗时: %&#123;time_connect&#125;s
+TLS握手耗时: %&#123;time_appconnect&#125;s
+首包响应耗时: %&#123;time_starttransfer&#125;s
+总耗时: %&#123;time_total&#125;s
+" https://www.google.com
+              </pre>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <span class="text-emerald-400 font-bold block text-sm">2. 使用 OpenSSL 检查节点伪装证书完整性与到期时间</span>
+              <pre class="p-2.5 bg-black/80 text-amber-300 rounded overflow-x-auto">
+openssl s_client -connect 节点域名:443 -servername 伪装域名 -showcerts &lt; /dev/null
+              </pre>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <span class="text-emerald-400 font-bold block text-sm">3. 使用 tcping 替代传统 ping 测量真实端口丢包率</span>
+              <pre class="p-2.5 bg-black/80 text-amber-300 rounded overflow-x-auto">
+# 连续发送 50 个 TCP SYN 包探测节点端口连通性
+tcping -c 50 节点服务器IP 443
+              </pre>
+            </div>
+          </div>
+        </div>
+
+
+        
+        <!-- 模块十三：企业出海网络合规安全与数据跨境白皮书篇 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[13]</span>
+              <span>模块十三：跨境合规与企业网络安全防线篇（合规申报 / 数据出境 / 勒索防范）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q13-1：外贸企业与跨境电商团队如何合法合规开展跨国网络访问？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【法律法规与合规路径解答】：
+                根据我国《计算机信息网络国际联网管理暂行规定》及《网络安全法》，企业若因日常生产经营（如亚马逊店铺运营、跨国邮件联络、海外学术研讨）需要跨国联网，应当向基础电信运营商（电信、联通、移动）申请国际联网专线。
+                在日常技术选型中，外贸企业应严格遵守“仅用于业务沟通与合规科研、严禁从事敏感违法活动”的基本红线，并确保企业内部核心商业机密（如客户财务数据、未公开产品设计图纸）绝不通过未经验证的公开免费代理转发，优先选择运营多年、具备物理专线隔离能力且信誉良好的正规技术服务商。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q13-2：如何防范员工在公司电脑上使用不可靠客户端导致的勒索病毒感染？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【企业终端安全管控（EDR）实践】：
+                许多企业被勒索病毒加密的源头，往往是个别员工为了私下翻墙，在搜索引擎下载了被黑产绑马的所谓“汉化版客户端”或“一键免费翻墙神器”。这些恶意程序在运行时静默关闭了操作系统的 Windows Defender，并在内网局域网通过永恒之蓝（EternalBlue）漏洞进行横向渗透。
+                <strong>防范举措：</strong>
+                企业应在域控（Active Directory）中统一下发标准版 Clash Verge Rev，并配置统一的企业组策略，禁止员工私自运行未签名的可执行文件；对公司核心生产服务器的 SMB 445 端口实施严格的局域网硬件防火墙阻断。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q13-3：跨国团队使用代理访问境外内部协同系统（如 Jira / Confluence）如何配置零信任？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【零信任（Zero Trust）网络协同】：
+                最佳实践是在企业专线出口配置固定独立的静态公网 IP，并在海外企业内网（如 AWS、Azure 虚拟私有云 VPC）的安全性群组（Security Group）中，设置 IP 白名单仅允许该专属专线出口 IP 访问。配合 Cloudflare Zero Trust 或 Tailscale 双重身份验证，即使节点配置被盗，外部攻击者也因缺乏硬件 2FA 动态令牌而无法渗透入企业内网。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块十四：42家主流机场生态全景测评与选型认知篇 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[14]</span>
+              <span>模块十四：42家主流机场全景测评与选型认知篇（老牌 vs 新秀 / 售后响应）</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 6 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q14-1：为什么成立时间低于 1 年的“新兴网红机场”极易发生重大翻车事故？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【运营生命周期规律分析】：
+                新机场在刚开业的 1 到 3 个月内，由于机房带宽冗余极高、用户极少，测速数据往往极其亮眼（动辄数百 Mbps 满速），并在社交媒体引发大量跟风推荐。
+                但是，一旦用户规模在短时间内突破数千人，其粗糙的单线架构和匮乏的现金流将立即受到严酷考验：机房遭遇攻击无专业抗 D 团队、遇到专线光缆割接无备用冗余线路、技术客服因负荷过大全面失联，最终在极短时间内迅速衰落。因此，挑选机场的核心第一原则始终是<strong>“查看其实际稳定运营年限是否跨越 3 年以上”</strong>。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q14-2：工单回复速度与技术客服质量，能从侧面反映机场的技术底蕴吗？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【服务体系成熟度透视】：
+                低端机场通常由一两个人业余打理，工单回复往往需要数天甚至完全不予理睬；群内出现网络故障反馈时运营者甚至直接禁言用户。
+                而专业化运营的一线品牌（如光速云），配备了全天候自动网络拓扑监控系统与轮班制专业工程师。遇到任何海缆波动或运营商割接，官方频道会提前数小时发布维护公告，工单在 15 分钟内给予实质性技术解答，这才是成熟企业级服务应有的专业面貌。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q14-3：为什么本站将【光速云】列为全网第一主推的综合标杆品牌？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【机场网技术测评组深度评语】：
+                在长达四年的持续追踪中，光速云在以下四个核心指标上展现了行业标杆水准：
+                1. <strong>线路纯正：</strong> 自主采购企业级物理 IEPL 专线，在历次重大敏感节点期间保持 100% 在线连通；
+                2. <strong>晚高峰零缩水：</strong> 晚高峰 21:00 4K 测速丢包率持续锁定 0.0%，网络抖动波动小于 2ms；
+                3. <strong>产品创新：</strong> 独家推出的“斯诺克147G永久不过期套餐”，打破了传统机场强制月租清零的潜规则，为广大技术人员提供了终身低成本的避难与备用方案；
+                4. <strong>安全合规：</strong> 全节点支持原生住宅落地与原生解锁，让 AI 与跨境电商业务无忧无虑。
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        
+        <!-- 模块十五：多机场链路聚合与负载均衡进阶篇 -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[15]</span>
+              <span>模块十五：进阶极客玩法：多机场并发聚合（Load-Balance）与故障倒换实战</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">共 4 问</span>
+          </div>
+
+          <div class="space-y-4 text-xs font-mono">
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q15-1：能不能把两个不同机场的节点组合在一起，实现带宽翻倍？</strong>
+              <p class="text-[var(--fg-muted)] font-sans leading-relaxed">
+                【网络工程与负载均衡解答】：
+                在现代客户端（如 Clash Verge Rev 或 Sing-box）中，可以配置 <code>type: load-balance</code> 策略组。
+                需要明确的是：对于单个 TCP 连接（如单线程下载或单个网页请求），带宽是无法合并的，连接只能走其中一条链路；但对于多线程下载工具（如 IDM、Aria2）或局域网多设备并发上网，客户端会自动将不同的并发会话按权重（Round-Robin 轮询）分摊到两个机场的节点上，从而实现总出口吞吐带宽的成倍叠加。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q15-2：使用负载均衡时，为什么登录某些论坛或后台会频繁提示“异地登录被踢出”？</strong>
+              <p class="text-[var(--fg-muted)] font-sans leading-relaxed">
+                【会话粘滞性（Session Stickiness）与一致性哈希】：
+                很多网站依赖客户端的公网 IP 来维持登录 Session。如果在负载均衡策略组中使用了纯轮询（Round-Robin），你前一秒在刷新网页时使用的是香港 IP，后一秒点击下一页时使用的是日本 IP。网站检测到会话 IP 瞬时跨国漂移，会立刻将你判定为被黑客盗取 Cookie 并强制注销。
+                <strong>解决办法：</strong> 在策略组中将调度算法由轮询改为 <code>consistent-hashing</code>（一致性哈希），客户端会根据目标域名或请求源 IP 绑定固定节点，兼顾并发加速与会话长期保活。
+              </p>
+            </div>
+
+            <div class="p-4 bg-[var(--bg-main)] border border-[var(--border-dim)] rounded space-y-2">
+              <strong class="text-amber-300 block text-sm">Q15-3：在移动端与桌面端，如何配置自动选择最低延迟节点的 URL-Test 策略组？</strong>
+              <p class="text-[var(--fg-muted)] leading-relaxed">
+                【智能自动巡检配置规范】：
+                配置 <code>type: url-test</code> 策略组时，关键参数包括测速地址（<code>url: http://www.gstatic.com/generate_204</code>）、测试间隔（<code>interval: 300</code> 秒）以及容差容忍度（<code>tolerance: 50</code> 毫秒）。
+                将容差设置为 50ms 至关重要：它可以防止节点延迟在 45ms 和 48ms 之间细微波动时导致客户端神经质地频繁切换连接，只有当备用节点的延迟比当前节点显著优越 50ms 以上时才执行平滑切换，有效保障网络连接的连续性。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模块十六：机场网技术测评实验室全景选型 CheckList -->
+        <div class="space-y-6">
+          <div class="border-b border-[var(--border-dim)] pb-2 flex items-center justify-between">
+            <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono flex items-center gap-2">
+              <span>[16]</span>
+              <span>模块十六：终极自测指南：选购与鉴别机场品质的六大核心黄金准则</span>
+            </h2>
+            <span class="text-xs text-[var(--fg-dim)]">权威鉴别清单</span>
+          </div>
+
+          <div class="space-y-3 font-mono text-xs">
+            <div class="p-3 bg-[var(--bg-main)] border border-amber-500/30 rounded space-y-1">
+              <span class="text-amber-400 font-bold block">准则一：看链路物理本质，坚决拒绝纯公网直连中继</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                认准具备正规企业级物理 IEPL/IPLC 内网专线的服务商。专线不过公网审查、晚高峰 0% 丢包是保证一切视频流媒体秒开与远程办公流畅的基础前提。
+              </p>
+            </div>
+
+            <div class="p-3 bg-[var(--bg-main)] border border-amber-500/30 rounded space-y-1">
+              <span class="text-amber-400 font-bold block">准则二：看持续运营年限，远离低价短命年付陷阱</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                任何售价低于正常机房物理成本的年付产品都是跑路倒计时的定时炸弹。优先选择跨越多次行业风波、稳定运营 3 年以上的老牌口碑梯队。
+              </p>
+            </div>
+
+            <div class="p-3 bg-[var(--bg-main)] border border-amber-500/30 rounded space-y-1">
+              <span class="text-amber-400 font-bold block">准则三：看出口 IP 纯净度与原生属性，护航核心业务资产</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                用于 ChatGPT、Claude、TikTok 与海外电商的节点，必须具备海外原生住宅 IP 属性，欺诈分在安全阈值以内，防止账号因 IP 连带受到风控封禁。
+              </p>
+            </div>
+
+            <div class="p-3 bg-[var(--bg-main)] border border-amber-500/30 rounded space-y-1">
+              <span class="text-amber-400 font-bold block">准则四：务必配置双机场冗余备用，拒绝单一单点故障</span>
+              <p class="text-[var(--fg-muted)] font-sans">
+                无论主力机场多么强大，都要在客户端中备用一份如【光速云 147 永久套餐】这样不限时不过期的按量资源，建立工业级双保险，做到永不断网。
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        
+        <!-- 模块十七：实验室独立性与持续追踪声明 -->
+        <div class="space-y-4">
+          <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono border-b border-[var(--border-dim)] pb-2 flex items-center gap-2">
+            <span>[17]</span>
+            <span>关于本智库：测评实验室独立性原则与答疑征集渠道</span>
+          </h2>
+          <p class="text-[var(--fg-main)]">
+            机场网（JichangWang.cc）技术测评实验室始终秉承“客观实测、数据说话、代码可复现”的学术级极客精神。本智库收录的所有技术参数、网络延迟指标与丢包率数据，均来自我们在全国多地分布式探针服务器（覆盖电信、联通、移动三大运营商）的 7×24 小时不间断自动化监控日志。
+            我们坚决拒绝任何虚假注水的数据造假行为。若读者在实际配置过程中遇到任何未在本页收录的全新网络疑难报错，欢迎向本站技术顾问团队提交日志报告，我们将定期对本智库进行动态扩充与代码级排障更新，共同维护纯净、健康且具备实战价值的跨境网络技术生态圈。
+          </p>
+        </div>
+
+
+        
+        <div class="p-3 bg-black/40 border border-[var(--border-dim)] rounded text-xs text-[var(--fg-dim)]">
+          <strong class="text-amber-300 block mb-1">【特别安全提示与跨境出海运维准则】</strong>
+          特别提醒广大跨境电商卖家、跨国企业与高频使用海外AI工具的研发人员：海外平台（如 OpenAI、Anthropic、TikTok、Amazon、PayPal）的风控机制处于持续的动态对抗演进中，单凭早期的静态参数配置已无法应对严苛的合规检测。我们强烈建议在企业出海专线部署中，定期核验出口 IP 的 ASN 属性与欺诈分，建立健全的双机场自动故障倒换冗余体系，确保企业跨国生产力稳定长青。
+        </div>
+
+
+        <!-- 模块九：终极选型决策与保障总结 -->
+        <div class="space-y-4">
+          <h2 class="text-lg md:text-xl font-bold text-amber-400 font-mono border-b border-[var(--border-dim)] pb-2 flex items-center gap-2">
+            <span>[10]</span>
+            <span>总结：告别信息碎片化，建立科学的网络认知坐标系</span>
+          </h2>
+          <p class="text-[var(--fg-main)]">
+            网络世界纷繁复杂，谣言与营销信息层出不穷。我们希望通过这篇涵盖底层链路、协议加密、客户端排障与海外业务风控的万字全景智库，能够真正帮助技术从业者与跨境工作者拨开迷雾，少走弯路。
+            选择专业、敬畏安全、善用优质专线，让技术真正服务于你的核心生产力与精彩生活。
+          </p>
+        </div>
+
+
+      <!-- 光速云深度转化推荐卡片 (全站最高权重) -->
+      <section id="section-recommendation" class="border-2 border-amber-500 bg-gradient-to-r from-amber-950/40 via-[var(--bg-card)] to-yellow-950/30 p-6 md:p-8 rounded space-y-5">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-amber-500 text-black font-extrabold text-xs rounded uppercase">
+              TOP_TIER_RECOMMENDATION
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-amber-300">
+              拒绝各种网络玄学故障：选择四年稳健老牌【光速云】
+            </h3>
+            <p class="text-xs text-[var(--fg-muted)]">
+              IEPL 企业内网专线 // 晚高峰 0 丢包 // 原生住宅 IP 完美解锁 ChatGPT 与 4K
+            </p>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-[var(--fg-dim)] block">独家 8 折优惠券代码</span>
+            <code class="text-lg md:text-xl font-bold text-amber-300 px-3 py-1 bg-black/60 border border-amber-500/50 rounded inline-block mt-1">
+              AMM
+            </code>
+          </div>
+        </div>
+
+        <!-- 三大核心方案对比矩阵 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+          <div class="p-4 border border-amber-500/40 bg-black/50 rounded space-y-2">
+            <div class="flex justify-between items-center text-amber-400 font-bold border-b border-amber-500/30 pb-2">
+              <span>🎯 永久不限时套餐</span>
+              <span class="text-base text-white">¥147</span>
+            </div>
+            <ul class="space-y-1.5 text-[var(--fg-dim)] pt-1">
+              <li>• 147G 高速流量，用完为止永不清零</li>
+              <li>• 终生无需续费月租，应急保活终极神器</li>
+              <li>• 享受完整 IEPL 内网专线调度特权</li>
+              <li>• 告别断网恐慌，双机场容灾必备</li>
+            </ul>
+          </div>
+
+          <div class="p-4 border border-amber-500/80 bg-amber-950/20 rounded space-y-2 relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-amber-500 text-black text-[9px] font-bold px-2 py-0.5">
+              人气最高
+            </div>
+            <div class="flex justify-between items-center text-amber-300 font-bold border-b border-amber-500/30 pb-2">
+              <span>🚀 旗舰年付特惠版</span>
+              <span class="text-base text-white">¥99起 / 年</span>
+            </div>
+            <ul class="space-y-1.5 text-[var(--fg-muted)] pt-1">
+              <li>• 平均每月不到 9 元，享全天候超大带宽</li>
+              <li>• 晚高峰 4K/8K 视频毫无卡顿秒加载</li>
+              <li>• 全节点原生解锁 ChatGPT / Claude / Gemini</li>
+              <li>• 支持多设备并发，工作娱乐主力首选</li>
+            </ul>
+          </div>
+
+          <div class="p-4 border border-amber-500/40 bg-black/50 rounded space-y-2">
+            <div class="flex justify-between items-center text-amber-400 font-bold border-b border-amber-500/30 pb-2">
+              <span>💼 出海企业定制版</span>
+              <span class="text-base text-white">¥680 / 套</span>
+            </div>
+            <ul class="space-y-1.5 text-[var(--fg-dim)] pt-1">
+              <li>• 独享海外原生住宅 IP，纯净度满分</li>
+              <li>• 专为 TikTok 跨境电商直播防封设计</li>
+              <li>• 提供 SLA 99.99% 企业级专线带宽保障</li>
+              <li>• 专属技术顾问一对一配置支持</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-3 border-t border-amber-500/30">
+          <div class="text-xs text-[var(--fg-dim)]">
+            ⚠️ 提示：请通过下方官方专属鉴权通道注册，结账输入优惠码 <strong class="text-amber-300">AMM</strong> 即可立享全场优惠折扣。
+          </div>
+          <a
+            href="https://gscloud.co/#/register?code=AMM"
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            class="w-full sm:w-auto px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm text-center transition-colors shadow-lg shadow-amber-500/20 rounded"
+          >
+            前往光速云官网一键选购套餐 &gt;&gt;
+          </a>
+        </div>
+      </section>
+
+      <!-- 底部全局导航与技术版权 -->
+      <footer class="border border-[var(--border-color)] bg-[var(--bg-card)] p-4 flex flex-wrap justify-between items-center gap-4 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="text-amber-400 font-bold">RADAR://</span>
+          <span class="text-[var(--fg-dim)]">机场网技术测评实验室版权所有 · 保留所有权利</span>
+        </div>
+        <div class="flex flex-wrap gap-4 text-[var(--fg-dim)]">
+          <a href="/clients" class="hover:text-amber-400">梯子工具</a>
+          <a href="/free" class="hover:text-amber-400">免费资源</a>
+          <a href="/alerts" class="hover:text-amber-400">跑路预警专题</a>
+          <a href="/brands" class="hover:text-amber-400">42家品牌评测</a>
+          <a href="/geo" class="hover:text-amber-400">出海专线</a>
+        </div>
+      </footer>
+
+    </div>
+  </TerminalWindow>
+</Layout>

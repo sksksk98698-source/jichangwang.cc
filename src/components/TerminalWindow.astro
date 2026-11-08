@@ -1,5 +1,13 @@
 ---
 import { ALL_THEMES } from "../config/themeConfig";
+import { PORTFOLIO_DATA } from "../data/portfolio";
+
+interface Props {
+  currentPath?: string;
+  showModeTabs?: boolean;
+}
+
+const { currentPath = "~/jichangwang", showModeTabs = true } = Astro.props;
 ---
 
 <div
@@ -29,33 +37,35 @@ import { ALL_THEMES } from "../config/themeConfig";
       <div
         class="text-xs font-mono font-bold text-[var(--fg-bright)] flex items-center gap-1.5"
       >
-        <span class="text-[var(--fg-dim)]">alex@quantum-box:</span>
+        <span class="text-[var(--fg-dim)]">radar@jichangwang.cc:</span>
         <span id="current-path" class="text-[var(--accent)] font-mono"
-          >~/portfolio</span
+          >{currentPath}</span
         >
         <span
-          class="text-[10px] px-1.5 py-0.5 rounded bg-[var(--border-color)] text-[var(--fg-dim)] font-mono"
-          >main*</span
+          class="text-[10px] px-1.5 py-0.5 rounded bg-[var(--border-color)] text-emerald-400 font-mono"
+          >42_BRANDS_ONLINE*</span
         >
       </div>
     </div>
 
-    <div
-      class="flex items-center gap-1 bg-[var(--bg-card)] border border-[var(--border-color)] p-0.5 rounded-none text-xs font-mono"
-    >
-      <button
-        id="tab-cli"
-        class="hidden md:inline-block px-3 py-1 font-bold text-[var(--fg-bright)] bg-[var(--border-color)] border-b-2 border-[var(--accent)] cursor-pointer transition-colors"
+    {showModeTabs && (
+      <div
+        class="flex items-center gap-1 bg-[var(--bg-card)] border border-[var(--border-color)] p-0.5 rounded-none text-xs font-mono"
       >
-        >_ CLI Mode
-      </button>
-      <button
-        id="tab-gui"
-        class="px-3 py-1 font-bold text-[var(--fg-dim)] hover:text-[var(--fg-bright)] cursor-pointer transition-colors"
-      >
-        [#] GUI Dashboard
-      </button>
-    </div>
+        <button
+          id="tab-cli"
+          class="hidden md:inline-block px-3 py-1 font-bold text-[var(--fg-bright)] bg-[var(--border-color)] border-b-2 border-[var(--accent)] cursor-pointer transition-colors"
+        >
+          >_ CLI Mode
+        </button>
+        <button
+          id="tab-gui"
+          class="px-3 py-1 font-bold text-[var(--fg-dim)] hover:text-[var(--fg-bright)] cursor-pointer transition-colors"
+        >
+          [#] GUI Dashboard
+        </button>
+      </div>
+    )}
 
     <div class="flex items-center gap-2 text-xs font-mono">
       <div class="relative group">
@@ -127,6 +137,78 @@ import { ALL_THEMES } from "../config/themeConfig";
     </div>
   </header>
 
+  <!-- 机场网 SEO 与 GEO 核心导航枢纽栏 (Topic Cluster Hub) -->
+  <nav
+    aria-label="机场网核心导航"
+    class="bg-[var(--bg-card)] border-b border-[var(--border-color)] px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-xs font-mono select-none"
+  >
+    <div class="flex items-center flex-wrap gap-1.5 overflow-x-auto scrollbar-thin">
+      <span class="text-[var(--accent)] font-bold mr-1">RADAR://</span>
+      <a
+        href="/"
+        class="px-2 py-0.5 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-bright)] hover:text-[var(--accent)] transition-colors font-bold"
+      >
+        01.智库首页
+      </a>
+      <a
+        href="/brands"
+        class="px-2 py-0.5 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-bright)] hover:text-[var(--accent)] transition-colors font-bold"
+      >
+        02.42家品牌库
+      </a>
+      <a
+        href="/free"
+        class="px-2 py-0.5 border border-amber-400/40 bg-[var(--bg-main)] hover:border-amber-400 text-amber-300 font-bold hover:brightness-120 transition-colors"
+      >
+        03.免费资源
+      </a>
+      <a
+        href="/clients"
+        class="px-2 py-0.5 border border-cyan-400/40 bg-[var(--bg-main)] hover:border-cyan-400 text-cyan-300 font-bold hover:brightness-120 transition-colors"
+      >
+        04.梯子工具
+      </a>
+      <a
+        href="/faq"
+        class="px-2 py-0.5 border border-yellow-400/40 bg-[var(--bg-main)] hover:border-yellow-400 text-yellow-300 font-bold hover:brightness-120 transition-colors"
+      >
+        05.机场FAQ
+      </a>
+      <a
+        href="/alerts"
+        class="px-2 py-0.5 border border-red-400/40 bg-[var(--bg-main)] hover:border-red-400 text-red-400 font-bold hover:brightness-120 transition-colors"
+      >
+        06.跑路预警
+      </a>
+      <a
+        href="/speedtest"
+        class="px-2 py-0.5 border border-[var(--border-color)] bg-[var(--bg-main)] hover:border-[var(--accent)] text-[var(--fg-bright)] hover:text-[var(--accent)] transition-colors font-bold"
+      >
+        07.晚高峰测速
+      </a>
+      <a
+        href="/geo"
+        class="px-2 py-0.5 border border-emerald-400/40 bg-[var(--bg-main)] hover:border-emerald-400 text-emerald-400 font-bold hover:brightness-120 transition-colors"
+      >
+        08.出海专线
+      </a>
+    </div>
+
+    <!-- 主推高转化金标提示 -->
+    <div class="hidden lg:flex items-center gap-2 text-xs font-mono bg-yellow-500/10 border border-yellow-500/30 px-2 py-0.5">
+      <span class="text-amber-400 font-bold">🏆 镇站首推: 光速云</span>
+      <span class="text-[var(--fg-dim)]">双专线/8元起</span>
+      <a
+        href="https://gsy01.vip/#/register?code=wY5yvR82"
+        target="_blank"
+        rel="nofollow sponsored noopener"
+        class="text-emerald-400 hover:text-emerald-300 font-bold underline"
+      >
+        直达 [码:AMM] ↗
+      </a>
+    </div>
+  </nav>
+
   <main class="p-4 md:p-6 min-h-[650px] flex flex-col justify-between">
     <slot />
   </main>
@@ -136,13 +218,16 @@ import { ALL_THEMES } from "../config/themeConfig";
   >
     <div class="flex items-center gap-4">
       <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-        STATUS 200 OK
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        STATUS 200 OK // RADAR ONLINE
       </span>
       <span class="hidden sm:inline">UTF-8</span>
       <span class="hidden md:inline"
-        >MODE: <span id="mode-status-text">CLI</span></span
+        >42 BRANDS MONITORED</span
       >
+      <span class="text-[var(--border-color)]">|</span>
+      <a href="/about" class="hover:text-[var(--accent)] underline">关于实验室</a>
+      <a href="/disclaimer" class="hover:text-[var(--accent)] underline">免责声明</a>
     </div>
 
     <!-- Live Status Bar Radio Ticker -->
@@ -160,7 +245,7 @@ import { ALL_THEMES } from "../config/themeConfig";
       <span id="live-clock" class="text-[var(--fg-bright)] font-mono"
         >00:00:00 UTC</span
       >
-      <span class="text-[var(--accent)] font-bold">TUI_ENGINE v5.0</span>
+      <span class="text-[var(--accent)] font-bold">JICHANGWANG_ENGINE v6.0</span>
     </div>
   </footer>
 </div>
@@ -174,21 +259,67 @@ import { ALL_THEMES } from "../config/themeConfig";
   } from "../utils/sound";
   import { applyTheme, applyCRTConfig } from '../config/themeConfig';
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const isMobile =
-      window.innerWidth < 768 ||
-      /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
-        navigator.userAgent,
-      );
+  // 全局 TUI 双模式切换引擎 (CLI 终端模式 / GUI 图形仪表盘模式)
+  window.switchTuiMode = function(mode: 'cli' | 'gui') {
+    const cliView = document.getElementById("view-cli");
+    const guiView = document.getElementById("view-gui");
+    const cliTab = document.getElementById("tab-cli");
+    const guiTab = document.getElementById("tab-gui");
 
+    if (mode === 'gui') {
+      if (cliView) cliView.classList.add("hidden");
+      if (guiView) guiView.classList.remove("hidden");
+      if (cliTab) {
+        cliTab.classList.remove("bg-[var(--border-color)]", "text-[var(--fg-bright)]", "border-b-2", "border-[var(--accent)]");
+        cliTab.classList.add("text-[var(--fg-dim)]");
+      }
+      if (guiTab) {
+        guiTab.classList.remove("text-[var(--fg-dim)]");
+        guiTab.classList.add("bg-[var(--border-color)]", "text-[var(--fg-bright)]", "border-b-2", "border-[var(--accent)]");
+      }
+      localStorage.setItem("tui_view_mode", "gui");
+      playBeep(700, 0.04);
+    } else {
+      if (guiView) guiView.classList.add("hidden");
+      if (cliView) cliView.classList.remove("hidden");
+      if (guiTab) {
+        guiTab.classList.remove("bg-[var(--border-color)]", "text-[var(--fg-bright)]", "border-b-2", "border-[var(--accent)]");
+        guiTab.classList.add("text-[var(--fg-dim)]");
+      }
+      if (cliTab) {
+        cliTab.classList.remove("text-[var(--fg-dim)]");
+        cliTab.classList.add("bg-[var(--border-color)]", "text-[var(--fg-bright)]", "border-b-2", "border-[var(--accent)]");
+      }
+      localStorage.setItem("tui_view_mode", "cli");
+      playBeep(520, 0.04);
+      // 聚焦终端输入框
+      const input = document.getElementById("cli-input") as HTMLInputElement;
+      if (input) input.focus();
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
     initSfxFromStorage();
     updateSfxUI();
+
+    // 绑定 Tab 点击事件
+    const cliTab = document.getElementById("tab-cli");
+    const guiTab = document.getElementById("tab-gui");
+    cliTab?.addEventListener("click", () => window.switchTuiMode('cli'));
+    guiTab?.addEventListener("click", () => window.switchTuiMode('gui'));
+
+    // 检查 URL Hash 或缓存首选模式 (如果有 #gui 或 #view-gui 或移动端，默认切 GUI)
+    const hash = window.location.hash;
+    const savedMode = localStorage.getItem("tui_view_mode");
+    if (hash.includes("gui") || hash.includes("table") || hash.includes("guangsu") || savedMode === "gui" || window.innerWidth < 768) {
+      window.switchTuiMode('gui');
+    }
 
     function updateClock() {
       const clockEl = document.getElementById("live-clock");
       if (clockEl) {
         const now = new Date();
-        clockEl.textContent = now.toTimeString().split(" ")[0] + " LOCAL";
+        clockEl.textContent = now.toTimeString().split(" ")[0] + " BJT";
       }
     }
     updateClock();
@@ -211,8 +342,6 @@ import { ALL_THEMES } from "../config/themeConfig";
     }
 
     const crtBtn = document.getElementById("toggle-crt-btn");
-    
-    // Apply CRT config on load according to GLOBAL_CRT_CONFIG
     applyCRTConfig();
 
     crtBtn?.addEventListener("click", () => {
@@ -247,149 +376,5 @@ import { ALL_THEMES } from "../config/themeConfig";
           playBeep(750, 0.05);
         }
       });
-
-    document
-      .getElementById("status-radio-ticker")
-      ?.addEventListener("click", () => {
-        const win = window as unknown as {
-          radioEngine?: { toggleModal: (f?: boolean) => void };
-        };
-        if (win.radioEngine) {
-          win.radioEngine.toggleModal(true);
-          playBeep(750, 0.05);
-        }
-      });
-
-    // Listen for live radio changes to update footer ticker
-    window.addEventListener("tui-radio-change", (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      const titleEl = document.getElementById("status-radio-title");
-      const iconEl = document.getElementById("status-radio-icon");
-      if (detail && detail.track) {
-        if (titleEl) {
-          titleEl.textContent = detail.isPlaying
-            ? `♪ ${detail.track.title.toUpperCase()}`
-            : `RADIO: PAUSED`;
-        }
-        if (iconEl) {
-          iconEl.textContent = detail.isPlaying ? "📻" : "📻";
-        }
-      }
-    });
-
-    window.addEventListener("tui-radio-viz", (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      const meterEl = document.getElementById("status-radio-meter");
-      if (meterEl && detail) {
-        meterEl.textContent = detail.isPlaying ? detail.ascii : "";
-      }
-    });
-
-    document
-      .getElementById("trigger-pong-btn")
-      ?.addEventListener("click", () => {
-        const win = window as unknown as {
-          togglePong?: (f?: boolean) => void;
-        };
-        if (win.togglePong) {
-          win.togglePong(true);
-          playBeep(880, 0.06, "triangle");
-        }
-      });
-
-    document
-      .getElementById("trigger-snake-btn")
-      ?.addEventListener("click", () => {
-        const win = window as unknown as {
-          toggleSnake?: (f?: boolean) => void;
-        };
-        if (win.toggleSnake) {
-          win.toggleSnake(true);
-          playBeep(820, 0.06, "triangle");
-        }
-      });
-
-    document
-      .getElementById("trigger-matrix-btn")
-      ?.addEventListener("click", () => {
-        const win = window as unknown as {
-          toggleMatrix?: (f?: boolean) => void;
-        };
-        if (win.toggleMatrix) {
-          win.toggleMatrix(true);
-          playBeep(700, 0.08);
-        }
-      });
-
-    const tabCli = document.getElementById("tab-cli");
-    const tabGui = document.getElementById("tab-gui");
-    const cliView = document.getElementById("view-cli");
-    const guiView = document.getElementById("view-gui");
-    const modeStatusText = document.getElementById("mode-status-text");
-
-    function switchMode(mode: "cli" | "gui") {
-      const targetMode = isMobile ? "gui" : mode;
-      playBeep(targetMode === "cli" ? 500 : 700, 0.05);
-
-      if (targetMode === "cli") {
-        cliView?.classList.remove("hidden");
-        guiView?.classList.add("hidden");
-
-        tabCli?.classList.add(
-          "bg-[var(--border-color)]",
-          "text-[var(--fg-bright)]",
-          "border-b-2",
-          "border-[var(--accent)]",
-        );
-        tabCli?.classList.remove("text-[var(--fg-dim)]");
-
-        tabGui?.classList.remove(
-          "bg-[var(--border-color)]",
-          "text-[var(--fg-bright)]",
-          "border-b-2",
-          "border-[var(--accent)]",
-        );
-        tabGui?.classList.add("text-[var(--fg-dim)]");
-
-        if (modeStatusText) modeStatusText.textContent = "CLI";
-
-        const cliInput = document.getElementById(
-          "cli-input",
-        ) as HTMLInputElement;
-        if (cliInput) setTimeout(() => cliInput.focus(), 100);
-      } else {
-        guiView?.classList.remove("hidden");
-        cliView?.classList.add("hidden");
-
-        tabGui?.classList.add(
-          "bg-[var(--border-color)]",
-          "text-[var(--fg-bright)]",
-          "border-b-2",
-          "border-[var(--accent)]",
-        );
-        tabGui?.classList.remove("text-[var(--fg-dim)]");
-
-        tabCli?.classList.remove(
-          "bg-[var(--border-color)]",
-          "text-[var(--fg-bright)]",
-          "border-b-2",
-          "border-[var(--accent)]",
-        );
-        tabCli?.classList.add("text-[var(--fg-dim)]");
-
-        if (modeStatusText) modeStatusText.textContent = "GUI";
-      }
-    }
-
-    if (isMobile) {
-      switchMode("gui");
-    }
-
-    tabCli?.addEventListener("click", () => switchMode("cli"));
-    tabGui?.addEventListener("click", () => switchMode("gui"));
-
-    (
-      window as unknown as { switchTuiMode: (mode: "cli" | "gui") => void }
-    ).switchTuiMode = switchMode;
   });
 </script>
